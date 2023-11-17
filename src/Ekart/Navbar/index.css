@@ -1,0 +1,36 @@
+.wd-navbar {
+    background-color: black !important;
+}
+
+.wd-title {
+    display: flex !important;
+    align-items: center !important;
+}
+
+.wd-search-container {
+    flex-grow: 1 !important;
+    display: flex !important;
+    justify-content: center !important;
+    margin-right: auto !important;
+    margin-left: auto !important;
+}
+
+.wd-search-icon {
+    /*background-color: white !important;*/
+    padding: 10px !important;
+    /*border-radius: 5px !important;*/
+}
+
+.wd-search-input {
+    border-radius: 5px !important;
+    width: 600px !important;
+    background-color: white !important;
+}
+
+.wd-td-none {
+    text-decoration: none !important;
+}
+
+.wd-fg-white {
+    color: white !important;
+}
