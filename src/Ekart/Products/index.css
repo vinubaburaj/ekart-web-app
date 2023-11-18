@@ -1,0 +1,11 @@
+#wd-product-list-header {
+  margin-top: 10px;
+  align-items: start;
+  display: flex;
+  margin-left: 5px;
+}
+
+#wd-card {
+    width: 200px;
+    margin: 10px;
+}
