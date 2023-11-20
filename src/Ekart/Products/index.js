@@ -9,7 +9,6 @@ function Products() {
 
   return (
     <>
-      <Navbar />
       <div className="ms-4">
       <div id="wd-product-list-header">
         <h4>Products</h4>
