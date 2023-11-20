@@ -6,5 +6,5 @@
 
 a {
   text-decoration: none !important;
-  color: brown !important;
+  color: var(--primary-color) !important;
 }
