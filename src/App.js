@@ -9,7 +9,7 @@ import Ekart from "./Ekart";
 
 function App() {
   return (
-      <div className="App">
+      <div>
         <HashRouter>
           <Routes>
             <Route path="*" element={<Ekart/>}/>

@@ -1,4 +1,10 @@
 .wd-login-container {
-  width: 200px !important;
-  height: 200px !important;
+  width: 400px;
+  height: 400px;
+  padding: 20px;
+}
+
+a {
+  text-decoration: none !important;
+  color: brown !important;
 }
