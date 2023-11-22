@@ -8,10 +8,12 @@ import {
   Button,
 } from "@mui/material";
 import staticImage from '../Database/product-img.avif';
-import ProductDetails from "./product-details";
+import { addProductToCart } from '../Cart/cartReducer';
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
 const ProductCard = ({ product }) => {
+    const dispatch = useDispatch();
   return (
     <Card id="wd-card" >
         <Link key={product._id} to={`/Products/${product._id}`} style={{ textDecoration: 'none' }}>
@@ -32,7 +34,13 @@ const ProductCard = ({ product }) => {
         </CardContent>
       </CardActionArea>
       </Link>
-      <Button className="mb-2" variant="outlined" size="small" color="primary">
+      <Button 
+      className="mb-2" 
+      variant="outlined" 
+      size="small" 
+      color="primary" 
+      onClick={() => dispatch(addProductToCart(product))}
+      >
         Add to Cart
       </Button>
     </Card>

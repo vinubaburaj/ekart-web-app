@@ -11,7 +11,6 @@ function ProductDetails() {
 
   return (
     <>
-    <Navbar />
     <div id="wd-product-list-header">
         <h4>Products Details</h4>
       </div>

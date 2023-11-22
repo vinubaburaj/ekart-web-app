@@ -59,7 +59,7 @@ const Navbar = () => {
             </div>
           </div>
 
-          <Link to={`/`} className="wd-td-none wd-fg-white">
+          <Link to={`/Cart`} className="wd-td-none wd-fg-white">
             <Typography variant="h6" component="div" className="wd-title me-4">
               Cart: 0
             </Typography>

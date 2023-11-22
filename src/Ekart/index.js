@@ -5,6 +5,9 @@ import Products from "./Products";
 import ProductDetails from "./Products/product-details";
 import {Navigate} from "react-router-dom";
 import Navbar from "./Navbar";
+import Cart from "./Cart";
+import { Provider } from "react-redux";
+import store from "./store";
 
 function Ekart() {
   const path = useLocation().pathname;
@@ -12,7 +15,7 @@ function Ekart() {
   const hideNavbarPaths = ["/Login"];
   showNavbar = !hideNavbarPaths.includes(path);
   return (
-      <>
+      <Provider store={store}>
         {showNavbar && <Navbar/>}
         <Routes>
           <Route path="/" element={<Navigate to={"/Home"}/>}/>
@@ -20,8 +23,9 @@ function Ekart() {
           <Route path="/Login" element={<Login/>}/>
           <Route path="/Products" element={<Products/>}/>
           <Route path="/Products/:productId" element={<ProductDetails/>}/>
+          <Route path="/Cart" element={<Cart />} />
         </Routes>
-      </>
+      </Provider>
   )
 }
 
