@@ -5,7 +5,16 @@
   margin-left: 5px;
 }
 
-#wd-card {
-    width: 200px;
-    margin: 10px;
+.wd-card {
+  width: 300px;
+  margin: 10px;
+}
+
+.primary-color {
+  color: var(--primary-color) !important;
+}
+
+.wd-in-cart {
+  background-color: var(--primary-color) !important;
+  color: white !important;
 }
