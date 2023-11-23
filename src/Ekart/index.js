@@ -8,24 +8,31 @@ import Navbar from "./Navbar";
 import Cart from "./Cart";
 import { Provider } from "react-redux";
 import store from "./store";
+import './index.css';
+import Register from "./Register";
 
 function Ekart() {
   const path = useLocation().pathname;
   let showNavbar = false;
-  const hideNavbarPaths = ["/Login"];
+  const hideNavbarPaths = ["/Login", "/Register"];
   showNavbar = !hideNavbarPaths.includes(path);
   return (
+
       <Provider store={store}>
+      <div className={'container-fluid px-0 mx-0'}>
         {showNavbar && <Navbar/>}
         <Routes>
           <Route path="/" element={<Navigate to={"/Home"}/>}/>
           <Route path="/Home" element={<Home/>}/>
           <Route path="/Login" element={<Login/>}/>
+          <Route path="/Register" element={<Register/>}/>
           <Route path="/Products" element={<Products/>}/>
           <Route path="/Products/:productId" element={<ProductDetails/>}/>
           <Route path="/Cart" element={<Cart />} />
         </Routes>
+      </div>
       </Provider>
+
   )
 }
 

@@ -6,10 +6,11 @@ import Products from './Ekart/Products';
 import ProductDetails from './Ekart/Products/product-details';
 import Login from "./Ekart/Login";
 import Ekart from "./Ekart";
+import {createTheme} from "@mui/material";
 
 function App() {
   return (
-      <div className="App">
+      <div>
         <HashRouter>
           <Routes>
             <Route path="*" element={<Ekart/>}/>

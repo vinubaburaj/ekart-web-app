@@ -18,7 +18,7 @@ import {Link} from "react-router-dom";
 
 const Navbar = () => {
   return (
-      <AppBar position="static" className="wd-navbar">
+      <AppBar position="static">
         <Toolbar>
 
           <Typography variant="h5" component="div" className="wd-title">
