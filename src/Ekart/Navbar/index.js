@@ -1,4 +1,3 @@
-// Navbar.jsx
 import React from 'react';
 import {
   AppBar,
@@ -15,8 +14,12 @@ import {
 } from '@mui/icons-material';
 import './index.css';
 import {Link} from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const Navbar = () => {
+
+  const cartItems = useSelector((state) => state.cartReducer.cartItems);
+
   return (
       <AppBar position="static">
         <Toolbar>
@@ -61,7 +64,7 @@ const Navbar = () => {
 
           <Link to={`/Cart`} className="wd-td-none wd-fg-white">
             <Typography variant="h6" component="div" className="wd-title me-4">
-              Cart: 0
+              Cart: {cartItems.length}
             </Typography>
           </Link>
         </Toolbar>

@@ -1,12 +1,19 @@
-import { useSelector } from "react-redux";
-import { addProductToCart, deleteProductFromCart } from "./cartReducer";
+import { useSelector, useDispatch } from "react-redux";
+import { deleteProductFromCart, emptyCart } from "./cartReducer";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { IconButton, Button } from "@mui/material";
 
 function Cart() {
+  const dispatch = useDispatch();
   const cartItems = useSelector((state) => state.cartReducer.cartItems);
 
+  const handleEmptyCart = () => {
+    dispatch(emptyCart());
+  };
+
   return (
-    <>
-      <h4>Cart Items:</h4>
+    <div className="m-2">
+      <h4> Items in Cart:</h4>
       <table className="table table-striped">
         <thead>
           <tr>
@@ -21,14 +28,34 @@ function Cart() {
               <td>{item.name}</td>
               <td>{item.price}</td>
               <td>1</td>
+              <td>
+                <IconButton
+                  color="error"
+                  onClick={() => dispatch(deleteProductFromCart(item._id))}
+                >
+                  <DeleteIcon />
+                </IconButton>
+              </td>
             </tr>
           ))}
         </tbody>
       </table>
-
-      <button className="btn me-2 btn-danger">Empty Cart</button>
-      <button className="btn btn-primary">Place Order</button>
-    </>
+      {cartItems.length > 0 && (
+        <div>
+          <Button
+            variant="contained"
+            className="me-2"
+            color="error"
+            onClick={handleEmptyCart}
+          >
+            Empty Cart
+          </Button>
+          <Button variant="contained" color="primary">
+            Place Order
+          </Button>
+        </div>
+      )}
+    </div>
   );
 }
 
