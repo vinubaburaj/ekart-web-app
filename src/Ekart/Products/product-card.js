@@ -9,12 +9,11 @@ import {
   Rating,
   Snackbar,
   Typography,
-  Button,
 } from "@mui/material";
 import staticImage from '../Database/product-img.avif';
-import { addProductToCart } from '../Cart/cartReducer';
-import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import {addProductToCart} from '../Cart/cartReducer';
+import {Link} from "react-router-dom";
+import {useDispatch} from "react-redux";
 import {FaRegHeart} from "react-icons/fa";
 import {FaHeart} from "react-icons/fa6";
 
@@ -76,7 +75,7 @@ const ProductCard = ({product}) => {
             className={'px-3 d-flex justify-content-between align-self-center mb-3'}>
           {!addedToCart && <Button className="mb-0" variant="outlined"
                                    size="small"
-                                   color="primary" onClick={() => {toggleCart}>
+                                   color="primary" onClick={toggleCart}>
             Add to Cart
           </Button>}
           {addedToCart && <Button className="mb-0 wd-in-cart" variant="outlined"
