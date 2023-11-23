@@ -11,11 +11,14 @@ import {
   Typography,
 } from "@mui/material";
 import staticImage from '../Database/product-img.avif';
+import {addProductToCart} from '../Cart/cartReducer';
 import {Link} from "react-router-dom";
+import {useDispatch} from "react-redux";
 import {FaRegHeart} from "react-icons/fa";
 import {FaHeart} from "react-icons/fa6";
 
 const ProductCard = ({product}) => {
+  const dispatch = useDispatch();
   const [wishListed, setWishListed] = useState(false);
   const [addedToCart, setAddedToCart] = useState(false);
   const [snackBarOpen, setSnackBarOpen] = useState(false);
@@ -31,6 +34,9 @@ const ProductCard = ({product}) => {
   const toggleCart = () => {
     setAddedToCart(!addedToCart);
     setSnackBarOpen(true);
+    if (!addedToCart) {
+      dispatch(addProductToCart(product));
+    }
     setSnackBarMessage(addedToCart ? 'Removed from Cart' : 'Added to Cart');
   }
 
