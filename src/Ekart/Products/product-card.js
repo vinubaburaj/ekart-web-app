@@ -74,8 +74,8 @@ const ProductCard = ({product}) => {
           </Button>}
           {addedToCart && <Button className="mb-0 wd-in-cart" variant="outlined"
                                   size="small"
-                                  color="primary">
-            In Cart
+                                  color="primary" onClick={toggleCart}>
+            Remove from cart
           </Button>}
           {!wishListed && <FaRegHeart onClick={toggleWishList}
                                       title={'Add to WishList'}
