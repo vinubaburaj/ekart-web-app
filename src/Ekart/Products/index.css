@@ -10,11 +10,29 @@
   margin: 10px;
 }
 
-.primary-color {
+.wd-primary-color {
   color: var(--primary-color) !important;
 }
 
 .wd-in-cart {
   background-color: var(--primary-color) !important;
   color: white !important;
+}
+
+.MuiSelect-select {
+  padding-top: 10px !important;
+  padding-bottom: 10px !important;
+  color: var(--primary-color) !important;
+}
+
+.MuiFormLabel-root {
+  color: var(--primary-color) !important;
+}
+
+.MuiInputBase-root {
+  color: var(--primary-color) !important;
+}
+
+.MuiOutlinedInput-notchedOutline {
+  border-color: rgba(62, 132, 154, 0.5) !important;
 }

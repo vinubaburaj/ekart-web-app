@@ -1,86 +1,402 @@
 [
   {
     "_id": 1,
-    "name": "Product 1",
-    "price": "$19.99",
-    "rating": 2.5
+    "name": "Smartphone Galaxy",
+    "category": "Electronics",
+    "currency": "$",
+    "price": "599.99",
+    "rating": 4.0
   },
   {
     "_id": 2,
-    "name": "Product 2",
-    "price": "$29.99",
-    "rating": 1.5
-  },
-  {
-    "_id": 3,
-    "name": "Product 3",
-    "price": "$29.99",
+    "name": "Laptop ProBook",
+    "category": "Laptops",
+    "currency": "$",
+    "price": "1299.99",
     "rating": 4.5
   },
   {
-    "_id": 4,
-    "name": "Product 4",
-    "price": "$29.99",
-    "rating": 0.5
-  },
-  {
-    "_id": 5,
-    "name": "Product 5",
-    "price": "$29.99",
-    "rating": 3
-  },
-  {
-    "_id": 6,
-    "name": "Product 6",
-    "price": "$29.99",
-    "rating": 5
-  },
-  {
-    "_id": 7,
-    "name": "Product 7",
-    "price": "$29.99",
-    "rating": 1
-  },
-  {
-    "_id": 8,
-    "name": "Product 8",
-    "price": "$29.99",
-    "rating": 2
-  },
-  {
-    "_id": 9,
-    "name": "Product 9",
-    "price": "$29.99",
-    "rating": 4
-  },
-  {
-    "_id": 10,
-    "name": "Product 10",
-    "price": "$29.99",
+    "_id": 3,
+    "name": "Wireless Earbuds Supreme",
+    "category": "Audio",
+    "currency": "$",
+    "price": "149.99",
     "rating": 3.5
   },
   {
+    "_id": 4,
+    "name": "Smartwatch Harmony",
+    "category": "Wearables",
+    "currency": "$",
+    "price": "199.99",
+    "rating": 3.0
+  },
+  {
+    "_id": 5,
+    "name": "4K UHD TV 65\"",
+    "category": "Televisions",
+    "currency": "$",
+    "price": "799.99",
+    "rating": 4.5
+  },
+  {
+    "_id": 6,
+    "name": "Gaming Console Ultimate",
+    "category": "Gaming",
+    "currency": "$",
+    "price": "349.99",
+    "rating": 4.0
+  },
+  {
+    "_id": 7,
+    "name": "Professional Mirrorless Camera",
+    "category": "Cameras",
+    "currency": "$",
+    "price": "849.99",
+    "rating": 3.5
+  },
+  {
+    "_id": 8,
+    "name": "High-Speed Mesh Router",
+    "category": "Networking",
+    "currency": "$",
+    "price": "99.99",
+    "rating": 4.0
+  },
+  {
+    "_id": 9,
+    "name": "Portable Bluetooth Speaker Pro",
+    "category": "Audio",
+    "currency": "$",
+    "price": "89.99",
+    "rating": 3.0
+  },
+  {
+    "_id": 10,
+    "name": "External SSD 1TB",
+    "category": "Storage",
+    "currency": "$",
+    "price": "129.99",
+    "rating": 4.5
+  },
+  {
     "_id": 11,
-    "name": "Product 11",
-    "price": "$29.99",
-    "rating": 0
+    "name": "Desktop Computer Titan",
+    "category": "Computers",
+    "currency": "$",
+    "price": "1499.99",
+    "rating": 4.0
   },
   {
     "_id": 12,
-    "name": "Product 12",
-    "price": "$29.99",
-    "rating": 5
+    "name": "Wireless Charging Pad",
+    "category": "Accessories",
+    "currency": "$",
+    "price": "39.99",
+    "rating": 3.5
   },
   {
     "_id": 13,
-    "name": "Product 13",
-    "price": "$29.99",
-    "rating": 2
+    "name": "Curved Gaming Monitor",
+    "category": "Monitors",
+    "currency": "$",
+    "price": "599.99",
+    "rating": 4.5
   },
   {
     "_id": 14,
-    "name": "Product 14",
-    "price": "$29.99",
-    "rating": 2
+    "name": "Digital Drawing Tablet",
+    "category": "Tablets",
+    "currency": "$",
+    "price": "249.99",
+    "rating": 4.0
+  },
+  {
+    "_id": 15,
+    "name": "Smart Home Security System",
+    "category": "Smart Home",
+    "currency": "$",
+    "price": "349.99",
+    "rating": 3.5
+  },
+  {
+    "_id": 16,
+    "name": "Noise-Canceling Headphones",
+    "category": "Audio",
+    "currency": "$",
+    "price": "179.99",
+    "rating": 4.0
+  },
+  {
+    "_id": 17,
+    "name": "Ultra-Slim Laptop",
+    "category": "Laptops",
+    "currency": "$",
+    "price": "899.99",
+    "rating": 3.5
+  },
+  {
+    "_id": 18,
+    "name": "RGB Mechanical Gaming Keyboard",
+    "category": "Gaming",
+    "currency": "$",
+    "price": "129.99",
+    "rating": 4.5
+  },
+  {
+    "_id": 19,
+    "name": "Fitness Tracker Band",
+    "category": "Wearables",
+    "currency": "$",
+    "price": "49.99",
+    "rating": 3.0
+  },
+  {
+    "_id": 20,
+    "name": "Smart Refrigerator",
+    "category": "Appliances",
+    "currency": "$",
+    "price": "1499.99",
+    "rating": 4.5
+  },
+  {
+    "_id": 21,
+    "name": "Portable Projector",
+    "category": "Projectors",
+    "currency": "$",
+    "price": "299.99",
+    "rating": 3.0
+  },
+  {
+    "_id": 22,
+    "name": "Mechanical Gaming Mouse",
+    "category": "Gaming",
+    "currency": "$",
+    "price": "69.99",
+    "rating": 4.0
+  },
+  {
+    "_id": 23,
+    "name": "HD Webcam",
+    "category": "Accessories",
+    "currency": "$",
+    "price": "79.99",
+    "rating": 3.5
+  },
+  {
+    "_id": 24,
+    "name": "Wireless Gaming Headset",
+    "category": "Audio",
+    "currency": "$",
+    "price": "129.99",
+    "rating": 4.5
+  },
+  {
+    "_id": 25,
+    "name": "Smart LED Light Bulbs",
+    "category": "Smart Home",
+    "currency": "$",
+    "price": "29.99",
+    "rating": 3.0
+  },
+  {
+    "_id": 26,
+    "name": "Ultra-Wide Gaming Monitor",
+    "category": "Monitors",
+    "currency": "$",
+    "price": "699.99",
+    "rating": 4.0
+  },
+  {
+    "_id": 27,
+    "name": "Digital Nomad Backpack",
+    "category": "Accessories",
+    "currency": "$",
+    "price": "49.99",
+    "rating": 3.5
+  },
+  {
+    "_id": 28,
+    "name": "Mini Desktop PC",
+    "category": "Computers",
+    "currency": "$",
+    "price": "499.99",
+    "rating": 4.0
+  },
+  {
+    "_id": 29,
+    "name": "Wireless Charging Dock",
+    "category": "Accessories",
+    "currency": "$",
+    "price": "34.99",
+    "rating": 3.5
+  },
+  {
+    "_id": 30,
+    "name": "Smart Doorbell",
+    "category": "Smart Home",
+    "currency": "$",
+    "price": "199.99",
+    "rating": 4.5
+  },
+  {
+    "_id": 31,
+    "name": "Mechanical Gaming Keyboard",
+    "category": "Gaming",
+    "currency": "$",
+    "price": "89.99",
+    "rating": 4.0
+  },
+  {
+    "_id": 32,
+    "name": "Wireless Gaming Controller",
+    "category": "Gaming",
+    "currency": "$",
+    "price": "79.99",
+    "rating": 3.5
+  },
+  {
+    "_id": 33,
+    "name": "Smart Thermostat",
+    "category": "Smart Home",
+    "currency": "$",
+    "price": "129.99",
+    "rating": 4.0
+  },
+  {
+    "_id": 34,
+    "name": "4K Action Camera",
+    "category": "Cameras",
+    "currency": "$",
+    "price": "199.99",
+    "rating": 3.5
+  },
+  {
+    "_id": 35,
+    "name": "Compact Photo Printer",
+    "category": "Printers",
+    "currency": "$",
+    "price": "149.99",
+    "rating": 4.5
+  },
+  {
+    "_id": 36,
+    "name": "Wireless In-Ear Monitors",
+    "category": "Audio",
+    "currency": "$",
+    "price": "199.99",
+    "rating": 3.0
+  },
+  {
+    "_id": 37,
+    "name": "Portable Solar Charger",
+    "category": "Accessories",
+    "currency": "$",
+    "price": "49.99",
+    "rating": 4.5
+  },
+  {
+    "_id": 38,
+    "name": "Gaming Desk",
+    "category": "Furniture",
+    "currency": "$",
+    "price": "149.99",
+    "rating": 3.0
+  },
+  {
+    "_id": 39,
+    "name": "Wireless Barcode Scanner",
+    "category": "Accessories",
+    "currency": "$",
+    "price": "79.99",
+    "rating": 4.0
+  },
+  {
+    "_id": 40,
+    "name": "Digital Drawing Monitor",
+    "category": "Tablets",
+    "currency": "$",
+    "price": "499.99",
+    "rating": 3.5
+  },
+  {
+    "_id": 41,
+    "name": "RGB Gaming Mouse Pad",
+    "category": "Gaming",
+    "currency": "$",
+    "price": "29.99",
+    "rating": 4.0
+  },
+  {
+    "_id": 42,
+    "name": "Smart Mirror",
+    "category": "Smart Home",
+    "currency": "$",
+    "price": "299.99",
+    "rating": 3.5
+  },
+  {
+    "_id": 43,
+    "name": "Mechanical Gaming Headset",
+    "category": "Gaming",
+    "currency": "$",
+    "price": "99.99",
+    "rating": 4.5
+  },
+  {
+    "_id": 44,
+    "name": "Wireless Touchpad Keyboard",
+    "category": "Keyboards",
+    "currency": "$",
+    "price": "49.99",
+    "rating": 3.0
+  },
+  {
+    "_id": 45,
+    "name": "Mini Drone",
+    "category": "Drones",
+    "currency": "$",
+    "price": "129.99",
+    "rating": 4.0
+  },
+  {
+    "_id": 46,
+    "name": "Smart Pet Feeder",
+    "category": "Pet Tech",
+    "currency": "$",
+    "price": "79.99",
+    "rating": 3.5
+  },
+  {
+    "_id": 47,
+    "name": "Portable Espresso Maker",
+    "category": "Appliances",
+    "currency": "$",
+    "price": "69.99",
+    "rating": 4.5
+  },
+  {
+    "_id": 48,
+    "name": "Wireless Charging Mouse Pad",
+    "category": "Accessories",
+    "currency": "$",
+    "price": "39.99",
+    "rating": 3.0
+  },
+  {
+    "_id": 49,
+    "name": "Smart Water Bottle",
+    "category": "Fitness",
+    "currency": "$",
+    "price": "29.99",
+    "rating": 4.0
+  },
+  {
+    "_id": 50,
+    "name": "Wireless RGB Gaming Headset",
+    "category": "Gaming",
+    "currency": "$",
+    "price": "149.99",
+    "rating": 3.5
   }
 ]
