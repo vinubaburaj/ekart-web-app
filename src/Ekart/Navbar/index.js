@@ -1,20 +1,15 @@
 import React from 'react';
 import {
   AppBar,
-  Toolbar,
-  Typography,
+  IconButton,
   InputBase,
-  IconButton
+  Toolbar,
+  Typography
 } from '@mui/material';
-import {
-  Search as SearchIcon,
-  Home as HomeIcon,
-  Person as PersonIcon,
-  Settings as SettingsIcon
-} from '@mui/icons-material';
+import {Search as SearchIcon} from '@mui/icons-material';
 import './index.css';
 import {Link} from "react-router-dom";
-import { useSelector } from "react-redux";
+import {useSelector} from "react-redux";
 
 const Navbar = () => {
 

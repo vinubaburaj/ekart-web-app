@@ -1,8 +1,5 @@
-import Navbar from "../Navbar";
 import ProductsList from "./products-list";
 import './index.css';
-import ProductDetails from "./product-details";
-import { Routes, Route } from "react-router";
 
 function Products() {
 
