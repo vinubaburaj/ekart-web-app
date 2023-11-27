@@ -3,6 +3,7 @@ import { connect } from "mongoose";
 import bodyParser from "body-parser";
 import cors from "cors";
 import authRoutes from "./routes/authRoutes.js";
+import productRoutes from "./routes/productRoutes.js";
 import sessionMiddleware from "./middleware/sessionMiddleware.js";
 
 const app = express();
@@ -21,6 +22,7 @@ connect("mongodb://localhost:27017/ekart", {
 
 // Routes
 app.use("/auth", authRoutes);
+app.use("/products", productRoutes);
 
 // Start the server
 app.listen(PORT, () => {
