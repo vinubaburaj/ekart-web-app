@@ -6,3 +6,8 @@ export const findAllProducts = async () => {
   const response = await axios.get(PRODUCTS_URL);
   return response.data.products;
 };
+
+export const findProductById = async (productId) => {
+    const response = await axios.get(`${PRODUCTS_URL}/${productId}`);
+    return response.data;
+}

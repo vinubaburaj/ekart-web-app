@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const PRODUCTS_URL = 'https://dummyjson.com/products';
+const PRODUCTS_URL = "https://dummyjson.com/products";
 
 const searchProducts = async (req, res) => {
   try {
@@ -34,8 +34,25 @@ const getAllProducts = async (req, res) => {
     res.status(200).json(response.data);
   } catch (error) {
     console.error(error);
-    res.status(500).json({message: "Internal server error"})
+    res.status(500).json({ message: "Internal server error" });
   }
 };
 
-export { searchProducts, getAllProducts };
+const getProductById = async (req, res) => {
+  try {
+    const productId = req.params.productId;
+    const response = await axios.get(
+      `${PRODUCTS_URL}/${encodeURIComponent(productId)}`
+    );
+    res.status(200).json(response.data);
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .json({
+        message: `Error fetching product by id: ${req.params.productId}`,
+      });
+  }
+};
+
+export { searchProducts, getAllProducts, getProductById };
