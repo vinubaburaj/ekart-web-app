@@ -10,7 +10,6 @@ import {
   Snackbar,
   Typography,
 } from "@mui/material";
-import staticImage from "../Database/product-img.avif";
 import {addProductToCart} from "../Cart/cartReducer";
 import {Link} from "react-router-dom";
 import {useDispatch} from "react-redux";
@@ -54,13 +53,13 @@ const ProductCard = ({product}) => {
           <CardActionArea>
             <CardMedia
                 component="img"
-                alt={product.name}
+                alt={"Image Unavailable"}
                 height="140"
-                image={staticImage}
+                image={product.thumbnail}
             />
             <CardContent>
               <Typography gutterBottom variant="h6" component="div">
-                {product.name}
+                {product.title}
               </Typography>
               <div className={"d-flex flex-row align-items-center mb-2"}>
                 <Rating

@@ -1,5 +1,7 @@
 import axios from "axios";
 
+const PRODUCTS_URL = 'https://dummyjson.com/products';
+
 const searchProducts = async (req, res) => {
   try {
     const searchTerm = req.query.q;
@@ -8,10 +10,13 @@ const searchProducts = async (req, res) => {
       return res.status(400).json({ message: "Search term is required" });
     }
 
-    const apiUrl = `https://dummyjson.com/products/search?q=${encodeURIComponent(
+    const searchUrl = `${PRODUCTS_URL}/search?q=${encodeURIComponent(
       searchTerm
     )}`;
-    const response = await axios.get(apiUrl);
+    // `https://dummyjson.com/products/search?q=${encodeURIComponent(
+    //   searchTerm
+    // )}`;
+    const response = await axios.get(searchUrl);
 
     // Handle the response from the external API as needed
     const searchData = response.data;
@@ -23,4 +28,14 @@ const searchProducts = async (req, res) => {
   }
 };
 
-export { searchProducts };
+const getAllProducts = async (req, res) => {
+  try {
+    const response = await axios.get(PRODUCTS_URL);
+    res.status(200).json(response.data);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({message: "Internal server error"})
+  }
+};
+
+export { searchProducts, getAllProducts };

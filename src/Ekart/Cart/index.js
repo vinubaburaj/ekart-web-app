@@ -50,7 +50,7 @@ function Cart() {
                 {cartItems.map((item, index) => (
                     <tr key={index}>
                       <td><Link
-                          to={`/Products/${item.product._id}`}>{item.product.name}</Link>
+                          to={`/Products/${item.product._id}`}>{item.product.title}</Link>
                       </td>
                       <td className={'col-3'}>{item.product.price}</td>
                       <td className={'col-1'}>
