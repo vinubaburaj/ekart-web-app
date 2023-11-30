@@ -16,6 +16,7 @@ import CardSummary from "./card-summary";
 function Cart() {
   const dispatch = useDispatch();
   const cartItems = useSelector((state) => state.cartReducer.cartItems);
+  console.log(cartItems);
   const [quantArr, setQuantArr] = useState(
       cartItems.map((item) => item.quantity || 1));
   console.log('cartItems: ', cartItems);
@@ -50,14 +51,14 @@ function Cart() {
                 {cartItems.map((item, index) => (
                     <tr key={index}>
                       <td><Link
-                          to={`/Products/${item.product._id}`}>{item.product.name}</Link>
+                          to={`/Products/${item.product.id}`}>{item.product.title}</Link>
                       </td>
                       <td className={'col-3'}>{item.product.price}</td>
                       <td className={'col-1'}>
                         <FormControl className={'me-3'} color="primary">
                           <InputLabel id="qty">Qty</InputLabel>
                           <Select
-                              defaultValue={quantArr[index]}
+                              value={item.quantity}
                               labelId="qty"
                               id="qty-input"
                               label="Quantity"
@@ -74,7 +75,7 @@ function Cart() {
                         <IconButton
                             color="error"
                             onClick={() => dispatch(
-                                deleteProductFromCart(item.product._id))}
+                                deleteProductFromCart(item.product.id))}
                         >
                           <DeleteIcon/>
                         </IconButton>

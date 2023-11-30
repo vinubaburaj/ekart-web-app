@@ -9,9 +9,9 @@ const cartSlice = createSlice({
   reducers: {
     addProductToCart: (state, action) => {
       if (state.cartItems.find(
-          (item, index) => item.product._id === action.payload.product._id)) {
+          (item, index) => item.product.id === action.payload.product.id)) {
         state.cartItems = state.cartItems.map((item, index) => {
-          if (item.product._id === action.payload.product._id) {
+          if (item.product.id === action.payload.product.id) {
             return {
               ...item,
               quantity: Math.min(
@@ -26,8 +26,8 @@ const cartSlice = createSlice({
       state.cartItems = [action.payload, ...state.cartItems];
     },
     deleteProductFromCart: (state, action) => {
-      console.log('delete rom cart: ', action.payload);
-      state.cartItems = state.cartItems.filter((c) => c.product._id !== action.payload);
+      console.log('Delete from cart: ', action.payload);
+      state.cartItems = state.cartItems.filter((c) => c.product.id !== action.payload);
     },
     setQuantity: (state, action) => {
       state.cartItems[action.payload.index].quantity = action.payload.value;
