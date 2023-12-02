@@ -10,6 +10,7 @@ import { Provider } from "react-redux";
 import store from "./store";
 import './index.css';
 import Register from "./Register";
+import ProductsList from "./Products/products-list";
 
 function Ekart() {
   const path = useLocation().pathname;
@@ -28,6 +29,7 @@ function Ekart() {
           <Route path="/Register" element={<Register/>}/>
           <Route path="/Products" element={<Products/>}/>
           <Route path="/Products/:productId" element={<ProductDetails/>}/>
+          <Route path="/Products/search/:searchTerm" element={<ProductsList/>}/>
           <Route path="/Cart" element={<Cart />} />
         </Routes>
       </div>

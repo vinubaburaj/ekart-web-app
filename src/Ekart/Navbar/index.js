@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   AppBar,
   IconButton,
@@ -13,7 +14,11 @@ import {useSelector} from "react-redux";
 
 const Navbar = () => {
 
+  const navigate = useNavigate();
+
   const cartItems = useSelector((state) => state.cartReducer.cartItems);
+
+  const [searchTerm, setSearchTerm] = useState('');
 
   return (
       <AppBar position="static">
@@ -48,10 +53,15 @@ const Navbar = () => {
                   placeholder="Search..."
                   inputProps={{'aria-label': 'search'}}
                   className="wd-search-input"
+                  value={searchTerm}
+                  onChange={(event) => {
+                    setSearchTerm(event.target.value)
+                  }}
               />
 
               <IconButton className="wd-search-icon wd-fg-white"
-                          aria-label="search">
+                          aria-label="search"
+                          onClick={() => navigate(`/Products/search/${searchTerm}`)}>
                 <SearchIcon/>
               </IconButton>
             </div>

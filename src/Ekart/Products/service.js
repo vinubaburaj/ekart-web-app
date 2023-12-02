@@ -11,3 +11,9 @@ export const findProductById = async (productId) => {
     const response = await axios.get(`${PRODUCTS_URL}/${productId}`);
     return response.data;
 }
+
+export const searchProductsByTitle = async (searchTerm) => {
+  const response = await axios.get(`${PRODUCTS_URL}/search?q=${searchTerm}`);
+  // console.log(response.data.data.products);
+  return response.data.data.products;
+}
