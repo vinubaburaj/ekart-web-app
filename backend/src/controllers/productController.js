@@ -4,7 +4,7 @@ const PRODUCTS_URL = "https://dummyjson.com/products";
 
 const searchProducts = async (req, res) => {
   try {
-    const searchTerm = req.query.q;
+    const searchTerm  = req.query.q;
 
     if (!searchTerm) {
       return res.status(400).json({ message: "Search term is required" });

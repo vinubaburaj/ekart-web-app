@@ -7,10 +7,10 @@ import {
 
 const router = express.Router();
 
-router.get("/:productId", getProductById);
-
 // Search products route
 router.get("/search", searchProducts);
+
+router.get("/:productId", getProductById);
 
 // Default all products route
 router.get("/", getAllProducts);
