@@ -1,11 +1,10 @@
 import express from "express";
-import { connect } from "mongoose";
+import mongoose from "mongoose";
 import bodyParser from "body-parser";
 import cors from "cors";
 import authRoutes from "./routes/authRoutes.js";
 import productRoutes from "./routes/productRoutes.js";
 import sessionMiddleware from "./middleware/sessionMiddleware.js";
-import mongoose from "mongoose";
 
 const app = express();
 const PORT = process.env.PORT || 4000;
@@ -23,8 +22,8 @@ app.use(sessionMiddleware);
 mongoose.connect("mongodb://127.0.0.1:27017/ekart");
 
 // Routes
-app.use("/auth", authRoutes);
-app.use("/products", productRoutes);
+app.use("/api/auth", authRoutes);
+app.use("/api/products", productRoutes);
 
 // Start the server
 app.listen(PORT, () => {
