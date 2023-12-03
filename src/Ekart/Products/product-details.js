@@ -14,6 +14,10 @@ import {addProductToCart} from "../Cart/cartReducer";
 import {useDispatch} from "react-redux";
 import * as service from "./service";
 import Carousel from "react-material-ui-carousel";
+import {
+  addProductToWishlist,
+  deleteProductFromWishlist
+} from "../Wishlist/wishlistReducer";
 
 function ProductDetails() {
   const dispatch = useDispatch();
@@ -23,6 +27,11 @@ function ProductDetails() {
   const [wishListed, setWishListed] = useState(false);
   const toggleWishList = () => {
     setWishListed(!wishListed);
+    if (!wishListed) {
+      dispatch(addProductToWishlist(product));
+    } else {
+      dispatch(deleteProductFromWishlist(product.id));
+    }
   };
   const addToCart = () => {
     dispatch(

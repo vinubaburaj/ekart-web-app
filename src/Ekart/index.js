@@ -6,10 +6,11 @@ import ProductDetails from "./Products/product-details";
 import {Navigate} from "react-router-dom";
 import Navbar from "./Navbar";
 import Cart from "./Cart";
-import { Provider } from "react-redux";
+import {Provider} from "react-redux";
 import store from "./store";
 import './index.css';
 import Register from "./Register";
+import Wishlist from "./Wishlist";
 import ProductsList from "./Products/products-list";
 
 function Ekart() {
@@ -31,6 +32,7 @@ function Ekart() {
           <Route path="/Products/:productId" element={<ProductDetails/>}/>
           <Route path="/Products/search/:searchTerm" element={<ProductsList/>}/>
           <Route path="/Cart" element={<Cart />} />
+          <Route path={"/Account/Wishlist"} element={<Wishlist/>}/>
         </Routes>
       </div>
       </Provider>
