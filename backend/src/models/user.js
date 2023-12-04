@@ -9,9 +9,11 @@ const User = model("User", {
   wishlist: [],
   role: {
     type: String,
-    enum: ["USER", "SELLER", "ADMIN"],
-    default: "USER",
+    enum: ["BUYER", "SELLER", "ADMIN"],
+    default: "BUYER",
   },
+  mobile: String,
+  address: String,
 });
 
 export default User;
