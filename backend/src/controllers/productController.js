@@ -22,7 +22,7 @@ export const searchProducts = async (req, res) => {
       searchTerm
     )}`;
     const apiResponse = await axios.get(searchUrl);
-    const apiSearchResults = apiResponse.data;
+    const apiSearchResults = apiResponse.data.products;
 
     // Merge and filter results
     const mergedResults = mergeAndFilterProducts(
@@ -41,7 +41,7 @@ export const getAllProducts = async (req, res) => {
   try {
     // Fetch products from the external API
     const apiResponse = await axios.get(PRODUCTS_URL);
-    const apiProducts = apiResponse.data;
+    const apiProducts = apiResponse.data.products;
 
     // Fetch products from the database
     const dbProducts = await Product.find();
@@ -60,6 +60,9 @@ export const getAllProducts = async (req, res) => {
 export const createProduct = async (req, res) => {
   try {
     const product = new Product(req.body);
+    if (product.thumbnail && !!product.thumbnail.length) {
+      product.thumbnail = "https://picsum.photos/400";
+    }
     const savedProduct = await product.save();
     res.json(savedProduct);
   } catch (error) {

@@ -18,6 +18,7 @@ function ProductsList() {
 
   const fetchAllProducts = async() => {
     const fetchedProducts = await service.findAllProducts();
+    console.log("FETCHED PRODUCTS: ", fetchedProducts);
     setProducts(fetchedProducts);
   }
 

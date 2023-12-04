@@ -10,20 +10,19 @@ import {
 
 const router = express.Router();
 
+// Create a new product
+router.post("/", createProduct);
+
 // Search products route
 router.get("/search", searchProducts);
-
-router.get("/:productId", getProductById);
 
 // Default all products route
 router.get("/", getAllProducts);
 
-// Create a new product
-router.post("/products", createProduct);
+router.get("/:id", getProductById);
 
-router.put("/products/:id", updateProduct);
+router.put("/:id", updateProduct);
 
-router.delete("/products/:id", deleteProduct);
-
+router.delete("/:id", deleteProduct);
 
 export default router;

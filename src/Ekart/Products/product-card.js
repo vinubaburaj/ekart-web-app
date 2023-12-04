@@ -69,7 +69,7 @@ const ProductCard = ({product}) => {
       <Card className={"wd-card"}>
         <Link
             key={product.id}
-            to={`/Products/${product.id}`}
+            to={`/Products/${product.id || product._id}`}
             style={{textDecoration: "none"}}
         >
           <CardActionArea>
