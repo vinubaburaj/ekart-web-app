@@ -6,6 +6,7 @@ import {
   CardActionArea,
   CardContent,
   CardMedia,
+  IconButton,
   Rating,
   Snackbar,
   Typography,
@@ -15,9 +16,17 @@ import {Link} from "react-router-dom";
 import {useDispatch} from "react-redux";
 import {FaRegHeart} from "react-icons/fa";
 import {FaHeart} from "react-icons/fa6";
+import {useLocation} from "react-router";
+import {
+  addProductToWishlist,
+  deleteProductFromWishlist
+} from "../Wishlist/wishlistReducer";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 const ProductCard = ({product}) => {
   const dispatch = useDispatch();
+  const url = useLocation().pathname;
+  const isWishlist = url.indexOf("Wishlist") !== -1;
   const [wishListed, setWishListed] = useState(false);
   const [addedToCart, setAddedToCart] = useState(false);
   const [snackBarOpen, setSnackBarOpen] = useState(false);
@@ -26,6 +35,11 @@ const ProductCard = ({product}) => {
   const toggleWishList = () => {
     setWishListed(!wishListed);
     setSnackBarOpen(true);
+    if (!wishListed) {
+      dispatch(addProductToWishlist(product));
+    } else {
+      dispatch(deleteProductFromWishlist(product.id));
+    }
     setSnackBarMessage(
         wishListed ? "Removed from WishList" : "Added to WishList",
     );
@@ -42,6 +56,14 @@ const ProductCard = ({product}) => {
     }
     setSnackBarMessage(addedToCart ? "Removed from Cart" : "Added to Cart");
   };
+
+  const moveToCart = () => {
+    dispatch(deleteProductFromWishlist(product.id));
+    dispatch(addProductToCart({
+      quantity: 1,
+      product: product,
+    }));
+  }
 
   return (
       <Card className={"wd-card"}>
@@ -77,46 +99,67 @@ const ProductCard = ({product}) => {
             </CardContent>
           </CardActionArea>
         </Link>
-        <div
-            className={"px-3 d-flex justify-content-between align-self-center mb-3"}
-        >
-          {!addedToCart && (
+        {!isWishlist && (
+            <div
+                className={"px-3 d-flex justify-content-between align-self-center mb-3"}
+            >
+              {!addedToCart && (
+                  <Button
+                      className="mb-0"
+                      variant="outlined"
+                      size="small"
+                      color="primary"
+                      onClick={toggleCart}
+                  >
+                    Add to Cart
+                  </Button>
+              )}
+              {addedToCart && (
+                  <Button
+                      className="mb-0 wd-in-cart"
+                      variant="outlined"
+                      size="small"
+                      color="primary"
+                      disabled
+                  >
+                    In Cart
+                  </Button>
+              )}
+              {!wishListed && (
+                  <FaRegHeart
+                      onClick={toggleWishList}
+                      title={"Add to WishList"}
+                      className={"wd-cursor-pointer wd-primary-color align-self-center"}
+                  />
+              )}
+              {wishListed && (
+                  <FaHeart
+                      onClick={toggleWishList}
+                      title={"Remove from WishList"}
+                      className={"wd-cursor-pointer wd-primary-color align-self-center"}
+                  />
+              )}
+            </div>)}
+        {isWishlist && (
+            <div
+                className={"px-3 d-flex justify-content-between align-self-center mb-3"}>
               <Button
                   className="mb-0"
                   variant="outlined"
                   size="small"
                   color="primary"
-                  onClick={toggleCart}
+                  onClick={moveToCart}
               >
-                Add to Cart
+                Move to Cart
               </Button>
-          )}
-          {addedToCart && (
-              <Button
-                  className="mb-0 wd-in-cart"
-                  variant="outlined"
-                  size="small"
-                  color="primary"
-                  disabled
-              >
-                In Cart
-              </Button>
-          )}
-          {!wishListed && (
-              <FaRegHeart
-                  onClick={toggleWishList}
-                  title={"Add to WishList"}
-                  className={"wd-cursor-pointer wd-primary-color align-self-center"}
-              />
-          )}
-          {wishListed && (
-              <FaHeart
-                  onClick={toggleWishList}
-                  title={"Remove from WishList"}
-                  className={"wd-cursor-pointer wd-primary-color align-self-center"}
-              />
-          )}
-        </div>
+              <IconButton
+                  color="error"
+                  onClick={() => dispatch(
+                      deleteProductFromWishlist(product.id))}>
+                <DeleteIcon/>
+              </IconButton>
+            </div>
+        )}
         <Snackbar
             anchorOrigin={{vertical: "top", horizontal: "center"}}
             open={snackBarOpen}

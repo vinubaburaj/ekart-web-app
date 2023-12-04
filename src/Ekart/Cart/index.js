@@ -53,7 +53,7 @@ function Cart() {
                       <td><Link
                           to={`/Products/${item.product.id}`}>{item.product.title}</Link>
                       </td>
-                      <td className={'col-3'}>{item.product.price}</td>
+                      <td className={'col-3'}>${item.product.price}</td>
                       <td className={'col-1'}>
                         <FormControl className={'me-3'} color="primary">
                           <InputLabel id="qty">Qty</InputLabel>
