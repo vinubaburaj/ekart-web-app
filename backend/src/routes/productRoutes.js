@@ -3,6 +3,8 @@ import {
   searchProducts,
   getAllProducts,
   getProductById,
+  getReviewsForProduct,
+  addReviewForProduct
 } from "../controllers/productController.js";
 
 const router = express.Router();
@@ -11,6 +13,10 @@ const router = express.Router();
 router.get("/search", searchProducts);
 
 router.get("/:productId", getProductById);
+
+router.get("/:productId/reviews", getReviewsForProduct);
+
+router.post("/:productId/reviews", addReviewForProduct);
 
 // Default all products route
 router.get("/", getAllProducts);
