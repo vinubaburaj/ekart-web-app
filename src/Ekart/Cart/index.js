@@ -72,7 +72,7 @@ function Cart() {
                 <tbody>
                   {cartItems.map((item, index) => {
                     const quantityRange = Array.from(
-                      { length: item.product.stock },
+                      { length: item.product.stock || 25 },
                       (_, index) => index + 1
                     );
                     return (

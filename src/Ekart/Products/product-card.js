@@ -50,7 +50,7 @@ const ProductCard = ({product}) => {
     setAddedToCart(!addedToCart);
     setSnackBarOpen(true);
     if (!addedToCart) {
-      addToCart(product._id, 1);
+      addToCart(product, 1);
     }
     setSnackBarMessage(addedToCart ? "Removed from Cart" : "Added to Cart");
   };
