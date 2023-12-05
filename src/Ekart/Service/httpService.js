@@ -25,3 +25,26 @@ export const post = async (url, payload) => {
   }
   return response.data;
 }
+
+export const put = async (url, payload) => {
+  let response;
+  try {
+    response = await request.put(url, payload);
+  } catch (error) {
+    console.log(error);
+    return error.response;
+  }
+  return response.data;
+}
+
+// won't let me add delete as a method name
+export const deleteReq = async (url, payload) => {
+  let response;
+  try {
+    response = await request.delete(url, payload);
+  } catch (error) {
+    console.log(error);
+    return error.response;
+  }
+  return response.data;
+}
