@@ -1,20 +1,30 @@
-import mongoose from "mongoose";
+import { Schema } from "mongoose";
 
-const userSchema = new mongoose.Schema(
+const userSchema = new Schema(
   {
     firstName: String,
     lastName: String,
     email: String,
     password: String,
-    cart: [],
+    cart: [
+      {
+        product: {
+          type: Schema.Types.ObjectId,
+          ref: "Product",
+        },
+        quantity: {
+          type: Number,
+          default: 1,
+        },
+      },
+    ],
     wishlist: [],
     role: {
       type: String,
       enum: ["USER", "SELLER", "ADMIN"],
       default: "USER",
     },
-  },
-  { collection: "users" }
+  }
 );
 
 export default userSchema;
