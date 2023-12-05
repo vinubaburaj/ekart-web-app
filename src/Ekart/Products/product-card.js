@@ -22,6 +22,7 @@ import {
   deleteProductFromWishlist
 } from "../Wishlist/wishlistReducer";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { addToCart } from "../Cart/service";
 
 const ProductCard = ({product}) => {
   const dispatch = useDispatch();
@@ -49,10 +50,7 @@ const ProductCard = ({product}) => {
     setAddedToCart(!addedToCart);
     setSnackBarOpen(true);
     if (!addedToCart) {
-      dispatch(addProductToCart({
-        quantity: 1,
-        product: product,
-      }));
+      addToCart(product._id, 1);
     }
     setSnackBarMessage(addedToCart ? "Removed from Cart" : "Added to Cart");
   };

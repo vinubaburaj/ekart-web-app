@@ -27,7 +27,12 @@ export const addToCart = async (req, res) => {
 
     const updatedUser = await User.findById(userId).populate("cart.product");
 
-    res.status(200).json({ message: "Product added to cart successfully", cart: updatedUser.cart});
+    res
+      .status(200)
+      .json({
+        message: "Product added to cart successfully",
+        cart: updatedUser.cart,
+      });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });
@@ -78,7 +83,12 @@ export const removeFromCart = async (req, res) => {
 
     const updatedUser = await User.findById(userId).populate("cart.product");
 
-    res.status(200).json({ message: "Product removed from cart successfully", cart: updatedUser.cart });
+    res
+      .status(200)
+      .json({
+        message: "Product removed from cart successfully",
+        cart: updatedUser.cart,
+      });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });
@@ -120,7 +130,39 @@ export const updateCartProduct = async (req, res) => {
     await user.save();
     const updatedUser = await User.findById(userId).populate("cart.product");
 
-    res.status(200).json({ message: "Cart updated successfully", cart: updatedUser.cart });
+    res
+      .status(200)
+      .json({ message: "Cart updated successfully", cart: updatedUser.cart });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+export const emptyCart = async (req, res) => {
+  try {
+    const userId = req.session.currentUser._id;
+
+    if (!userId) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Fetch the user from the database
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Empty the cart
+    user.cart = [];
+
+    await user.save();
+    const updatedUser = await User.findById(userId).populate("cart.product");
+
+    res
+      .status(200)
+      .json({ message: "Cart emptied successfully", cart: updatedUser.cart });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });

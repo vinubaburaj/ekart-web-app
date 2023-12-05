@@ -15,4 +15,7 @@ router.delete("/remove/:productId", cartController.removeFromCart);
 // Update the quantity of a product in the user's cart
 router.put("/:productId", cartController.updateCartProduct);
 
+// Empty the user's cart
+router.delete("/empty", cartController.emptyCart);
+
 export default router;

@@ -1,10 +1,12 @@
 import { Button, Card, CardContent, Typography } from "@mui/material";
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { emptyCart } from "./cartReducer";
+import { emptyCart } from "./service";
 
-function CardSummary({cartItems}) {
-  const handleEmptyCart = () => {};
+function CardSummary({ cartItems, setCartItems }) {
+  const handleEmptyCart = () => {
+    emptyCart();
+    setCartItems([]);
+  };
   const shipping = 5.0;
   let totalPrice = 0;
   let totalQuantity = 0;

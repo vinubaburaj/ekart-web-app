@@ -128,7 +128,7 @@ function Cart() {
               </table>
             </div>
             <div className={"col-3"}>
-              <CardSummary cartItems={cartItems} />
+              <CardSummary cartItems={cartItems} setCartItems={setCartItems} />
             </div>
           </div>
         </>
