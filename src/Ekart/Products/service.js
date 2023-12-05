@@ -1,32 +1,30 @@
 import axios from "axios";
-
-const API_BASE = process.env.REACT_APP_API_BASE || "http://localhost:4000/api";
-const PRODUCTS_URL = `${API_BASE}/products`;
-
+import {PRODUCTS} from "../../Constants/apiUrls";
+import * as httpService from "../Service/httpService";
 
 export const findAllProducts = async () => {
-  const response = await axios.get(PRODUCTS_URL);
-  return response.data.products;
+  const response = await httpService.get(PRODUCTS);
+  return response.products;
 };
 
 export const findProductById = async (productId) => {
-  const response = await axios.get(`${PRODUCTS_URL}/${productId}`);
-  return response.data;
+  const response = await httpService.get(`${PRODUCTS}/${productId}`);
+  return response;
 };
 
 export const searchProductsByTitle = async (searchTerm) => {
-  const response = await axios.get(`${PRODUCTS_URL}/search?q=${searchTerm}`);
-  return response.data.data.products;
+  const response = await httpService.get(`${PRODUCTS}/search?q=${searchTerm}`);
+  return response.data.products;
 };
 
 export const getReviewsForProduct = async (productId) => {
-  const response = await axios.get(`${PRODUCTS_URL}/${productId}/reviews`);
-  return response.data;
+  const response = await httpService.get(`${PRODUCTS}/${productId}/reviews`);
+  return response;
 };
 
 export const addReviewForProduct = async (productId, review) => {
-  const response = await axios.post(`${PRODUCTS_URL}/${productId}/reviews`, {
+  const response = await httpService.post(`${PRODUCTS}/${productId}/reviews`, {
     review: review,
   });
-  return response.data;
+  return response;
 };

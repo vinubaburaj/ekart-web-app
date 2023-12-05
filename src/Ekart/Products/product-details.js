@@ -11,7 +11,7 @@ import { FaRegHeart } from "react-icons/fa";
 import { FaHeart } from "react-icons/fa6";
 import React, { useEffect, useState } from "react";
 import { addProductToCart } from "../Cart/cartReducer";
-import { useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import * as service from "./service";
 import Carousel from "react-material-ui-carousel";
 import {
@@ -27,6 +27,8 @@ function ProductDetails() {
   const [wishListed, setWishListed] = useState(false);
   const [review, setReview] = useState("");
   const [reviews, setReviews] = useState([]);
+  const user = useSelector((state) => state.userReducer.currentUser);
+  console.log(user);
 
   const toggleWishList = () => {
     setWishListed(!wishListed);
@@ -54,16 +56,16 @@ function ProductDetails() {
     }
   };
 
-  const handleAddReview = async() => {
+  const handleAddReview = async () => {
     const addedReview = await service.addReviewForProduct(productId, review);
     setReviews([addedReview, ...reviews]);
     setReview("");
   };
 
-  const fetchProductReviews = async() => {
+  const fetchProductReviews = async () => {
     const fetchedReviews = await service.getReviewsForProduct(productId);
-    setReviews(fetchedReviews)
-  }
+    setReviews(fetchedReviews);
+  };
 
   useEffect(() => {
     fetchProduct();
@@ -162,41 +164,45 @@ function ProductDetails() {
           <hr className={"mt-1"} />
           <div className="mx-3 mb-5">
             <div className="fs-4 mb-3">Reviews</div>
-            <div className="row">
-              <div className="col-6">
-                <textarea
-                  id="addReviewForm"
-                  className="form-control"
-                  rows="3"
-                  placeholder="Add a review..."
-                  value={review}
-                  onChange={(e) => setReview(e.target.value)}
-                />
+            {user && user.role === "BUYER" && (
+              <div className="row">
+                <div className="col-6">
+                  <textarea
+                    id="addReviewForm"
+                    className="form-control"
+                    rows="3"
+                    placeholder="Add a review..."
+                    value={review}
+                    onChange={(e) => setReview(e.target.value)}
+                  />
+                </div>
+                <div className="col-2">
+                  <button
+                    className="btn btn-primary"
+                    disabled={!review}
+                    onClick={handleAddReview}
+                  >
+                    Add Review
+                  </button>
+                </div>
               </div>
-              <div className="col-2">
-                <button
-                  className="btn btn-primary"
-                  disabled={!review}
-                  onClick={handleAddReview}
-                >
-                  Add Review
-                </button>
-              </div>
-            </div>
+            )}
             <div className="mt-3 ">
               {reviews && (
                 <>
-                {/* {JSON.stringify(reviews)} */}
-                <ul className="list-group list-group-flush">
-                  {reviews.map((reviewObject) => (
-                    <li className="list-group-item">
-                      {/* {JSON.stringify(reviewObject)} */}
-                      <div className="fs-5">{reviewObject.review}</div>
-                      <div>
-                      {reviewObject.user.firstName} {reviewObject.user.lastName}
-                      </div>
-                    </li>
-                  ))}
+                  {/* {JSON.stringify(reviews)} */}
+                  <ul className="list-group list-group-flush">
+                    {reviews.map((reviewObject) => (
+                      <li className="list-group-item">
+                        {/* {JSON.stringify(reviewObject)} */}
+                        <div className="fs-5">{reviewObject.review}</div>
+                        <div className="small">
+                          <span>By: </span> 
+                          {reviewObject.user.firstName}{" "}
+                          {reviewObject.user.lastName}
+                        </div>
+                      </li>
+                    ))}
                   </ul>
                 </>
               )}
