@@ -1,6 +1,7 @@
 import axios from "axios";
 import Product from "../models/product.js";
 import { mergeAndFilterProducts } from "../helpers/productHelper.js";
+import reviewModel from "../models/review.js";
 
 const PRODUCTS_URL = "https://dummyjson.com/products";
 
@@ -101,5 +102,32 @@ export const deleteProduct = async (req, res) => {
     res.json({ message: "Product deleted successfully" });
   } catch (error) {
     res.status(500).json({ error: error.message });
+  }
+};
+
+export const getReviewsForProduct = async (req, res) => {
+  try {
+    const productId = req.params.productId;
+    const response = await reviewModel
+      .find({ productId: productId })
+      .populate("user");
+    res.status(200).json(response);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error fetching reviews for product" });
+  }
+};
+
+export const addReviewForProduct = async (req, res) => {
+  try {
+    const user = "656bda3832dcaff6f4308a5a"; // This needs to be fetched from the session.
+    const productId = req.params.productId;
+    const review = req.body.review;
+    const createdReview = await reviewModel.create({ user, productId, review });
+    const response = await createdReview.populate("user");
+    res.status(200).json(response);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error adding review for product" });
   }
 };

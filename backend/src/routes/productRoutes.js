@@ -6,6 +6,8 @@ import {
   createProduct,
   updateProduct,
   deleteProduct,
+  getReviewsForProduct,
+  addReviewForProduct
 } from "../controllers/productController.js";
 
 const router = express.Router();
@@ -15,6 +17,10 @@ router.post("/", createProduct);
 
 // Search products route
 router.get("/search", searchProducts);
+
+router.get("/:productId/reviews", getReviewsForProduct);
+
+router.post("/:productId/reviews", addReviewForProduct);
 
 // Default all products route
 router.get("/", getAllProducts);
