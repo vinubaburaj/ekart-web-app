@@ -19,6 +19,7 @@ import { useAuth } from "../../AuthContext";
 
 function Cart() {
   const { user } = useAuth();
+  console.log(user);
   const [cartItems, setCartItems] = useState([]);
   const [cartChanged, setCartChanged] = useState(false);
 
@@ -26,6 +27,7 @@ function Cart() {
     try {
       const cartData = await getCart();
       setCartItems(cartData);
+      console.log(cartItems)
     } catch (error) {
       console.error("Error fetching cart:", error);
     }
@@ -40,7 +42,9 @@ function Cart() {
 
   // Separate useEffect for the initial fetch
   useEffect(() => {
+    if(user){
     fetchCart(); // Initial fetch
+    }
   }, []);
 
   return (
@@ -58,7 +62,7 @@ function Cart() {
       )}
       {cartItems.length > 0 && (
         <>
-          <div className={"fs-3"}>Hey {user.firstName}, here's your cart</div>
+          <div className={"fs-3"}>Hey {user.user.firstName}, here's your cart</div>
           <div className={"row"}>
             <div className={"col-9"}>
               <table className="table table-striped table-responsive">

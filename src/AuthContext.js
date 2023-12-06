@@ -25,8 +25,12 @@ export const AuthProvider = ({ children }) => {
     fetchUserDetails();
   }, []);
 
+  const invalidateAuth = () => {
+    setUser(null);
+  };
+
   return (
-    <AuthContext.Provider value={{ user, loading }}>
+    <AuthContext.Provider value={{ user, loading, invalidateAuth }}>
       {children}
     </AuthContext.Provider>
   );

@@ -19,7 +19,8 @@ import { getCart } from "../Cart/service";
 const Navbar = () => {
   const navigate = useNavigate();
 
-  const { user } = useAuth();
+  const { user, invalidateAuth } = useAuth();
+  console.log(user);
   const [cartItems, setCartItems] = useState([]);
 
   const fetchCart = async () => {
@@ -40,13 +41,16 @@ const Navbar = () => {
   }, [user]);
 
   useEffect(() => {
+    if(user){
     fetchCart();
+    }
   }, []);
 
   const [searchTerm, setSearchTerm] = useState("");
 
   const logout = async () => {
     await authServices.logout();
+    invalidateAuth();
     setIsUserLoggedIn(false);
     navigate("/Login");
   };
