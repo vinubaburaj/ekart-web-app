@@ -10,7 +10,7 @@ export const createProduct = async (product) => {
 
 export const findAllProducts = async () => {
   const response = await httpService.get(PRODUCTS);
-  return response.data;
+  return response;
 };
 
 export const findProductById = async (productId) => {
