@@ -139,7 +139,7 @@ export const getReviewsForProduct = async (req, res) => {
 
 export const addReviewForProduct = async (req, res) => {
   try {
-    const user = "656bda3832dcaff6f4308a5a"; // This needs to be fetched from the session.
+    const user = req.session['currentUser']._id; 
     const productId = req.params.productId;
     const review = req.body.review;
     const createdReview = await reviewModel.create({ user, productId, review });
