@@ -20,7 +20,7 @@ export const findAllProducts = async () => {
 export const findProductById = async (productId) => {
   // allow it to fail if it is a dummy JSON ID that doesn't exist
   const response = await request.get(`${PRODUCTS}/${productId}`);
-  return response;
+  return response.data;
 };
 
 export const externalFindProductById = async (productId) => {

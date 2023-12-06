@@ -64,6 +64,7 @@ function ProductDetails() {
 
   const fetchProductReviews = async () => {
     const fetchedReviews = await service.getReviewsForProduct(productId);
+    console.log("FETCHED REVIEWS: ", fetchedReviews);
     setReviews(fetchedReviews);
   };
 
@@ -82,7 +83,7 @@ function ProductDetails() {
           <hr className={"mt-1"} />
           <div className={"row mx-3"}>
             <Carousel animation={"slide"} swipe={true} autoPlay={false}>
-              {product.images.map((item) => (
+              {product.images && !!product.images.length && product.images.map((item) => (
                 <div className={"d-flex justify-content-center"}>
                   <img
                     style={{ height: "400px", width: "600px" }}
