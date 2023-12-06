@@ -29,8 +29,12 @@ export const AuthProvider = ({ children }) => {
     setUser(null);
   };
 
+  const setInitialAuth = (user) => {
+    setUser(user);
+  };
+
   return (
-    <AuthContext.Provider value={{ user, loading, invalidateAuth }}>
+    <AuthContext.Provider value={{ user, loading, invalidateAuth, setInitialAuth }}>
       {children}
     </AuthContext.Provider>
   );
