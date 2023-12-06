@@ -19,6 +19,7 @@ import {
   deleteProductFromWishlist,
 } from "../Wishlist/wishlistReducer";
 import { addToCart as addToCartService } from "../Cart/service";
+import { useAuth } from "../../AuthContext";
 
 function ProductDetails() {
   const dispatch = useDispatch();
@@ -28,8 +29,7 @@ function ProductDetails() {
   const [wishListed, setWishListed] = useState(false);
   const [review, setReview] = useState("");
   const [reviews, setReviews] = useState([]);
-  const user = useSelector((state) => state.userReducer.currentUser);
-  console.log(user);
+  const { user } = useAuth();
 
   const toggleWishList = () => {
     setWishListed(!wishListed);
@@ -49,7 +49,9 @@ function ProductDetails() {
       setProduct(fetchedProduct);
     } catch (error) {
       console.error("Error fetching product: ", error);
-      const externalFetchedProduct = await service.externalFindProductById(productId);
+      const externalFetchedProduct = await service.externalFindProductById(
+        productId
+      );
       setProduct(externalFetchedProduct);
     }
   };
@@ -195,7 +197,7 @@ function ProductDetails() {
                         {/* {JSON.stringify(reviewObject)} */}
                         <div className="fs-5">{reviewObject.review}</div>
                         <div className="small">
-                          <span>By: </span> 
+                          <span>By: </span>
                           {reviewObject.user.firstName}{" "}
                           {reviewObject.user.lastName}
                         </div>
