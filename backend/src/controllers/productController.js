@@ -2,7 +2,7 @@ import axios from "axios";
 import Product from "../models/product.js";
 import { mergeAndFilterProducts } from "../helpers/productHelper.js";
 import reviewModel from "../models/review.js";
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const PRODUCTS_URL = "https://dummyjson.com/products";
 
@@ -127,8 +127,25 @@ export const deleteProduct = async (req, res) => {
 export const getReviewsForProduct = async (req, res) => {
   try {
     const productId = req.params.productId;
+    let product;
+
+    // Check if params.id is a valid MongoDB ObjectId
+    if (mongoose.Types.ObjectId.isValid(productId)) {
+      // If it's a valid ObjectId, find by MongoDB _id
+      product = await Product.findById(productId);
+    } else {
+      // If it's not a valid ObjectId, assume it's an integer and find by dummyId
+      product = await Product.findOne({ dummyId: productId });
+    }
+
     const response = await reviewModel
-      .find({ productId: productId })
+      .find(
+        product && product.dummyId
+          ? {
+              $or: [{ productId: productId }, { productId: product.dummyId }],
+            }
+          : { productId }
+      )
       .populate("user");
     res.status(200).json(response);
   } catch (error) {
@@ -139,7 +156,7 @@ export const getReviewsForProduct = async (req, res) => {
 
 export const addReviewForProduct = async (req, res) => {
   try {
-    const user = req.session['currentUser']._id; 
+    const user = req.session["currentUser"]._id;
     const productId = req.params.productId;
     const review = req.body.review;
     const createdReview = await reviewModel.create({ user, productId, review });

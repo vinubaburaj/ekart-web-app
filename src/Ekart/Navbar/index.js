@@ -20,7 +20,6 @@ const Navbar = () => {
   const navigate = useNavigate();
 
   const { user, invalidateAuth } = useAuth();
-  console.log(user);
   const [cartItems, setCartItems] = useState([]);
 
   const fetchCart = async () => {
@@ -41,10 +40,10 @@ const Navbar = () => {
   }, [user]);
 
   useEffect(() => {
-    if(user){
-    fetchCart();
+    if (user) {
+      fetchCart();
     }
-  }, []);
+  }, [user]);
 
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -153,7 +152,7 @@ const Navbar = () => {
         <Link to={`/Cart`} className="wd-td-none wd-fg-white">
           <Typography variant="h6" component="div" className="wd-title me-4">
             <FaShoppingCart className={"me-1"} />
-            Cart: {cartItems ? cartItems.length: 0}
+            Cart: {cartItems ? cartItems.length : 0}
           </Typography>
         </Link>
       </Toolbar>
