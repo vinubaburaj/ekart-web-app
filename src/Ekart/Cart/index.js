@@ -17,15 +17,12 @@ import {
 } from "./service";
 import { useAuth } from "../../AuthContext";
 import { useIsMount } from "../../Common/helpers";
-import { setCartItems } from "../Cart/cartReducer";
-import { useDispatch } from "react-redux";
 
 function Cart() {
   const { user } = useAuth();
   const [cartItems, setCartItems] = useState([]);
   const [cartChanged, setCartChanged] = useState(false);
   const isMount = useIsMount();
-  const dispatch = useDispatch();
 
   const fetchCart = async () => {
     try {
@@ -34,12 +31,6 @@ function Cart() {
     } catch (error) {
       console.error("Error fetching cart:", error);
     }
-  };
-
-  const handleRemoveProductFromCart = async (productId) => {
-    const response = await removeProductFromCart(productId);
-    dispatch(setCartItems(response));
-    setCartChanged(true);
   };
 
   useEffect(() => {
@@ -126,7 +117,8 @@ function Cart() {
                           <IconButton
                             color="error"
                             onClick={() => {
-                              handleRemoveProductFromCart(item.product._id);
+                              setCartChanged(true);
+                              removeProductFromCart(item.product._id);
                             }}
                           >
                             <DeleteIcon />

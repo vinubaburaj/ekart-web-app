@@ -11,7 +11,7 @@ import {
   Snackbar,
   Typography,
 } from "@mui/material";
-import {addProductToCart, setCartItems} from "../Cart/cartReducer";
+import {addProductToCart} from "../Cart/cartReducer";
 import {Link} from "react-router-dom";
 import {useDispatch} from "react-redux";
 import {FaRegHeart} from "react-icons/fa";
@@ -46,12 +46,11 @@ const ProductCard = ({product}) => {
     );
   };
 
-  const toggleCart = async() => {
+  const toggleCart = () => {
     setAddedToCart(!addedToCart);
     setSnackBarOpen(true);
     if (!addedToCart) {
-      const response = await addToCart(product, 1);
-      dispatch(setCartItems(response))
+      addToCart(product, 1);
     }
     setSnackBarMessage(addedToCart ? "Removed from Cart" : "Added to Cart");
   };
