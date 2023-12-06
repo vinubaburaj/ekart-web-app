@@ -127,7 +127,17 @@ export const deleteProduct = async (req, res) => {
 export const getReviewsForProduct = async (req, res) => {
   try {
     const productId = req.params.productId;
-    const product = await Product.findById(productId);
+    let product;
+
+    // Check if params.id is a valid MongoDB ObjectId
+    if (mongoose.Types.ObjectId.isValid(productId)) {
+      // If it's a valid ObjectId, find by MongoDB _id
+      product = await Product.findById(productId);
+    } else {
+      // If it's not a valid ObjectId, assume it's an integer and find by dummyId
+      product = await Product.findOne({ dummyId: productId });
+    }
+
     const response = await reviewModel
       .find(
         product && product.dummyId
