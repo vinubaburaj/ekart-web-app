@@ -1,15 +1,13 @@
-import {Button, Card, CardContent, Typography} from "@mui/material";
+import { Button, Card, CardContent, Typography } from "@mui/material";
 import React from "react";
-import {useDispatch, useSelector} from "react-redux";
-import {emptyCart} from "./cartReducer";
+import { emptyCart } from "./service";
 
-function CardSummary() {
-  const dispatch = useDispatch();
-  const cartItems = useSelector((state) => state.cartReducer.cartItems);
+function CardSummary({ cartItems, setCartItems }) {
   const handleEmptyCart = () => {
-    dispatch(emptyCart());
+    emptyCart();
+    setCartItems([]);
   };
-  const shipping = 5.00;
+  const shipping = 5.0;
   let totalPrice = 0;
   let totalQuantity = 0;
   cartItems.forEach((item) => {
@@ -17,79 +15,76 @@ function CardSummary() {
     totalQuantity += item.quantity;
   });
   totalPrice = totalPrice.toFixed(2);
-  console.log('price: ', totalPrice);
+  console.log("price: ", totalPrice);
   return (
-      <>
-        <Card>
-          <CardContent>
-            <Typography variant="h5" component="div">
-              Order Summary
-            </Typography>
-            <div className={'row mt-3'}>
-              <div className={'col-6'}>
-                <Typography variant="body2">
-                  Total Items:
-                </Typography>
-              </div>
-              <div className={'col-6'}>
-                <Typography variant="body2" align="right">
-                  {totalQuantity}
-                </Typography>
-              </div>
+    <>
+      <Card>
+        <CardContent>
+          <Typography variant="h5" component="div">
+            Order Summary
+          </Typography>
+          <div className={"row mt-3"}>
+            <div className={"col-6"}>
+              <Typography variant="body2">Total Items:</Typography>
             </div>
-            <div className={'row'}>
-              <div className={'col-6'}>
-                <Typography variant="body2">
-                  Total Price:
-                </Typography>
-              </div>
-              <div className={'col-6'}>
-                <Typography variant="body2" align="right">
-                  ${totalPrice}
-                </Typography>
-              </div>
+            <div className={"col-6"}>
+              <Typography variant="body2" align="right">
+                {totalQuantity}
+              </Typography>
             </div>
-            <div className={'row'}>
-              <div className={'col-8'}>
-                <Typography variant="body2">
-                  Shipping and handling:
-                </Typography>
-              </div>
-              <div className={'col-4'}>
-                <Typography variant="body2" align="right">
-                  ${shipping.toFixed(2)}
-                </Typography>
-              </div>
+          </div>
+          <div className={"row"}>
+            <div className={"col-6"}>
+              <Typography variant="body2">Total Price:</Typography>
             </div>
-            <hr/>
-            <div className={'row'}>
-              <div className={'col-8'}>
-                <Typography variant="h6" color="error">
-                  Order total:
-                </Typography>
-              </div>
-              <div className={'col-4'}>
-                <Typography variant="h6" color="error" align="right">
-                  ${(parseFloat(totalPrice) + shipping).toFixed(2)}
-                </Typography>
-              </div>
+            <div className={"col-6"}>
+              <Typography variant="body2" align="right">
+                ${totalPrice}
+              </Typography>
             </div>
-          </CardContent>
-        </Card>
-        <Button variant="contained" color="primary"
-                className="d-block mt-2 w-100">
-          Place Order
-        </Button>
-        <Button
-            variant="contained"
-            className="mt-2 d-block w-100"
-            color="error"
-            onClick={handleEmptyCart}
-        >
-          Empty Cart
-        </Button>
-      </>
-  )
+          </div>
+          <div className={"row"}>
+            <div className={"col-8"}>
+              <Typography variant="body2">Shipping and handling:</Typography>
+            </div>
+            <div className={"col-4"}>
+              <Typography variant="body2" align="right">
+                ${shipping.toFixed(2)}
+              </Typography>
+            </div>
+          </div>
+          <hr />
+          <div className={"row"}>
+            <div className={"col-8"}>
+              <Typography variant="h6" color="error">
+                Order total:
+              </Typography>
+            </div>
+            <div className={"col-4"}>
+              <Typography variant="h6" color="error" align="right">
+                ${(parseFloat(totalPrice) + shipping).toFixed(2)}
+              </Typography>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+      <Button
+        variant="contained"
+        color="primary"
+        className="d-block mt-2 w-100"
+      >
+        Place Order
+      </Button>
+      <Button
+        variant="contained"
+        className="mt-2 d-block w-100"
+        color="error"
+        onClick={handleEmptyCart}
+      >
+        Empty Cart
+      </Button>
+    </>
+  );
 }
 
 export default CardSummary;

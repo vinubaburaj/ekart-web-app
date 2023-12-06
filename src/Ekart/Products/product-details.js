@@ -18,6 +18,7 @@ import {
   addProductToWishlist,
   deleteProductFromWishlist,
 } from "../Wishlist/wishlistReducer";
+import { addToCart as addToCartService } from "../Cart/service";
 
 function ProductDetails() {
   const dispatch = useDispatch();
@@ -39,12 +40,7 @@ function ProductDetails() {
     }
   };
   const addToCart = () => {
-    dispatch(
-      addProductToCart({
-        quantity: quantity,
-        product: product,
-      })
-    );
+    addToCartService(product, 1);
   };
 
   const fetchProduct = async () => {
@@ -53,6 +49,8 @@ function ProductDetails() {
       setProduct(fetchedProduct);
     } catch (error) {
       console.error("Error fetching product: ", error);
+      const externalFetchedProduct = await service.externalFindProductById(productId);
+      setProduct(externalFetchedProduct);
     }
   };
 

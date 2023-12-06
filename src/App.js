@@ -1,16 +1,19 @@
-import './App.css';
-import {HashRouter, Route, Routes} from "react-router-dom";
+import "./App.css";
+import { HashRouter, Route, Routes } from "react-router-dom";
 import Ekart from "./Ekart";
+import { AuthProvider } from "./AuthContext";
 
 function App() {
   return (
-      <div>
+    <div>
+      <AuthProvider>
         <HashRouter>
           <Routes>
-            <Route path="*" element={<Ekart/>}/>
+            <Route path="*" element={<Ekart />} />
           </Routes>
         </HashRouter>
-      </div>
+      </AuthProvider>
+    </div>
   );
 }
 
