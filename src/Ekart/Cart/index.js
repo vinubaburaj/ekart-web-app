@@ -19,7 +19,6 @@ import { useAuth } from "../../AuthContext";
 
 function Cart() {
   const { user } = useAuth();
-  console.log(user);
   const [cartItems, setCartItems] = useState([]);
   const [cartChanged, setCartChanged] = useState(false);
 
@@ -27,7 +26,6 @@ function Cart() {
     try {
       const cartData = await getCart();
       setCartItems(cartData);
-      console.log(cartItems)
     } catch (error) {
       console.error("Error fetching cart:", error);
     }
