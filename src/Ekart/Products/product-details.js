@@ -18,7 +18,7 @@ import {
   addProductToWishlist,
   deleteProductFromWishlist,
 } from "../Wishlist/wishlistReducer";
-import { addToCart } from "../Cart/service";
+import { addToCart as addToCartService } from "../Cart/service";
 
 function ProductDetails() {
   const dispatch = useDispatch();
@@ -38,7 +38,7 @@ function ProductDetails() {
     }
   };
   const addToCart = () => {
-    addToCart(product, 1);
+    addToCartService(product, 1);
   };
 
   const fetchProduct = async () => {
