@@ -16,11 +16,13 @@ import {
   removeProductFromCart,
 } from "./service";
 import { useAuth } from "../../AuthContext";
+import { useIsMount } from "../../Common/helpers";
 
 function Cart() {
   const { user } = useAuth();
   const [cartItems, setCartItems] = useState([]);
   const [cartChanged, setCartChanged] = useState(false);
+  const isMount = useIsMount();
 
   const fetchCart = async () => {
     try {
@@ -46,7 +48,7 @@ function Cart() {
 
   return (
     <div className="m-2">
-      {cartItems.length === 0 && (
+      {cartItems.length === 0 && !isMount && (
         <>
           <div className={"fs-2 mt-4"}>
             Your cart is empty <PiSmileySad />
@@ -57,7 +59,7 @@ function Cart() {
           </div>
         </>
       )}
-      {cartItems.length > 0 && (
+      {cartItems.length > 0 && !isMount && (
         <>
           <div className={"fs-3"}>Hey {user.firstName}, here's your cart</div>
           <div className={"row"}>
@@ -73,7 +75,7 @@ function Cart() {
                 <tbody>
                   {cartItems.map((item, index) => {
                     const quantityRange = Array.from(
-                      { length: item.product && item.product.stock || 25 },
+                      { length: (item.product && item.product.stock) || 25 },
                       (_, index) => index + 1
                     );
                     return (
