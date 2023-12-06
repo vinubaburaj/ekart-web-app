@@ -38,12 +38,11 @@ function Cart() {
     }
   }, [cartChanged]);
 
-  // Separate useEffect for the initial fetch
   useEffect(() => {
     if (user) {
-      fetchCart(); // Initial fetch
+      fetchCart();
     }
-  }, []);
+  }, [user]);
 
   return (
     <div className="m-2">
