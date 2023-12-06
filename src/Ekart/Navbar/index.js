@@ -15,17 +15,26 @@ import * as authServices from "../Auth/authService";
 import { setCurrentUser } from "../Auth/userReducer";
 import { useAuth } from "../../AuthContext";
 import { getCart } from "../Cart/service";
+import { setCartItems } from "../Cart/cartReducer";
 
 const Navbar = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const { user, invalidateAuth } = useAuth();
-  const [cartItems, setCartItems] = useState([]);
+
+  console.log(user);
+
+  const cartItemsFromReducer = useSelector(
+    (state) => state.cartReducer.cartItems
+  );
+  console.log(cartItemsFromReducer.length);
 
   const fetchCart = async () => {
     try {
       const cartData = await getCart();
-      setCartItems(cartData);
+      // setCartItems(cartData);
+      dispatch(setCartItems(cartData));
     } catch (error) {
       console.error("Error fetching cart:", error);
     }
@@ -36,6 +45,7 @@ const Navbar = () => {
   useEffect(() => {
     if (user) {
       setIsUserLoggedIn(true);
+      fetchCart(); // Fetching the cart info after a refresh as user gets updated after refresh.
     }
   }, [user]);
 
@@ -43,7 +53,7 @@ const Navbar = () => {
     if (user) {
       fetchCart();
     }
-  }, [user]);
+  }, []);
 
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -152,7 +162,7 @@ const Navbar = () => {
         <Link to={`/Cart`} className="wd-td-none wd-fg-white">
           <Typography variant="h6" component="div" className="wd-title me-4">
             <FaShoppingCart className={"me-1"} />
-            Cart: {cartItems ? cartItems.length : 0}
+            Cart: {cartItemsFromReducer ? cartItemsFromReducer.length : 0}
           </Typography>
         </Link>
       </Toolbar>
