@@ -10,7 +10,7 @@ import { MongoClient, ServerApiVersion } from "mongodb";
 
 const PORT = process.env.PORT || 4000;
 const DB_URL =
-  process.env.DB_CONNECTION_STRING || "mongodb://localhost:27017/ekart";
+  process.env.DB_CONNECTION_STRING || "mongodb+srv://gibranmyageri:btRc5Zq5LCdvpVil@kanbas.jopnsgi.mongodb.net/ekart?retryWrites=true&w=majority";
 
 mongoose.connect(DB_URL);
 

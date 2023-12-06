@@ -53,8 +53,7 @@ export const {
   deleteProductFromCart,
   emptyCart,
   setQuantity,
-  setCartItemsCount,
-  increaseCartItemsCount
+  setCartItems
 } = cartSlice.actions;
 
 export default cartSlice.reducer;
