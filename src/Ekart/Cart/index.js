@@ -40,7 +40,9 @@ function Cart() {
 
   // Separate useEffect for the initial fetch
   useEffect(() => {
+    if(user){
     fetchCart(); // Initial fetch
+    }
   }, []);
 
   return (
@@ -58,7 +60,7 @@ function Cart() {
       )}
       {cartItems.length > 0 && (
         <>
-          <div className={"fs-3"}>Hey {user.firstName}, here's your cart</div>
+          <div className={"fs-3"}>Hey {user.user.firstName}, here's your cart</div>
           <div className={"row"}>
             <div className={"col-9"}>
               <table className="table table-striped table-responsive">
