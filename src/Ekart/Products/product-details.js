@@ -47,6 +47,8 @@ function ProductDetails() {
       setProduct(fetchedProduct);
     } catch (error) {
       console.error("Error fetching product: ", error);
+      const externalFetchedProduct = await service.externalFindProductById(productId);
+      setProduct(externalFetchedProduct);
     }
   };
 
