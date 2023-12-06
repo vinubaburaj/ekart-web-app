@@ -60,10 +60,14 @@ export const getAllProducts = async (req, res) => {
 // Create a new product
 export const createProduct = async (req, res) => {
   try {
-    const product = new Product(req.body);
-    if (product.thumbnail && !!product.thumbnail.length) {
-      product.thumbnail = "https://picsum.photos/400";
-    }
+    const { id, thumbnail, ...productData } = req.body;
+
+    const product = new Product({
+      ...productData,
+      dummyId: id, // Assign the id to dummyId
+      thumbnail: thumbnail || "https://picsum.photos/400", // Use the provided thumbnail or the default link
+    });
+
     const savedProduct = await product.save();
     res.json(savedProduct);
   } catch (error) {

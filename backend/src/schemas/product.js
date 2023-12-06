@@ -11,6 +11,8 @@ const productSchema = new Schema({
   category: String,
   thumbnail: String,
   images: [String],
+  // dummy json product ID ranges from 1 - 100
+  dummyId: Number,
 });
 
 export default productSchema;

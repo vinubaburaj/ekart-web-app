@@ -12,8 +12,7 @@ export const addToCart = async (product, quantity) => {
   } else if (typeof product.id === 'number') {
     // If _id is not present, create the product in our db and use the created product's _id
     // TODO: Move this to backend
-    const { id, ...productDetails } = product;
-    const createdProduct = await createProduct(productDetails);
+    const createdProduct = await createProduct(product);
     productId = createdProduct._id;
   }
 

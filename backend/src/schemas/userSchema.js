@@ -21,8 +21,8 @@ const userSchema = new Schema(
     wishlist: [],
     role: {
       type: String,
-      enum: ["USER", "SELLER", "ADMIN"],
-      default: "USER",
+      enum: ["BUYER", "SELLER", "ADMIN"],
+      default: "BUYER",
     },
   }
 );
