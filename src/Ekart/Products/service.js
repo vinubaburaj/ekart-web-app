@@ -1,5 +1,9 @@
-import {PRODUCTS} from "../../Constants/apiUrls";
+import { PRODUCTS } from "../../Constants/apiUrls";
 import * as httpService from "../Service/httpService";
+import axios from "axios";
+const request = axios.create({
+  withCredentials: true,
+});
 
 const EXTERNAL_API_URL = "https://dummyjson.com/products";
 
@@ -14,12 +18,14 @@ export const findAllProducts = async () => {
 };
 
 export const findProductById = async (productId) => {
-  const response = await httpService.get(`${PRODUCTS}/${productId}`);
-  return response;
+  // allow it to fail if it is a dummy JSON ID that doesn't exist
+  const response = await request.get(`${PRODUCTS}/${productId}`);
+  return response.data;
 };
 
 export const externalFindProductById = async (productId) => {
-  const response = await httpService.get(`${EXTERNAL_API_URL}/${productId}`);
+  // using axios instead of httpservice since we're pinging external API
+  const response = await axios.get(`${EXTERNAL_API_URL}/${productId}`);
   return response.data;
 };
 
