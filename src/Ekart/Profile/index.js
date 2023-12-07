@@ -9,7 +9,8 @@ const Profile = () => {
   const { user } = useAuth();
   const { profileId } = useParams();
   const [profileData, setProfileData] = useState();
-
+  const [reviewsByUser, setReviewsByUser] = useState([]);
+  const [isEditing, setEditing] = useState(false);
   const [hasFullAccess, setHasFullAccess] = useState(false);
 
   const getUserProfile = async (id) => {
@@ -17,7 +18,12 @@ const Profile = () => {
     setProfileData(response);
   };
 
-  //   useEffect to determine how much access to give to user
+  const getReviewsByUser = async (id) => {
+    const response = await service.getReviewsByUser(id);
+    setReviewsByUser(response);
+  };
+
+  //   useEffect to determine how much access to give to user (especially the option to edit and view email/password)
   useEffect(() => {
     if (user) {
       /*
@@ -37,23 +43,30 @@ const Profile = () => {
       // User is viewing their own profile, find user by useauth
       if (user) {
         getUserProfile(user._id);
+        getReviewsByUser(user._id);
       }
     } else {
       // Someone else is viewing user, find user by profileId
       getUserProfile(profileId);
+      getReviewsByUser(profileId);
     }
   }, [user, profileId]);
-
-  const isCurrentUser = !profileId; // Check if it's the current user's profile
-
-  const [isEditing, setEditing] = useState(false);
 
   const handleEdit = () => {
     setEditing(true);
   };
 
-  const handleSave = () => {
-    // Save changes to the backend and update state
+  const handleSave = async () => {
+    if (!profileId) {
+      // User is updating their own profile, hence no profile id
+      const response = await service.updateProfile(user._id, profileData);
+      setProfileData(response);
+    } else {
+      // Admin is updating a user's profile
+      const response = await service.updateProfile(profileId, profileData);
+      setProfileData(response);
+    }
+
     setEditing(false);
   };
 
@@ -64,7 +77,7 @@ const Profile = () => {
           <Card>
             <Card.Body>
               <Card.Title>Profile</Card.Title>
-              {isCurrentUser && isEditing && (
+              {hasFullAccess && isEditing && (
                 <Alert variant="info">You are currently editing profile.</Alert>
               )}
               <Form>
@@ -121,6 +134,7 @@ const Profile = () => {
                         fullWidth
                         variant="outlined"
                         disabled={!isEditing}
+                        type="password"
                         value={profileData.password}
                         onChange={(e) =>
                           setProfileData({
@@ -176,6 +190,13 @@ const Profile = () => {
             </Card.Body>
           </Card>
         </Container>
+      )}
+      {reviewsByUser.length > 0 && (
+        <div>
+          {reviewsByUser.map((review) => (
+            <div>{JSON.stringify(review)}</div>
+          ))}
+        </div>
       )}
     </>
   );
