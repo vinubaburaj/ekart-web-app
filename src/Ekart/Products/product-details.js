@@ -58,7 +58,7 @@ function ProductDetails() {
   };
 
   const handleAddReview = async () => {
-    const addedReview = await service.addReviewForProduct(productId, review);
+    const addedReview = await service.addReviewForProduct(product, review);
     setReviews([addedReview, ...reviews]);
     setReview("");
   };
@@ -190,7 +190,7 @@ function ProductDetails() {
               </div>
             )}
             <div className="mt-3 ">
-              {reviews && (
+              {reviews.length>0 && (
                 <>
                   {/* {JSON.stringify(reviews)} */}
                   <ul className="list-group list-group-flush">

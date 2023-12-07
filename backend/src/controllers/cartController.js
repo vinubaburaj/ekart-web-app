@@ -7,7 +7,7 @@ export const addToCart = async (req, res) => {
     const userId = req.session.currentUser._id;
 
     const user = await User.findById(userId);
-    const product = await Product.findOne({id: parseInt(productId)});
+    const product = await Product.findOne({ id: parseInt(productId) });
 
     if (!user || !product) {
       return res.status(404).json({ message: "User or product not found" });
@@ -27,12 +27,10 @@ export const addToCart = async (req, res) => {
 
     const updatedUser = await User.findById(userId).populate("cart.product");
 
-    res
-      .status(200)
-      .json({
-        message: "Product added to cart successfully",
-        cart: updatedUser.cart,
-      });
+    res.status(200).json({
+      message: "Product added to cart successfully",
+      cart: updatedUser.cart,
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });
@@ -41,7 +39,10 @@ export const addToCart = async (req, res) => {
 
 export const getCart = async (req, res) => {
   try {
-    const userId = req.session.currentUser._id;
+    let userId = null;
+    if (req.session.currentUser) {
+      userId = req.session.currentUser._id;
+    }
 
     if (!userId) {
       return res.status(404).json({ message: "User not found" });
@@ -83,12 +84,10 @@ export const removeFromCart = async (req, res) => {
 
     const updatedUser = await User.findById(userId).populate("cart.product");
 
-    res
-      .status(200)
-      .json({
-        message: "Product removed from cart successfully",
-        cart: updatedUser.cart,
-      });
+    res.status(200).json({
+      message: "Product removed from cart successfully",
+      cart: updatedUser.cart,
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });

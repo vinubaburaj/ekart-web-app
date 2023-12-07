@@ -56,8 +56,9 @@ export const updateProfile = async (req, res) => {
 
 export const getReviewsByUser = async (req, res) => {
   try {
-    const { userId } = req.params.profileId;
-    const reviews = reviewModel.find({ user: userId });
+    const userId = req.params.profileId;
+    // console.log(userId);
+    const reviews = await reviewModel.find({ user: userId });
     res.status(200).json(reviews);
   } catch (error) {
     console.error(error);
