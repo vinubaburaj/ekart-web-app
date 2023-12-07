@@ -22,7 +22,7 @@ import {
   deleteProductFromWishlist
 } from "../Wishlist/wishlistReducer";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { addToCart } from "../Cart/service";
+import {addToCart} from "../Cart/service";
 
 const ProductCard = ({product}) => {
   const dispatch = useDispatch();
@@ -68,7 +68,7 @@ const ProductCard = ({product}) => {
       <Card className={"wd-card"}>
         <Link
             key={product.id}
-            to={`/Products/${product.id || product._id}`}
+            to={`/Products/${product.id}`}
             style={{textDecoration: "none"}}
         >
           <CardActionArea>

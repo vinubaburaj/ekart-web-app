@@ -6,8 +6,10 @@ import reportWebVitals from './reportWebVitals';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
 import {createTheme, ThemeProvider} from "@mui/material";
+import store from "./Ekart/store";
+import {Provider} from "react-redux";
 
-const theme = createTheme({
+export const theme = createTheme({
   palette: {
     primary: {
       main: '#3e849a',
@@ -22,7 +24,9 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <React.StrictMode>
       <ThemeProvider theme={theme}>
-        <App/>
+        <Provider store={store}>
+          <App/>
+        </Provider>
       </ThemeProvider>
     </React.StrictMode>
 );

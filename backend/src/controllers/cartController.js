@@ -7,7 +7,7 @@ export const addToCart = async (req, res) => {
     const userId = req.session.currentUser._id;
 
     const user = await User.findById(userId);
-    const product = await Product.findById(productId);
+    const product = await Product.findOne({id: parseInt(productId)});
 
     if (!user || !product) {
       return res.status(404).json({ message: "User or product not found" });

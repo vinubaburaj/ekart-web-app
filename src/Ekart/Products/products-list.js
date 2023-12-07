@@ -1,7 +1,7 @@
 import ProductCard from "./product-card";
 import * as service from "./service";
-import { useState, useEffect } from "react";
-import { json, useParams } from "react-router-dom";
+import {useEffect, useState} from "react";
+import {useParams} from "react-router-dom";
 
 function ProductsList() {
   // const products = db.products;
@@ -24,7 +24,7 @@ function ProductsList() {
 
   useEffect(() => {
     if (searchTerm) {
-      searchProducts(searchTerm)
+      searchProducts(searchTerm);
     } else {
      fetchAllProducts();
     }
@@ -37,7 +37,7 @@ function ProductsList() {
           {products.map((product) => (
             <div
               className="col col-sm-6 col-md-4 col-lg-3 mb-3"
-              key={product._id}
+              key={product.id}
             >
               <ProductCard product={product} />
             </div>

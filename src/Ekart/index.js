@@ -6,12 +6,11 @@ import ProductDetails from "./Products/product-details";
 import {Navigate} from "react-router-dom";
 import Navbar from "./Navbar";
 import Cart from "./Cart";
-import {Provider} from "react-redux";
-import store from "./store";
 import './index.css';
 import Register from "./Auth/Register";
 import Wishlist from "./Wishlist";
 import ProductsList from "./Products/products-list";
+import AddProduct from "./Seller/addProduct";
 import Profile from "./Profile";
 
 function Ekart() {
@@ -20,8 +19,6 @@ function Ekart() {
   const hideNavbarPaths = ["/Login", "/Register"];
   showNavbar = !hideNavbarPaths.includes(path);
   return (
-
-      <Provider store={store}>
       <div className={'container-fluid px-0 mx-0'}>
         {showNavbar && <Navbar/>}
         <Routes>
@@ -33,15 +30,16 @@ function Ekart() {
           <Route path="/Products/:productId" element={<ProductDetails/>}/>
           <Route path="/Products/search/:searchTerm" element={<ProductsList/>}/>
           <Route path="/Cart" element={<Cart />} />
+          <Route path="/Account/Wishlist" element={<Wishlist/>}/>
+          <Route path="/Seller/AddProduct" element={<AddProduct/>}/>
           <Route path={"/Account/Wishlist"} element={<Wishlist/>}/>
           {/* To fetch the profile of the user who is currently logged in (according to requirement) */}
           <Route path={"/Account/Profile"} exact element={<Profile />} /> 
           {/* To fetch the profile of another user using their userId */}
           <Route path={"/Account/Profile/:profileId"} element={<Profile />} />
+
         </Routes>
       </div>
-      </Provider>
-
   )
 }
 
