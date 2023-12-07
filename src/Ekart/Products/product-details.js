@@ -20,6 +20,7 @@ import {
 } from "../Wishlist/wishlistReducer";
 import {addToCart as addToCartService} from "../Cart/service";
 import {useAuth} from "../../AuthContext";
+import {Link} from 'react-router-dom'
 
 function ProductDetails() {
   const dispatch = useDispatch();
@@ -200,8 +201,10 @@ function ProductDetails() {
                         <div className="fs-5">{reviewObject.review}</div>
                         <div className="small">
                           <span>By: </span>
+                          <Link to={`/Account/Profile/${reviewObject?.user?._id}`}>
                           {reviewObject?.user?.firstName}{" "}
                           {reviewObject?.user?.lastName}
+                          </Link>
                         </div>
                       </li>
                     ))}
