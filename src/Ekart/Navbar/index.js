@@ -27,6 +27,7 @@ const Navbar = () => {
   );
   console.log(role);
 
+
   const fetchCart = async () => {
     try {
       const cartData = await getCart();

@@ -5,6 +5,7 @@ import cors from "cors";
 import authRoutes from "./routes/authRoutes.js";
 import productRoutes from "./routes/productRoutes.js";
 import cartRoutes from "./routes/cartRoutes.js";
+import profileRoutes from "./routes/profileRoutes.js"
 import sessionMiddleware from "./middleware/sessionMiddleware.js";
 import { MongoClient, ServerApiVersion } from "mongodb";
 
@@ -64,6 +65,7 @@ app.use(sessionMiddleware);
 app.use("/api/auth", authRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/cart", cartRoutes);
+app.use("/api/profile", profileRoutes);
 
 // Start the server
 app.listen(PORT, () => {
