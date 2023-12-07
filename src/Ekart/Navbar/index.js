@@ -23,12 +23,12 @@ const Navbar = () => {
 
   const { user, invalidateAuth } = useAuth();
 
-  console.log(user);
+  // console.log(user);
 
   const cartItemsFromReducer = useSelector(
     (state) => state.cartReducer.cartItems
   );
-  console.log(cartItemsFromReducer.length);
+  // console.log(cartItemsFromReducer.length);
 
   const fetchCart = async () => {
     try {
