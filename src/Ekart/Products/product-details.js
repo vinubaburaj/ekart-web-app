@@ -1,4 +1,4 @@
-import { useParams } from "react-router";
+import {useParams} from "react-router";
 import {
   Button,
   FormControl,
@@ -7,19 +7,19 @@ import {
   Rating,
   Select,
 } from "@mui/material";
-import { FaRegHeart } from "react-icons/fa";
-import { FaHeart } from "react-icons/fa6";
-import React, { useEffect, useState } from "react";
-import { addProductToCart } from "../Cart/cartReducer";
-import { useSelector, useDispatch } from "react-redux";
+import {FaRegHeart} from "react-icons/fa";
+import {FaHeart} from "react-icons/fa6";
+import React, {useEffect, useState} from "react";
+import {setCartItems} from "../Cart/cartReducer";
+import {useDispatch} from "react-redux";
 import * as service from "./service";
 import Carousel from "react-material-ui-carousel";
 import {
   addProductToWishlist,
   deleteProductFromWishlist,
 } from "../Wishlist/wishlistReducer";
-import { addToCart as addToCartService } from "../Cart/service";
-import { useAuth } from "../../AuthContext";
+import {addToCart as addToCartService} from "../Cart/service";
+import {useAuth} from "../../AuthContext";
 
 function ProductDetails() {
   const dispatch = useDispatch();
@@ -39,8 +39,9 @@ function ProductDetails() {
       dispatch(deleteProductFromWishlist(product.id));
     }
   };
-  const addToCart = () => {
-    addToCartService(product, 1);
+  const addToCart = async () => {
+    const response = await addToCartService(product, quantity);
+    dispatch(setCartItems(response));
   };
 
   const fetchProduct = async () => {
@@ -199,8 +200,8 @@ function ProductDetails() {
                         <div className="fs-5">{reviewObject.review}</div>
                         <div className="small">
                           <span>By: </span>
-                          {reviewObject.user.firstName}{" "}
-                          {reviewObject.user.lastName}
+                          {reviewObject?.user?.firstName}{" "}
+                          {reviewObject?.user?.lastName}
                         </div>
                       </li>
                     ))}

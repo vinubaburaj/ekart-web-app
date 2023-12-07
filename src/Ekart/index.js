@@ -6,12 +6,11 @@ import ProductDetails from "./Products/product-details";
 import {Navigate} from "react-router-dom";
 import Navbar from "./Navbar";
 import Cart from "./Cart";
-import {Provider} from "react-redux";
-import store from "./store";
 import './index.css';
 import Register from "./Auth/Register";
 import Wishlist from "./Wishlist";
 import ProductsList from "./Products/products-list";
+import AddProduct from "./Seller/addProduct";
 
 function Ekart() {
   const path = useLocation().pathname;
@@ -19,8 +18,6 @@ function Ekart() {
   const hideNavbarPaths = ["/Login", "/Register"];
   showNavbar = !hideNavbarPaths.includes(path);
   return (
-
-      <Provider store={store}>
       <div className={'container-fluid px-0 mx-0'}>
         {showNavbar && <Navbar/>}
         <Routes>
@@ -32,11 +29,10 @@ function Ekart() {
           <Route path="/Products/:productId" element={<ProductDetails/>}/>
           <Route path="/Products/search/:searchTerm" element={<ProductsList/>}/>
           <Route path="/Cart" element={<Cart />} />
-          <Route path={"/Account/Wishlist"} element={<Wishlist/>}/>
+          <Route path="/Account/Wishlist" element={<Wishlist/>}/>
+          <Route path="/Seller/AddProduct" element={<AddProduct/>}/>
         </Routes>
       </div>
-      </Provider>
-
   )
 }
 

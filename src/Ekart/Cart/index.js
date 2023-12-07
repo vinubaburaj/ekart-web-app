@@ -6,23 +6,24 @@ import {
   MenuItem,
   Select,
 } from "@mui/material";
-import React, { useState, useEffect } from "react";
-import { PiSmileySad } from "react-icons/pi";
-import { Link } from "react-router-dom";
+import React, {useEffect, useState} from "react";
+import {PiSmileySad} from "react-icons/pi";
+import {Link} from "react-router-dom";
 import CardSummary from "./card-summary";
 import {
   getCart,
-  updateProductQtyInCart,
   removeProductFromCart,
+  updateProductQtyInCart,
 } from "./service";
-import { useAuth } from "../../AuthContext";
-import { useIsMount } from "../../Common/helpers";
-import { setCartItems } from "../Cart/cartReducer";
-import { useDispatch } from "react-redux";
+import {useAuth} from "../../AuthContext";
+import {useIsMount} from "../../Common/helpers";
+import {setCartItems} from "../Cart/cartReducer";
+import {useDispatch, useSelector} from "react-redux";
 
 function Cart() {
   const { user } = useAuth();
-  const [cartItems, setCartItems] = useState([]);
+  //const [cartItems, setCartItems] = useState([]);
+  const cartItems = useSelector((state) => state.cartReducer.cartItems);
   const [cartChanged, setCartChanged] = useState(false);
   const isMount = useIsMount();
   const dispatch = useDispatch();
@@ -30,7 +31,7 @@ function Cart() {
   const fetchCart = async () => {
     try {
       const cartData = await getCart();
-      setCartItems(cartData);
+      dispatch(setCartItems(cartData));
     } catch (error) {
       console.error("Error fetching cart:", error);
     }
@@ -92,7 +93,7 @@ function Cart() {
                         <td>
                           <Link
                             to={`/Products/${
-                              item.product.id || item.product._id
+                              item.product.id
                             }`}
                           >
                             {item.product.title}

@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, {useEffect, useState} from "react";
+import {Link, useNavigate} from "react-router-dom";
 import {
   AppBar,
   IconButton,
@@ -7,33 +7,29 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
-import { Search as SearchIcon } from "@mui/icons-material";
+import {Search as SearchIcon} from "@mui/icons-material";
 import "./index.css";
-import { useDispatch, useSelector } from "react-redux";
-import { FaShoppingCart } from "react-icons/fa";
+import {useDispatch, useSelector} from "react-redux";
+import {FaShoppingCart} from "react-icons/fa";
 import * as authServices from "../Auth/authService";
-import { setCurrentUser } from "../Auth/userReducer";
-import { useAuth } from "../../AuthContext";
-import { getCart } from "../Cart/service";
-import { setCartItems } from "../Cart/cartReducer";
+import {setCurrentUser} from "../Auth/userReducer";
+import {useAuth} from "../../AuthContext";
+import {getCart} from "../Cart/service";
+import {setCartItems} from "../Cart/cartReducer";
 
 const Navbar = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
   const { user, invalidateAuth } = useAuth();
-
-  console.log(user);
-
+  const role = useSelector((state) => state.userReducer.role);
   const cartItemsFromReducer = useSelector(
     (state) => state.cartReducer.cartItems
   );
-  console.log(cartItemsFromReducer.length);
+  console.log(role);
 
   const fetchCart = async () => {
     try {
       const cartData = await getCart();
-      // setCartItems(cartData);
       dispatch(setCartItems(cartData));
     } catch (error) {
       console.error("Error fetching cart:", error);
@@ -49,17 +45,13 @@ const Navbar = () => {
     }
   }, [user]);
 
-  useEffect(() => {
-    if (user) {
-      fetchCart();
-    }
-  }, []);
 
   const [searchTerm, setSearchTerm] = useState("");
 
   const logout = async () => {
     await authServices.logout();
     invalidateAuth();
+    dispatch(setCurrentUser(null));
     setIsUserLoggedIn(false);
     navigate("/Login");
   };

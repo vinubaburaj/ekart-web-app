@@ -1,12 +1,12 @@
-import { Paper, TextField, Typography } from "@mui/material";
+import {Paper, TextField, Typography} from "@mui/material";
 import "./index.css";
-import { Link, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import {Link, useNavigate} from "react-router-dom";
+import {useEffect, useState} from "react";
 import * as authServices from "../authService";
-import { useDispatch } from "react-redux";
-import { setCurrentUser } from "../userReducer";
-import { emailValidator } from "../../Validators";
-import { useAuth } from "../../../AuthContext";
+import {useDispatch} from "react-redux";
+import {setCurrentUser, setRole} from "../userReducer";
+import {emailValidator} from "../../Validators";
+import {useAuth} from "../../../AuthContext";
 
 function Login() {
   const navigate = useNavigate();
@@ -23,7 +23,7 @@ function Login() {
 
   const checkAuth = async () => {
     const response = await authServices.checkAuth();
-    if (response.authenticated) {
+    if (response?.authenticated) {
       dispatch(setCurrentUser(response.user));
       navigate("/Home");
     }
@@ -47,14 +47,16 @@ function Login() {
       return;
     }
     const response = await authServices.login(user);
-    if (response.status === 401) {
+    if (response?.status === 401) {
       setPwdErrMsg(response.data.message);
       setPwdErr(true);
-    } else if (response.status === 404) {
+    } else if (response?.status === 404) {
       setEmailErrMsg(response.data.message);
       setEmailErr(true);
     } else {
       setInitialAuth(response);
+      dispatch(setCurrentUser(response));
+      dispatch(setRole(response.role));
       navigate("/Home");
     }
     console.log(response);
