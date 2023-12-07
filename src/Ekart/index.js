@@ -12,6 +12,7 @@ import './index.css';
 import Register from "./Auth/Register";
 import Wishlist from "./Wishlist";
 import ProductsList from "./Products/products-list";
+import Profile from "./Profile";
 
 function Ekart() {
   const path = useLocation().pathname;
@@ -33,6 +34,10 @@ function Ekart() {
           <Route path="/Products/search/:searchTerm" element={<ProductsList/>}/>
           <Route path="/Cart" element={<Cart />} />
           <Route path={"/Account/Wishlist"} element={<Wishlist/>}/>
+          {/* To fetch the profile of the user who is currently logged in (according to requirement) */}
+          <Route path={"/Account/Profile"} exact element={<Profile />} /> 
+          {/* To fetch the profile of another user using their userId */}
+          <Route path={"/Account/Profile/:profileId"} element={<Profile />} />
         </Routes>
       </div>
       </Provider>
