@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, {useEffect, useState} from "react";
+import {Link, useNavigate} from "react-router-dom";
 import {
   AppBar,
   IconButton,
@@ -7,10 +7,10 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
-import { Search as SearchIcon } from "@mui/icons-material";
+import {Search as SearchIcon} from "@mui/icons-material";
 import "./index.css";
-import { useDispatch, useSelector } from "react-redux";
-import { FaShoppingCart } from "react-icons/fa";
+import {useDispatch, useSelector} from "react-redux";
+import {FaShoppingCart} from "react-icons/fa";
 import * as authServices from "../Auth/authService";
 import {setCurrentUser, setRole} from "../Auth/userReducer";
 import {useAuth} from "../../AuthContext";
@@ -171,7 +171,7 @@ const Navbar = () => {
           </Link>
         )}
 
-        {role !== Roles.ADMIN && (
+        {role !== Roles.ADMIN && !isSeller && (
           <Link to={`/Cart`} className="wd-td-none wd-fg-white">
             <Typography variant="h6" component="div" className="wd-title me-4">
               <FaShoppingCart className={"me-1"} />
