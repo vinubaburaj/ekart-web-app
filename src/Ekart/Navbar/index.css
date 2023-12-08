@@ -39,3 +39,7 @@
 .wd-ml-auto {
   margin-left: auto;
 }
+
+.wd-cursor-pointer {
+    cursor: pointer !important;
+}

@@ -1,3 +1,8 @@
 .wd-min-card-width {
   min-height: 210px;
 }
+
+.wd-desc-error {
+  font-size: 0.75rem !important;
+  margin-left: 14px !important;
+}

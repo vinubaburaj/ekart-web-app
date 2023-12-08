@@ -1,13 +1,15 @@
 import express from "express";
 import {
-  searchProducts,
+  addReviewForProduct,
+  createProduct,
+  deleteProduct,
   getAllProducts,
   getProductById,
-  createProduct,
-  updateProduct,
-  deleteProduct,
+  getProductsBySeller,
   getReviewsForProduct,
-  addReviewForProduct
+  searchProducts,
+  searchProductsBySeller,
+  updateProduct
 } from "../controllers/productController.js";
 
 const router = express.Router();
@@ -18,6 +20,8 @@ router.post("/", createProduct);
 // Search products route
 router.get("/search", searchProducts);
 
+router.get("/seller", getProductsBySeller);
+
 router.get("/:productId/reviews", getReviewsForProduct);
 
 router.post("/:productId/reviews", addReviewForProduct);
@@ -27,8 +31,12 @@ router.get("/", getAllProducts);
 
 router.get("/:id", getProductById);
 
-router.put("/:id", updateProduct);
+// Seller routes
 
-router.delete("/:id", deleteProduct);
+router.get("/seller/:sellerId/search", searchProductsBySeller);
+
+router.put("/seller/:id", updateProduct);
+
+router.delete("/seller/:id", deleteProduct);
 
 export default router;

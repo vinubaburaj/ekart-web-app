@@ -16,7 +16,7 @@ function SellerHome() {
         </div>
         <div className={'d-none d-sm-block row mt-4'}>
           <div className={'d-flex justify-content-evenly'}>
-            <Link to={'/Seller/Products'}>
+            <Link to={'/Products'}>
               <Card sx={{maxWidth: 275, boxShadow: 3}}
                     className={'wd-min-card-width'}>
                 <CardContent>
@@ -36,7 +36,7 @@ function SellerHome() {
                 </CardContent>
               </Card>
             </Link>
-            <Link to={'/Seller/AddProduct'}>
+            <Link to={'/AddProduct'}>
               <Card sx={{maxWidth: 275, boxShadow: 3}}
                     className={'wd-min-card-width'}>
                 <CardContent>
@@ -59,7 +59,7 @@ function SellerHome() {
         </div>
         <div className={'d-block d-sm-none row mt-4'}>
           <div className={'col'}>
-            <Link to={'/Seller/Products'} className={'d-flex justify-content-center'}>
+            <Link to={'/Products'} className={'d-flex justify-content-center'}>
               <Card sx={{maxWidth: 275, boxShadow: 3}}
                     className={'wd-min-card-width'}>
                 <CardContent>
@@ -81,7 +81,7 @@ function SellerHome() {
             </Link>
           </div>
           <div className={'col mt-3'}>
-            <Link to={'/Seller/AddProduct'} className={'d-flex justify-content-center'}>
+            <Link to={'/AddProduct'} className={'d-flex justify-content-center'}>
               <Card sx={{maxWidth: 275, boxShadow: 3}}
                     className={'wd-min-card-width'}>
                 <CardContent>

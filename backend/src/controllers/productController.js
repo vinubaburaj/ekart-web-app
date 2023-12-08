@@ -112,10 +112,9 @@ export const getProductById = async (req, res) => {
 // Update a product by ID
 export const updateProduct = async (req, res) => {
   try {
-    const updatedProduct = await Product.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      { new: true }
+    const updatedProduct = await Product.findOneAndUpdate({id: req.params.id},
+        req.body,
+        {new: true}
     );
     res.json(updatedProduct);
   } catch (error) {
@@ -126,8 +125,8 @@ export const updateProduct = async (req, res) => {
 // Delete a product by ID
 export const deleteProduct = async (req, res) => {
   try {
-    await Product.findByIdAndDelete(req.params.id);
-    res.json({ message: "Product deleted successfully" });
+    await Product.findOneAndDelete({id: req.params.id});
+    res.json({message: "Product deleted successfully"});
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -199,3 +198,43 @@ export const addReviewForProduct = async (req, res) => {
     res.status(500).json({ message: "Error adding review for product" });
   }
 };
+
+export const getProductsBySeller = async (req, res) => {
+  try {
+    const sellerId = req.session["currentUser"]?._id;
+    if (!sellerId) {
+      return res.status(401).json({message: "Unauthorized"});
+    }
+    const response = await Product.find({sellerId: sellerId});
+    res.status(200).json(response);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({message: "Error fetching products for seller"});
+  }
+}
+
+export const searchProductsBySeller = async (req, res) => {
+  try {
+    const searchTerm = req.query.q;
+    const sellerId = req.params.sellerId;
+
+    if (!sellerId) {
+      return res.status(401).json({message: "Unauthorized"});
+    }
+
+    if (!searchTerm) {
+      return res.status(400).json({message: "Search term is required"});
+    }
+
+    // Search in the database
+    const dbSearchResults = await Product.find({
+      title: {$regex: new RegExp(searchTerm, "i")}, // Case-insensitive search
+      sellerId: sellerId
+    });
+
+    res.status(200).json({message: "Search successful", data: dbSearchResults});
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({message: "Internal server error"});
+  }
+}

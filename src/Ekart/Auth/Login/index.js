@@ -56,7 +56,7 @@ function Login() {
     } else {
       setInitialAuth(response);
       dispatch(setCurrentUser(response));
-      dispatch(setRole(response.role));
+      dispatch(setRole(response?.role));
       navigate("/Home");
     }
     console.log(response);
