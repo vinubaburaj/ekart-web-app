@@ -4,18 +4,30 @@ import { Container, Card, Button, Form, Alert } from "react-bootstrap";
 import { TextField } from "@mui/material";
 import { useAuth } from "../../AuthContext";
 import * as service from "./service";
+import { emailValidator, checkPassword } from "../Validators";
+import { useSelector } from "react-redux";
 
 const Profile = () => {
   const { user } = useAuth();
+  const currentUser = useSelector((state) => state.userReducer.currentUser);
   const { profileId } = useParams();
   const [profileData, setProfileData] = useState();
   const [reviewsByUser, setReviewsByUser] = useState([]);
   const [isEditing, setEditing] = useState(false);
   const [hasFullAccess, setHasFullAccess] = useState(false);
+  const [emailErr, setEmailErr] = useState(false);
+  const [emailErrMsg, setEmailErrMsg] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState(currentUser?.password);
+  const [confirmPwdErr, setConfirmPwdErr] = useState(false);
+  const [confirmPwdErrMsg, setConfirmPwdErrMsg] = useState("");
 
   const getUserProfile = async (id) => {
-    const response = await service.getProfile(id);
-    setProfileData(response);
+    try {
+      const response = await service.getProfile(id);
+      setProfileData(response);
+    } catch (error) {
+      console.error("Error fetching user profile:", error);
+    }
   };
 
   const getReviewsByUser = async (id) => {
@@ -23,36 +35,36 @@ const Profile = () => {
     setReviewsByUser(response);
   };
 
-  //   useEffect to determine how much access to give to user (especially the option to edit and view email/password)
+  //   useEffect to determine how much access to give to user
+  // (especially the option to edit and view email/password)
+  // and to fetch user info
   useEffect(() => {
-    if (user) {
+    if (currentUser) {
       /*
         Condition 1: User is admin
         Condition 2: /profileId matches the current user id
         Condition 3: User is viewing his own profile after clicking it from account(without profileId)
          */
-      if (user.role === "ADMIN" || user._id === profileId || !profileId) {
+      if (
+        currentUser.role === "ADMIN" ||
+        currentUser._id === profileId ||
+        !profileId
+      ) {
         setHasFullAccess(true);
       }
     }
-  }, [user, profileId]);
 
-  // useEffect to fetch user info
-  useEffect(() => {
-    if (!profileId) {
-      // User is viewing their own profile, find user by useauth
-      if (user) {
-        getUserProfile(user._id);
-        getReviewsByUser(user._id);
-      }
-    } else {
-      // Someone else is viewing user, find user by profileId
-      getUserProfile(profileId);
-      getReviewsByUser(profileId);
-    }
-  }, [user, profileId]);
+    // Fetching user info by profileId if another user is viewing it.
+    // Or by currentUser id if the user is viewing their own profile
+    const fetchById = profileId ? profileId : currentUser?._id;
+    getUserProfile(fetchById);
+    getReviewsByUser(fetchById);
+  }, [currentUser, profileId]);
 
   const handleEdit = () => {
+    // If profile is being edited, display a confirm password input field
+    // whose initial value is the same as current password
+    setConfirmPassword(profileData.password);
     setEditing(true);
   };
 
@@ -68,6 +80,27 @@ const Profile = () => {
     }
 
     setEditing(false);
+  };
+
+  const checkEmailFormat = () => {
+    if (profileData.email && !emailValidator(profileData.email)) {
+      setEmailErrMsg("Invalid email");
+      setEmailErr(true);
+    }
+  };
+
+  const checkPasswordsMatch = () => {
+    if (!checkPassword(profileData.password, confirmPassword)) {
+      setConfirmPwdErrMsg("Passwords do not match");
+      setConfirmPwdErr(true);
+    }
+  };
+
+  const invalidFields = () => {
+    if (emailErr || confirmPwdErr) {
+      return true;
+    }
+    return false;
   };
 
   return (
@@ -118,6 +151,13 @@ const Profile = () => {
                       <TextField
                         fullWidth
                         variant="outlined"
+                        type="email"
+                        error={emailErr}
+                        helperText={emailErr ? emailErrMsg : ""}
+                        onFocus={() => {
+                          setEmailErr(false);
+                        }}
+                        onBlur={checkEmailFormat}
                         disabled={!isEditing}
                         value={profileData.email}
                         onChange={(e) =>
@@ -136,6 +176,10 @@ const Profile = () => {
                         disabled={!isEditing}
                         type="password"
                         value={profileData.password}
+                        error={confirmPwdErr}
+                        helperText={confirmPwdErr ? confirmPwdErrMsg : ""}
+                        onFocus={() => setConfirmPwdErr(false)}
+                        onBlur={checkPasswordsMatch}
                         onChange={(e) =>
                           setProfileData({
                             ...profileData,
@@ -144,6 +188,26 @@ const Profile = () => {
                         }
                       />
                     </Form.Group>
+                    {isEditing && (
+                      <Form.Group
+                        className="mb-3"
+                        controlId="formConfirmPassword"
+                      >
+                        <Form.Label>Confirm Password</Form.Label>
+                        <TextField
+                          fullWidth
+                          variant="outlined"
+                          disabled={!isEditing}
+                          type="password"
+                          value={confirmPassword}
+                          error={confirmPwdErr}
+                          helperText={confirmPwdErr ? confirmPwdErrMsg : ""}
+                          onFocus={() => setConfirmPwdErr(false)}
+                          onBlur={checkPasswordsMatch}
+                          onChange={(e) => setConfirmPassword(e.target.value)}
+                        />
+                      </Form.Group>
+                    )}
                   </>
                 )}
                 <Form.Group className="mb-3">
@@ -177,13 +241,14 @@ const Profile = () => {
                 {hasFullAccess ? (
                   <Button
                     variant="primary"
+                    disabled={isEditing && invalidFields()}
                     onClick={isEditing ? handleSave : handleEdit}
                   >
                     {isEditing ? "Save" : "Edit Profile"}
                   </Button>
                 ) : (
                   <Button variant="secondary" disabled>
-                    View Profile
+                    Viewing Profile
                   </Button>
                 )}
               </Form>
