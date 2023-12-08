@@ -146,7 +146,10 @@ const AdminCreateUser = ({ isOpen, onClose, onUserCreated }) => {
               ))}
             </Select>
           </FormControl>
-          <div className="d-flex justify-content-end mt-2">
+          <div className="d-flex justify-content-between mt-2">
+            <Button variant="contained" color="secondary" onClick={onClose}>
+              Cancel
+            </Button>
             <Button
               variant="contained"
               color="primary"
