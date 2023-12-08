@@ -19,7 +19,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import axios from "axios";
 import { deleteUser, getAllUsers } from "./service";
 
-function AdminUsersTable() {
+function AdminUsersTable({ shouldRefreshUsers }) {
   const [users, setUsers] = useState([]);
   const [selectedUserId, setSelectedUserId] = useState(null);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
@@ -33,7 +33,7 @@ function AdminUsersTable() {
     };
 
     fetchUsers();
-  }, [user]);
+  }, [user, shouldRefreshUsers]);
 
   const handleDeleteUser = async () => {
     try {

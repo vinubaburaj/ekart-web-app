@@ -7,11 +7,11 @@ import AdminCreateUser from "./adminCreateUser.js";
 function AdminHome() {
   const user = useSelector((state) => state.userReducer.currentUser);
   const [isCreateUserModalOpen, setIsCreateUserModalOpen] = useState(false);
+  const [shouldRefreshUsers, setShouldRefreshUsers] = useState(false);
 
   const handleUserCreated = () => {
-    // You can perform any additional actions after a user is created
-    // For example, refresh the user table
-    // Fetch the updated list of users or update the table in a different way
+    // Set the flag to true to indicate that users need to be refreshed
+    setShouldRefreshUsers(true);
   };
 
   return (
@@ -23,7 +23,7 @@ function AdminHome() {
         Since you are an admin user, you can manage the following users of
         Ekart.
       </div>
-      
+
       {/* Button to open the Create User modal */}
       <div className="d-flex justify-content-center mt-3">
         <Button
@@ -38,11 +38,17 @@ function AdminHome() {
       {/* AdminCreateUser modal */}
       <AdminCreateUser
         isOpen={isCreateUserModalOpen}
-        onClose={() => setIsCreateUserModalOpen(false)}
+        onClose={() => {
+          setIsCreateUserModalOpen(false);
+          // If the flag is set, refresh the users
+          if (shouldRefreshUsers) {
+            setShouldRefreshUsers(false);
+          }
+        }}
         onUserCreated={handleUserCreated}
       />
 
-      <AdminUsersTable />
+      <AdminUsersTable shouldRefreshUsers={shouldRefreshUsers} />
     </div>
   );
 }
