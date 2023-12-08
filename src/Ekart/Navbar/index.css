@@ -35,3 +35,7 @@
 .wd-fg-white {
     color: white !important;
 }
+
+.wd-cursor-pointer {
+    cursor: pointer !important;
+}

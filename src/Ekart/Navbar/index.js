@@ -12,10 +12,11 @@ import "./index.css";
 import {useDispatch, useSelector} from "react-redux";
 import {FaShoppingCart} from "react-icons/fa";
 import * as authServices from "../Auth/authService";
-import {setCurrentUser} from "../Auth/userReducer";
+import {setCurrentUser, setRole} from "../Auth/userReducer";
 import {useAuth} from "../../AuthContext";
 import {getCart} from "../Cart/service";
 import {setCartItems} from "../Cart/cartReducer";
+import {Roles} from "../../Constants/roles";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -25,6 +26,9 @@ const Navbar = () => {
   const cartItemsFromReducer = useSelector(
     (state) => state.cartReducer.cartItems
   );
+  const [isUserLoggedIn, setIsUserLoggedIn] = useState(!!user);
+  const [searchPlaceholder, setSearchPlaceholder] = useState("Search...");
+  const [isSeller, setIsSeller] = useState(role === Roles.SELLER);
   console.log(role);
 
 
@@ -37,14 +41,25 @@ const Navbar = () => {
     }
   };
 
-  const [isUserLoggedIn, setIsUserLoggedIn] = useState(!!user);
+  const search = () => {
+    if (isSeller) {
+      navigate(`/Products/seller/search/${searchTerm}`);
+    } else {
+      navigate(`/Products/search/${searchTerm}`);
+    }
+  }
+
 
   useEffect(() => {
     if (user) {
       setIsUserLoggedIn(true);
       fetchCart(); // Fetching the cart info after a refresh as user gets updated after refresh.
     }
-  }, [user]);
+    if (role === Roles.SELLER) {
+      setIsSeller(true);
+      setSearchPlaceholder("Search your products...");
+    }
+  }, [user, role]);
 
 
   const [searchTerm, setSearchTerm] = useState("");
@@ -53,6 +68,7 @@ const Navbar = () => {
     await authServices.logout();
     invalidateAuth();
     dispatch(setCurrentUser(null));
+    dispatch(setRole(Roles.ANON));
     setIsUserLoggedIn(false);
     navigate("/Login");
   };
@@ -73,7 +89,7 @@ const Navbar = () => {
         {/* Search Bar in the middle */}
         <div className="d-flex flex-grow-1 justify-content-center ms-3">
           <InputBase
-            placeholder="Search..."
+            placeholder={searchPlaceholder}
             inputProps={{ "aria-label": "search" }}
             className="wd-search-input"
             value={searchTerm}
@@ -84,7 +100,7 @@ const Navbar = () => {
           <IconButton
             className="wd-search-icon wd-fg-white"
             aria-label="search"
-            onClick={() => navigate(`/Products/search/${searchTerm}`)}
+            onClick={search}
           >
             <SearchIcon />
           </IconButton>
@@ -116,14 +132,14 @@ const Navbar = () => {
                 </Link>
               </li>
               <li>
-                <Link to={"/Account/Orders"} className="dropdown-item">
+                {!isSeller && <Link to={"/Account/Orders"} className="dropdown-item">
                   My Orders
-                </Link>
+                </Link>}
               </li>
               <li>
-                <Link to={"/Account/Wishlist"} className="dropdown-item">
+                {!isSeller && <Link to={"/Account/Wishlist"} className="dropdown-item">
                   Wishlist
-                </Link>
+                </Link>}
               </li>
               {isUserLoggedIn && (
                 <>
@@ -132,7 +148,7 @@ const Navbar = () => {
                   </li>
                   <li>
                     <div
-                      className={"dropdown-item alert-danger"}
+                      className={"dropdown-item text-danger wd-cursor-pointer"}
                       onClick={logout}
                     >
                       Sign Out
@@ -152,12 +168,12 @@ const Navbar = () => {
           </Link>
         )}
 
-        <Link to={`/Cart`} className="wd-td-none wd-fg-white">
+        {!isSeller && <Link to={`/Cart`} className="wd-td-none wd-fg-white">
           <Typography variant="h6" component="div" className="wd-title me-4">
             <FaShoppingCart className={"me-1"} />
             Cart: {cartItemsFromReducer ? cartItemsFromReducer.length : 0}
           </Typography>
-        </Link>
+        </Link>}
       </Toolbar>
     </AppBar>
   );

@@ -1,6 +1,7 @@
-import { PRODUCTS } from "../../Constants/apiUrls";
+import {PRODUCTS} from "../../Constants/apiUrls";
 import * as httpService from "../Service/httpService";
 import axios from "axios";
+
 const request = axios.create({
   withCredentials: true,
 });
@@ -31,8 +32,20 @@ export const externalFindProductById = async (productId) => {
 
 export const searchProductsByTitle = async (searchTerm) => {
   const response = await httpService.get(`${PRODUCTS}/search?q=${searchTerm}`);
-  return response.data.products;
+  return response.data;
 };
+
+export const searchSellerProductsByTitle = async (sellerId, searchTerm) => {
+  const response = await httpService.get(
+    `${PRODUCTS}/seller/${sellerId}/search?q=${searchTerm}`
+  );
+  return response.data;
+}
+
+export const getProductsBySeller = async () => {
+  const response = await httpService.get(`${PRODUCTS}/seller`);
+  return response;
+}
 
 export const getReviewsForProduct = async (productId) => {
   const response = await httpService.get(`${PRODUCTS}/${productId}/reviews`);
@@ -43,5 +56,15 @@ export const addReviewForProduct = async (productId, review) => {
   const response = await httpService.post(`${PRODUCTS}/${productId}/reviews`, {
     review: review,
   });
+  return response;
+};
+
+export const updateProduct = async (productId, product) => {
+  const response = await httpService.put(`${PRODUCTS}/seller/${productId}`, product);
+  return response;
+}
+
+export const deleteProduct = async (productId) => {
+  const response = await httpService.deleteReq(`${PRODUCTS}/seller/${productId}`);
   return response;
 };
