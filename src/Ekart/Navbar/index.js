@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from "react";
-import {Link, useNavigate} from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import {
   AppBar,
   IconButton,
@@ -7,15 +7,15 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
-import {Search as SearchIcon} from "@mui/icons-material";
+import { Search as SearchIcon } from "@mui/icons-material";
 import "./index.css";
-import {useDispatch, useSelector} from "react-redux";
-import {FaShoppingCart} from "react-icons/fa";
+import { useDispatch, useSelector } from "react-redux";
+import { FaShoppingCart } from "react-icons/fa";
 import * as authServices from "../Auth/authService";
-import {setCurrentUser} from "../Auth/userReducer";
-import {useAuth} from "../../AuthContext";
-import {getCart} from "../Cart/service";
-import {setCartItems} from "../Cart/cartReducer";
+import { setCurrentUser } from "../Auth/userReducer";
+import { useAuth } from "../../AuthContext";
+import { getCart } from "../Cart/service";
+import { setCartItems } from "../Cart/cartReducer";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -26,7 +26,6 @@ const Navbar = () => {
     (state) => state.cartReducer.cartItems
   );
   console.log(role);
-
 
   const fetchCart = async () => {
     try {
@@ -45,7 +44,6 @@ const Navbar = () => {
       fetchCart(); // Fetching the cart info after a refresh as user gets updated after refresh.
     }
   }, [user]);
-
 
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -115,16 +113,20 @@ const Navbar = () => {
                   My Profile
                 </Link>
               </li>
-              <li>
-                <Link to={"/Account/Orders"} className="dropdown-item">
-                  My Orders
-                </Link>
-              </li>
-              <li>
-                <Link to={"/Account/Wishlist"} className="dropdown-item">
-                  Wishlist
-                </Link>
-              </li>
+              {role === "BUYER" && (
+                <>
+                  <li>
+                    <Link to={"/Account/Orders"} className="dropdown-item">
+                      My Orders
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to={"/Account/Wishlist"} className="dropdown-item">
+                      Wishlist
+                    </Link>
+                  </li>
+                </>
+              )}
               {isUserLoggedIn && (
                 <>
                   <li>
