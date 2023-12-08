@@ -41,7 +41,6 @@ function AddProduct() {
   const [categoryErrMsg, setCategoryErrMsg] = useState('');
   const [imagesErrMsg, setImagesErrMsg] = useState('');
   const [imagesField, setImagesField] = useState(['']);
-  const [productToEdit, setProductToEdit] = useState({});
   const addHeading = "Add a new Product";
   const editHeading = "Edit Product";
   console.log(editMode);
@@ -59,7 +58,6 @@ function AddProduct() {
     console.log(productToEditId);
     const product = await findProductById(productToEditId);
     setImageFieldsArray(product);
-    setProductToEdit(product);
     setNewProduct(product);
   }
 
