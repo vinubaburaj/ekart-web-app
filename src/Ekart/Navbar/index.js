@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from "react";
-import {Link, useNavigate} from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import {
   AppBar,
   IconButton,
@@ -7,10 +7,10 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
-import {Search as SearchIcon} from "@mui/icons-material";
+import { Search as SearchIcon } from "@mui/icons-material";
 import "./index.css";
-import {useDispatch, useSelector} from "react-redux";
-import {FaShoppingCart} from "react-icons/fa";
+import { useDispatch, useSelector } from "react-redux";
+import { FaShoppingCart } from "react-icons/fa";
 import * as authServices from "../Auth/authService";
 import {setCurrentUser, setRole} from "../Auth/userReducer";
 import {useAuth} from "../../AuthContext";
@@ -61,7 +61,6 @@ const Navbar = () => {
     }
   }, [user, role]);
 
-
   const [searchTerm, setSearchTerm] = useState("");
 
   const logout = async () => {
@@ -106,7 +105,11 @@ const Navbar = () => {
           </IconButton>
         </div>
 
-        <div className="wd-td-none wd-fg-white me-3">
+        <div
+          className={`wd-td-none wd-fg-white me-3 ${
+            role === Roles.ADMIN ? "wd-ml-auto" : ""
+          }`}
+        >
           <Typography
             variant="h6"
             component="div"
@@ -168,12 +171,14 @@ const Navbar = () => {
           </Link>
         )}
 
-        {!isSeller && <Link to={`/Cart`} className="wd-td-none wd-fg-white">
-          <Typography variant="h6" component="div" className="wd-title me-4">
-            <FaShoppingCart className={"me-1"} />
-            Cart: {cartItemsFromReducer ? cartItemsFromReducer.length : 0}
-          </Typography>
-        </Link>}
+        {role !== Roles.ADMIN && (
+          <Link to={`/Cart`} className="wd-td-none wd-fg-white">
+            <Typography variant="h6" component="div" className="wd-title me-4">
+              <FaShoppingCart className={"me-1"} />
+              Cart: {cartItemsFromReducer ? cartItemsFromReducer.length : 0}
+            </Typography>
+          </Link>
+        )}
       </Toolbar>
     </AppBar>
   );
