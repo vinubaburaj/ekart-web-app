@@ -12,3 +12,8 @@ export const deleteUser = async (userId) => {
   const response = await httpService.deleteReq(`${USERS_URL}/${userId}`);
   return response;
 };
+
+export const createUser = async (user) => {
+    const response = await httpService.post(`${USERS_URL}`, user);
+    return response;
+  };
