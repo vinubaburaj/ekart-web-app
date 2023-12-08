@@ -1,4 +1,5 @@
 import User from "../models/user.js";
+import { hash } from "bcrypt";
 
 const isAdmin = (user) => {
   return user.role === "ADMIN";
@@ -24,7 +25,6 @@ export const getAllUsers = async (req, res) => {
 
 export const createUser = async (req, res) => {
   const user = req.session.currentUser;
-  console.log("CURRENT USER: ", user);
   try {
     // Check if the user making the request is an admin
     if (!isAdmin(user)) {
@@ -33,8 +33,33 @@ export const createUser = async (req, res) => {
         .json({ error: "Permission denied. Admin access required." });
     }
 
-    const newUser = await User.create(req.body);
-    res.json(newUser);
+    const { firstName, lastName, email, password, role } = req.body;
+    try {
+      if (role !== "BUYER" && role !== "SELLER" && role !== "ADMIN") {
+        return res.status(400).json({ message: "Invalid role" });
+      }
+      console.log("Registering user: ", req.body);
+      const existingUser = await User.findOne({ email });
+      if (existingUser) {
+        return res.status(400).json({ message: "User already exists" });
+      }
+      // Save the user to the database
+      const user = new User({
+        firstName,
+        lastName,
+        email,
+        password: await hash(password, 10),
+        role,
+      });
+
+      const newUser = await user.save();
+      res.json(newUser);
+    } catch (error) {
+      console.error(error);
+      res
+        .status(500)
+        .json({ message: "Internal server error", error: error.message });
+    }
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
