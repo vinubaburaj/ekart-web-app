@@ -1,24 +1,28 @@
-import {useDispatch, useSelector} from "react-redux";
 import ProductCard from "../Products/product-card";
 import {Button} from "@mui/material";
-import React from "react";
-import {deleteProductFromWishlist, emptyWishlist} from "./wishlistReducer";
-import {addProductToCart} from "../Cart/cartReducer";
+import React, {useEffect, useState} from "react";
+import * as wishlistService from "./wishlistService";
 
 function Wishlist() {
-  const dispatch = useDispatch();
-  const wishlistItems = useSelector(
-      (state) => state.wishlistReducer.wishlistItems);
+  const [wishlistItems, setWishlistItems] = useState([])
 
-  const moveAllToCart = () => {
-    wishlistItems.forEach((product) => {
-      dispatch(deleteProductFromWishlist(product.id));
-      dispatch(addProductToCart({
-        quantity: 1,
-        product: product,
-      }));
-    });
+  const moveAllToCart = async () => {
+    await wishlistService.moveAllToCart();
   }
+
+  const getWishlist = async () => {
+    const response = await wishlistService.getWishlist();
+    setWishlistItems(response);
+  }
+
+  const clearWishlist = async () => {
+    const response = await wishlistService.clearWishlist();
+    setWishlistItems(response);
+  }
+
+  useEffect(() => {
+    getWishlist();
+  }, []);
 
   return (
       <div className={'m-3'}>
@@ -44,7 +48,7 @@ function Wishlist() {
                   variant="contained"
                   className="d-block w-100"
                   color="error"
-                  onClick={() => dispatch(emptyWishlist())}
+                  onClick={clearWishlist}
               >
                 Clear Wishlist
               </Button>
@@ -54,7 +58,7 @@ function Wishlist() {
             {wishlistItems.map((product, index) => (
                 <div className="col col-sm-6 col-md-4 col-lg-3 mb-3"
                      key={index}>
-                  <ProductCard product={product}/>
+                  <ProductCard product={product} wishlistItems={wishlistItems}/>
                 </div>
             ))}
           </div>

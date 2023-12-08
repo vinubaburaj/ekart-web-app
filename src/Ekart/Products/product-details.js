@@ -15,43 +15,74 @@ import {useDispatch, useSelector} from "react-redux";
 import * as service from "./service";
 import {deleteProduct} from "./service";
 import Carousel from "react-material-ui-carousel";
-import {
-  addProductToWishlist,
-  deleteProductFromWishlist,
-} from "../Wishlist/wishlistReducer";
 import {addToCart as addToCartService} from "../Cart/service";
 import {useAuth} from "../../AuthContext";
 import {Roles} from "../../Constants/roles";
 import {Link, useNavigate} from "react-router-dom";
 import SimpleConfirmDialog from "../../Common/SimpleConfirmDialog";
 import PropTypes from "prop-types";
+import * as wishlistService from "../Wishlist/wishlistService";
 
 function ProductDetails() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const {productId} = useParams();
+  const {user} = useAuth();
+  const [wishlistItems, setWishlistItems] = useState([]);
   const [quantity, setQuantity] = useState(1);
   const [product, setProduct] = useState(null);
-  const [wishListed, setWishListed] = useState(false);
   const [review, setReview] = useState("");
   const [reviews, setReviews] = useState([]);
-  const {user} = useAuth();
   const role = useSelector((state) => state.userReducer.role);
   const [isSeller, setIsSeller] = useState(role === Roles.SELLER);
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [snackBarOpen, setSnackBarOpen] = useState(false);
+  const [snackBarMessage, setSnackBarMessage] = useState('');
+  const [snackBarSeverity, setSnackBarSeverity] = useState('success');
+  const [wishListed, setWishListed] = useState(false);
 
   const toggleWishList = () => {
-    setWishListed(!wishListed);
-    if (!wishListed) {
-      dispatch(addProductToWishlist(product));
+    if (user) {
+      if (!wishListed) {
+        addingToWishlist();
+      } else {
+        removingFromWishlist();
+      }
+      setWishListed(!wishListed);
     } else {
-      dispatch(deleteProductFromWishlist(product.id));
+      navigate('/Login');
     }
   };
   const addToCart = async () => {
     const response = await addToCartService(product, quantity);
     dispatch(setCartItems(response));
-  };
+  }
+
+  const addingToWishlist = async () => {
+    const res = await wishlistService.addToWishlist(product);
+    if (res?.status === 400) {
+      setSnackBarMessage("Already in WishList!");
+      setSnackBarSeverity("error");
+      setSnackBarOpen(true);
+      return;
+    }
+    setSnackBarMessage("Added to WishList!");
+    setSnackBarSeverity("success");
+    setSnackBarOpen(true);
+  }
+
+  const removingFromWishlist = async () => {
+    const res = await wishlistService.removeFromWishlist(product.id);
+    if (res?.status === 400) {
+      setSnackBarMessage("Not in WishList!");
+      setSnackBarSeverity("error");
+      setSnackBarOpen(true);
+      return;
+    }
+    setSnackBarMessage("Removed from WishList!");
+    setSnackBarSeverity("success");
+    setSnackBarOpen(true);
+  }
 
   const fetchProduct = async () => {
     try {
@@ -78,6 +109,13 @@ function ProductDetails() {
     setReviews(fetchedReviews);
   };
 
+  const fetchWishlist = async () => {
+    const res = await wishlistService.getWishlist();
+    setWishlistItems(res);
+    setWishListed(wishlistItems.some(
+        (p) => p.id === parseInt(productId) || p._id === productId));
+  }
+
   const handleDialogClose = (value) => {
     console.log(value);
     setDialogOpen(false);
@@ -102,8 +140,11 @@ function ProductDetails() {
   useEffect(() => {
     fetchProduct();
     fetchProductReviews();
+    if (user) {
+      fetchWishlist();
+    }
     setIsSeller(role === Roles.SELLER)
-  }, [productId, role]);
+  }, [productId, user, role]);
 
   return (
       <>

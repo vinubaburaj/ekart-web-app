@@ -1,9 +1,9 @@
 import axios from "axios";
 import Product from "../models/product.js";
-import { mergeAndFilterProducts } from "../helpers/productHelper.js";
+import {mergeAndFilterProducts} from "../helpers/productHelper.js";
 import reviewModel from "../models/review.js";
 
-const PRODUCTS_URL = "https://dummyjson.com/products";
+export const PRODUCTS_URL = "https://dummyjson.com/products";
 
 export const searchProducts = async (req, res) => {
   try {

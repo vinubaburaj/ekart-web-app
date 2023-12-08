@@ -1,6 +1,5 @@
 import React, {useState} from "react";
 import {
-  Alert,
   Button,
   Card,
   CardActionArea,
@@ -8,19 +7,14 @@ import {
   CardMedia,
   IconButton,
   Rating,
-  Snackbar,
   Typography,
 } from "@mui/material";
-import {addProductToCart, setCartItems} from "../Cart/cartReducer";
-import {Link} from "react-router-dom";
+import {setCartItems} from "../Cart/cartReducer";
+import {Link, useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {FaRegHeart} from "react-icons/fa";
 import {FaHeart} from "react-icons/fa6";
 import {useLocation} from "react-router";
-import {
-  addProductToWishlist,
-  deleteProductFromWishlist
-} from "../Wishlist/wishlistReducer";
 import DeleteIcon from "@mui/icons-material/Delete";
 import {addToCart} from "../Cart/service";
 import {Roles} from "../../Constants/roles";
@@ -29,16 +23,22 @@ import SimpleConfirmDialog from "../../Common/SimpleConfirmDialog";
 import PropTypes from "prop-types";
 import {deleteProduct} from "./service";
 import {deleteFromSellerProducts} from "../Seller/sellerProductsReducer";
+import SnackbarComponent from "../../Common/snackbar";
+import * as wishlistService from "../Wishlist/wishlistService";
 
-const ProductCard = ({product}) => {
-  const dispatch = useDispatch();
+const ProductCard = ({product, wishlistItems, user}) => {
   const url = useLocation().pathname;
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [wishlist, setWishlist] = useState(wishlistItems);
   const isWishlist = url.indexOf("Wishlist") !== -1;
-  const [wishListed, setWishListed] = useState(false);
   const [addedToCart, setAddedToCart] = useState(false);
+  const ratingValue = product?.rating;
+  const [wishListed, setWishListed] = useState(
+      wishlist.some((item) => item.id === product.id));
   const [snackBarOpen, setSnackBarOpen] = useState(false);
   const [snackBarMessage, setSnackBarMessage] = useState("");
-  const ratingValue = product.rating;
+  const [snackBarSeverity, setSnackBarSeverity] = useState('success');
   const role = useSelector((state) => state.userReducer.role);
   const [isSeller, setIsSeller] = useState(role === Roles.SELLER);
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -65,17 +65,43 @@ const ProductCard = ({product}) => {
   }
 
   const toggleWishList = () => {
-    setWishListed(!wishListed);
-    setSnackBarOpen(true);
-    if (!wishListed) {
-      dispatch(addProductToWishlist(product));
+    if (user) {
+      if (!wishListed) {
+        addingToWishlist();
+      } else {
+        removingFromWishlist();
+      }
+      setWishListed(!wishListed);
     } else {
-      dispatch(deleteProductFromWishlist(product.id));
+      navigate("/Login");
     }
-    setSnackBarMessage(
-        wishListed ? "Removed from WishList" : "Added to WishList",
-    );
   };
+
+  const addingToWishlist = async () => {
+    const res = await wishlistService.addToWishlist(product);
+    if (res?.status === 400) {
+      setSnackBarMessage("Already in WishList!");
+      setSnackBarSeverity("error");
+      setSnackBarOpen(true);
+      return;
+    }
+    setSnackBarMessage("Added to WishList!");
+    setSnackBarSeverity("success");
+    setSnackBarOpen(true);
+  }
+
+  const removingFromWishlist = async () => {
+    const res = await wishlistService.removeFromWishlist(product.id);
+    if (res?.status === 400) {
+      setSnackBarMessage("Not in WishList!");
+      setSnackBarSeverity("error");
+      setSnackBarOpen(true);
+      return;
+    }
+    setSnackBarMessage("Removed from WishList!");
+    setSnackBarSeverity("success");
+    setSnackBarOpen(true);
+  }
 
   const toggleCart = async () => {
     setAddedToCart(!addedToCart);
@@ -88,11 +114,8 @@ const ProductCard = ({product}) => {
   };
 
   const moveToCart = () => {
-    dispatch(deleteProductFromWishlist(product.id));
-    dispatch(addProductToCart({
-      quantity: 1,
-      product: product,
-    }));
+    const res = wishlistService.moveToCart(product.id);
+    setWishlist(res);
   }
 
   return (
@@ -184,8 +207,7 @@ const ProductCard = ({product}) => {
               </Button>
               <IconButton
                   color="error"
-                  onClick={() => dispatch(
-                      deleteProductFromWishlist(product.id))}>
+                  onClick={removingFromWishlist}>
                 <DeleteIcon/>
               </IconButton>
             </div>
@@ -202,17 +224,10 @@ const ProductCard = ({product}) => {
               </IconButton>
             </div>
         )}
-        <Snackbar
-            anchorOrigin={{vertical: "top", horizontal: "center"}}
-            open={snackBarOpen}
-            transitionDuration={300}
-            autoHideDuration={2500}
-            onClose={() => setSnackBarOpen(false)}
-        >
-          <Alert onClose={() => setSnackBarOpen(false)} severity="success">
-            {snackBarMessage}
-          </Alert>
-        </Snackbar>
+        <SnackbarComponent snackbarOpen={snackBarOpen}
+                           severity={snackBarSeverity}
+                           snackbarMsg={snackBarMessage} horizontal="center"
+                           vertical="top"/>
         <SimpleConfirmDialog open={dialogOpen} onClose={handleDialogClose} />
       </Card>
   );

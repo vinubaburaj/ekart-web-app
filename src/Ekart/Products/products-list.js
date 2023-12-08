@@ -2,12 +2,14 @@ import ProductCard from "./product-card";
 import * as service from "./service";
 import {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
+import * as wishlistService from "../Wishlist/wishlistService";
+import {useAuth} from "../../AuthContext";
 
 function ProductsList() {
-
+  const {user} = useAuth();
   const [products, setProducts] = useState([]);
-
   const {searchTerm} = useParams();
+  const [wishlistItems, setWishlistItems] = useState([]);
 
   const searchProducts = async (searchTerm) => {
     const fetchedProducts = await service.searchProductsByTitle(searchTerm);
@@ -19,13 +21,23 @@ function ProductsList() {
     setProducts(fetchedProducts);
   }
 
+  const fetchWishlistItems = async () => {
+    const response = await wishlistService.getWishlist();
+    setWishlistItems(response);
+  }
+
+  console.log(wishlistItems);
+
   useEffect(() => {
     if (searchTerm) {
       searchProducts(searchTerm);
     } else {
       fetchAllProducts();
     }
-  }, [searchTerm]);
+    if (user) {
+      fetchWishlistItems();
+    }
+  }, [searchTerm, user]);
 
   return (
       <>

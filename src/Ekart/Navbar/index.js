@@ -69,6 +69,7 @@ const Navbar = () => {
     dispatch(setCurrentUser(null));
     dispatch(setRole(Roles.ANON));
     setIsUserLoggedIn(false);
+    dispatch(setCurrentUser(null));
     navigate("/Login");
   };
 

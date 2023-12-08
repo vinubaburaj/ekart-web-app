@@ -35,12 +35,10 @@ function Ekart() {
           <Route path="/Account/Wishlist" element={<Wishlist/>}/>
           <Route path="/AddProduct" element={<AddProduct/>}/>
           <Route path="/EditProduct/:productId" element={<AddProduct/>}/>
-          <Route path={"/Account/Wishlist"} element={<Wishlist/>}/>
           {/* To fetch the profile of the user who is currently logged in (according to requirement) */}
           <Route path={"/Account/Profile"} exact element={<Profile/>}/>
           {/* To fetch the profile of another user using their userId */}
           <Route path={"/Account/Profile/:profileId"} element={<Profile/>}/>
-
         </Routes>
       </div>
   )

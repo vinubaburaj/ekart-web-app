@@ -7,6 +7,7 @@ import {useDispatch} from "react-redux";
 import {setCurrentUser, setRole} from "../userReducer";
 import {emailValidator} from "../../Validators";
 import {useAuth} from "../../../AuthContext";
+import SnackbarComponent from "../../../Common/snackbar";
 
 function Login() {
   const navigate = useNavigate();
@@ -18,14 +19,21 @@ function Login() {
   });
   const [pwdErr, setPwdErr] = useState(false);
   const [emailErr, setEmailErr] = useState(false);
-  const [pwdErrMsg, setPwdErrMsg] = useState("");
-  const [emailErrMsg, setEmailErrMsg] = useState("");
+  const [pwdErrMsg, setPwdErrMsg] = useState('');
+  const [emailErrMsg, setEmailErrMsg] = useState('');
+  const [snackBarOpen, setSnackBarOpen] = useState(false);
+  const [snackBarMessage, setSnackBarMessage] = useState('');
+  const [snackBarSeverity, setSnackBarSeverity] = useState('success');
 
   const checkAuth = async () => {
     const response = await authServices.checkAuth();
-    if (response?.authenticated) {
-      dispatch(setCurrentUser(response.user));
-      navigate("/Home");
+    if (response.authenticated) {
+      setSnackBarMessage('Already logged in! Redirecting to Home...');
+      setSnackBarSeverity('success');
+      setSnackBarOpen(true);
+      setTimeout(() => {
+        navigate("/Home");
+      }, 3000);
     }
   };
 
@@ -110,6 +118,10 @@ function Login() {
           Don't have an account? <Link to={"/Register"}>Register now</Link>
         </Typography>
       </Paper>
+      <SnackbarComponent snackbarOpen={snackBarOpen}
+                         snackbarMsg={snackBarMessage}
+                         severity={snackBarSeverity} horizontal='center'
+                         vertical='top'/>
     </div>
   );
 }

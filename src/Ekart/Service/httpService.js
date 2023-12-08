@@ -4,12 +4,17 @@ const request = axios.create({
   withCredentials: true,
 });
 
+const Series500Errors = ["500", "501", "503"];
+
 export const get = async (url) => {
   let response
   try {
     response = await request.get(url);
   } catch (error) {
     console.log(error);
+    if (Series500Errors.includes(error.response.status)) {
+      // TODO handle errors
+    }
     return error.response;
   }
   return response.data;
