@@ -1,37 +1,45 @@
 .wd-navbar {
-    background-color: black !important;
+  background-color: black !important;
 }
 
 .wd-title {
-    display: flex !important;
-    align-items: center !important;
+  display: flex !important;
+  align-items: center !important;
 }
 
 .wd-search-container {
-    flex-grow: 1 !important;
-    display: flex !important;
-    justify-content: center !important;
-    margin-right: auto !important;
-    margin-left: auto !important;
+  flex-grow: 1 !important;
+  display: flex !important;
+  justify-content: center !important;
+  margin-right: auto !important;
+  margin-left: auto !important;
 }
 
 .wd-search-icon {
-    /*background-color: white !important;*/
-    padding: 10px !important;
-    /*border-radius: 5px !important;*/
+  /*background-color: white !important;*/
+  padding: 10px !important;
+  /*border-radius: 5px !important;*/
 }
 
 .wd-search-input {
-    border-radius: 5px !important;
-    width: 600px !important;
-    background-color: white !important;
-    padding: 5px;
+  border-radius: 5px !important;
+  width: 600px !important;
+  background-color: white !important;
+  padding: 5px;
 }
 
 .wd-td-none {
-    text-decoration: none !important;
+  text-decoration: none !important;
 }
 
 .wd-fg-white {
-    color: white !important;
+  color: white !important;
+}
+
+.wd-ml-auto {
+  margin-left: auto;
+}
+
+.wd-cursor-pointer {
+    cursor: pointer !important;
 }

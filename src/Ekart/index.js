@@ -12,6 +12,7 @@ import Wishlist from "./Wishlist";
 import ProductsList from "./Products/products-list";
 import AddProduct from "./Seller/addProduct";
 import Profile from "./Profile";
+import SellerProductsList from "./Seller/seller-products-list";
 
 function Ekart() {
   const path = useLocation().pathname;
@@ -29,14 +30,16 @@ function Ekart() {
           <Route path="/Products" element={<Products/>}/>
           <Route path="/Products/:productId" element={<ProductDetails/>}/>
           <Route path="/Products/search/:searchTerm" element={<ProductsList/>}/>
-          <Route path="/Cart" element={<Cart />} />
+          <Route path="/Products/seller/search/:searchTerm" element={<SellerProductsList/>}/>
+          <Route path="/Cart" element={<Cart/>}/>
           <Route path="/Account/Wishlist" element={<Wishlist/>}/>
-          <Route path="/Seller/AddProduct" element={<AddProduct/>}/>
+          <Route path="/AddProduct" element={<AddProduct/>}/>
+          <Route path="/EditProduct/:productId" element={<AddProduct/>}/>
           <Route path={"/Account/Wishlist"} element={<Wishlist/>}/>
           {/* To fetch the profile of the user who is currently logged in (according to requirement) */}
-          <Route path={"/Account/Profile"} exact element={<Profile />} /> 
+          <Route path={"/Account/Profile"} exact element={<Profile/>}/>
           {/* To fetch the profile of another user using their userId */}
-          <Route path={"/Account/Profile/:profileId"} element={<Profile />} />
+          <Route path={"/Account/Profile/:profileId"} element={<Profile/>}/>
 
         </Routes>
       </div>

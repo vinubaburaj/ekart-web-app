@@ -6,6 +6,7 @@ import {useDispatch} from "react-redux";
 import * as authServices from "./Ekart/Auth/authService";
 import {setCurrentUser, setRole} from "./Ekart/Auth/userReducer";
 import {useEffect} from "react";
+import {Roles} from "./Constants/roles";
 
 function App() {
   const dispatch = useDispatch();
@@ -14,6 +15,9 @@ function App() {
     if (response?.authenticated) {
       dispatch(setCurrentUser(response.user));
       dispatch(setRole(response.user.role));
+    } else {
+      dispatch(setCurrentUser(null));
+      dispatch(setRole(Roles.ANON));
     }
   }
   useEffect(() => {
