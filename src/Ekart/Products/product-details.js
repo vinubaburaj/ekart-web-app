@@ -67,7 +67,7 @@ function ProductDetails() {
   };
 
   const handleAddReview = async () => {
-    const addedReview = await service.addReviewForProduct(productId, review);
+    const addedReview = await service.addReviewForProduct(product, review);
     setReviews([addedReview, ...reviews]);
     setReview("");
   };
@@ -217,51 +217,51 @@ function ProductDetails() {
                     <div className="row">
                       <div className="col-6">
                   <textarea
-                      id="addReviewForm"
-                      className="form-control"
-                      rows="3"
-                      placeholder="Add a review..."
-                      value={review}
-                      onChange={(e) => setReview(e.target.value)}
+                    id="addReviewForm"
+                    className="form-control"
+                    rows="3"
+                    placeholder="Add a review..."
+                    value={review}
+                    onChange={(e) => setReview(e.target.value)}
                   />
-                      </div>
-                      <div className="col-2">
-                        <button
-                            className="btn btn-primary"
-                            disabled={!review}
-                            onClick={handleAddReview}
-                        >
-                          Add Review
-                        </button>
-                      </div>
-                    </div>
-                )}
-                <div className="mt-3 ">
-                  {reviews && (
-                      <>
-                        {/* {JSON.stringify(reviews)} */}
-                        <ul className="list-group list-group-flush">
-                          {reviews.map((reviewObject) => (
-                              <li className="list-group-item">
-                                {/* {JSON.stringify(reviewObject)} */}
-                                <div
-                                    className="fs-5">{reviewObject.review}</div>
-                                <div className="small">
-                                  <span>By: </span>
-                                  {reviewObject?.user?.firstName}{" "}
-                                  {reviewObject?.user?.lastName}
-                                </div>
-                              </li>
-                          ))}
-                        </ul>
-                      </>
-                  )}
+                </div>
+                <div className="col-2">
+                  <button
+                    className="btn btn-primary"
+                    disabled={!review}
+                    onClick={handleAddReview}
+                  >
+                    Add Review
+                  </button>
                 </div>
               </div>
-            </>
-        )}
-        <SimpleConfirmDialog open={dialogOpen} onClose={handleDialogClose} />
-      </>
+            )}
+            <div className="mt-3 ">
+              {reviews.length>0 && (
+                <>
+                  {/* {JSON.stringify(reviews)} */}
+                  <ul className="list-group list-group-flush">
+                    {reviews.map((reviewObject) => (
+                      <li className="list-group-item">
+                        {/* {JSON.stringify(reviewObject)} */}
+                        <div className="fs-5">{reviewObject.review}</div>
+                        <div className="small">
+                          <span>By: </span>
+                          <Link to={`/Account/Profile/${reviewObject?.user?._id}`}>
+                          {reviewObject?.user?.firstName}{" "}
+                          {reviewObject?.user?.lastName}
+                          </Link>
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                </>
+              )}
+            </div>
+          </div>
+        </>
+      )}
+    </>
   );
 }
 

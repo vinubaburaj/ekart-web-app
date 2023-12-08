@@ -52,8 +52,9 @@ export const getReviewsForProduct = async (productId) => {
   return response;
 };
 
-export const addReviewForProduct = async (productId, review) => {
-  const response = await httpService.post(`${PRODUCTS}/${productId}/reviews`, {
+export const addReviewForProduct = async (product, review) => {
+  const response = await httpService.post(`${PRODUCTS}/${product.id}/reviews`, {
+    product: product,
     review: review,
   });
   return response;
