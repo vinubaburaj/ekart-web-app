@@ -4,6 +4,7 @@ import { Container, Card, Button, Form, Alert } from "react-bootstrap";
 import { TextField } from "@mui/material";
 import { useAuth } from "../../AuthContext";
 import * as service from "./service";
+import { Link } from "react-router-dom";
 
 const Profile = () => {
   const { user } = useAuth();
@@ -192,11 +193,24 @@ const Profile = () => {
         </Container>
       )}
       {reviewsByUser.length > 0 && (
-        <div>
-          {reviewsByUser.map((review) => (
-            <div>{JSON.stringify(review)}</div>
-          ))}
-        </div>
+        <Container className="mt-4 mb-2">
+          <h5 className="mb-3">Reviews Made By User:</h5>
+          <ul className="list-group">
+            {reviewsByUser.map((review) => (
+              <li key={review._id} className="list-group-item">
+                <div className="d-flex justify-content-between align-items-center">
+                  <Link to={`/Products/${review.productId.id}`}>
+                    <h6>{review.productId.title}</h6>
+                  </Link>
+                  <span className="badge bg-primary">
+                    {review.productId.category}
+                  </span>
+                </div>
+                <p className="mb-0 ">"{review.review}"</p>
+              </li>
+            ))}
+          </ul>
+        </Container>
       )}
     </>
   );
