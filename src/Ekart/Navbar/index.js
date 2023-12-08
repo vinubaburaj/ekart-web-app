@@ -16,6 +16,7 @@ import { setCurrentUser } from "../Auth/userReducer";
 import { useAuth } from "../../AuthContext";
 import { getCart } from "../Cart/service";
 import { setCartItems } from "../Cart/cartReducer";
+import { Roles } from "../../Constants/roles";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -69,26 +70,32 @@ const Navbar = () => {
         </Link>
 
         {/* Search Bar in the middle */}
-        <div className="d-flex flex-grow-1 justify-content-center ms-3">
-          <InputBase
-            placeholder="Search..."
-            inputProps={{ "aria-label": "search" }}
-            className="wd-search-input"
-            value={searchTerm}
-            onChange={(event) => {
-              setSearchTerm(event.target.value);
-            }}
-          />
-          <IconButton
-            className="wd-search-icon wd-fg-white"
-            aria-label="search"
-            onClick={() => navigate(`/Products/search/${searchTerm}`)}
-          >
-            <SearchIcon />
-          </IconButton>
-        </div>
+        {role !== Roles.ADMIN && (
+          <div className="d-flex flex-grow-1 justify-content-center ms-3">
+            <InputBase
+              placeholder="Search..."
+              inputProps={{ "aria-label": "search" }}
+              className="wd-search-input"
+              value={searchTerm}
+              onChange={(event) => {
+                setSearchTerm(event.target.value);
+              }}
+            />
+            <IconButton
+              className="wd-search-icon wd-fg-white"
+              aria-label="search"
+              onClick={() => navigate(`/Products/search/${searchTerm}`)}
+            >
+              <SearchIcon />
+            </IconButton>
+          </div>
+        )}
 
-        <div className="wd-td-none wd-fg-white me-3">
+        <div
+          className={`wd-td-none wd-fg-white me-3 ${
+            role === Roles.ADMIN ? "wd-ml-auto" : ""
+          }`}
+        >
           <Typography
             variant="h6"
             component="div"
@@ -154,12 +161,14 @@ const Navbar = () => {
           </Link>
         )}
 
-        <Link to={`/Cart`} className="wd-td-none wd-fg-white">
-          <Typography variant="h6" component="div" className="wd-title me-4">
-            <FaShoppingCart className={"me-1"} />
-            Cart: {cartItemsFromReducer ? cartItemsFromReducer.length : 0}
-          </Typography>
-        </Link>
+        {role !== Roles.ADMIN && (
+          <Link to={`/Cart`} className="wd-td-none wd-fg-white">
+            <Typography variant="h6" component="div" className="wd-title me-4">
+              <FaShoppingCart className={"me-1"} />
+              Cart: {cartItemsFromReducer ? cartItemsFromReducer.length : 0}
+            </Typography>
+          </Link>
+        )}
       </Toolbar>
     </AppBar>
   );
