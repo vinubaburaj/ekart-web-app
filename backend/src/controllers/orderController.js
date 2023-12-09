@@ -76,9 +76,8 @@ const cancelOrder = async (req, res) => {
       return res.status(404).json({ message: "Order not found for the user" });
     }
 
-    // Perform cancellation logic (e.g., update order status)
-    // For simplicity, let's assume setting the order status to "canceled"
-    orderToCancel.status = "canceled";
+    // Perform cancellation logic (e.g., update isCancelled flag)
+    orderToCancel.isCancelled = true;
     await orderToCancel.save();
 
     res

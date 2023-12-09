@@ -27,6 +27,10 @@ const orderSchema = new Schema({
     type: Date,
     default: Date.now,
   },
+  isCancelled: {
+    type: Boolean,
+    default: false, // Set to false by default
+  },
 });
 
 export default orderSchema;
