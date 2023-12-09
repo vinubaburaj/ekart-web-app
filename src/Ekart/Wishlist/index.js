@@ -6,16 +6,24 @@ import {setCartItems} from "../Cart/cartReducer";
 import {setWishlistItems} from "./wishlistReducer";
 import * as wishlistService from "./wishlistService";
 import {useNavigate} from "react-router-dom";
+import {Roles} from "../../Constants/roles";
 
 function Wishlist() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const wishlistItems = useSelector(
       (state) => state.wishlistReducer.wishlistItems);
+  const user = useSelector((state) => state.userReducer.currentUser);
+  const role = useSelector((state) => state.userReducer.role);
 
   useEffect(() => {
-    getWishlistItems();
-  }, []);
+    if (user) {
+      if (role === Roles.SELLER) {
+        navigate("/Unauthorized");
+      }
+      getWishlistItems();
+    }
+  }, [user]);
 
   const getWishlistItems = async () => {
     const fetchedWishlistItems = await wishlistService.getWishlist()

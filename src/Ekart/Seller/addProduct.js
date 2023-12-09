@@ -9,12 +9,14 @@ import {
   updateProduct
 } from "../Products/service";
 import {useNavigate, useParams} from "react-router-dom";
+import {Roles} from "../../Constants/roles";
 
 function AddProduct() {
   const navigate = useNavigate();
   const productToEditId = useParams().productId;
   const [editMode, setEditMode] = useState(!!productToEditId);
   const currentUser = useSelector((state) => state.userReducer.currentUser);
+  const role = useSelector((state) => state.userReducer.role);
   const [newProduct, setNewProduct] = useState({
     title: '',
     description: '',
@@ -46,6 +48,9 @@ function AddProduct() {
   console.log(editMode);
 
   useEffect(() => {
+    if (role !== Roles.SELLER) {
+      navigate('/Unauthorized');
+    }
     if (currentUser) {
       setNewProduct({...newProduct, sellerId: currentUser._id});
     }
@@ -265,7 +270,8 @@ function AddProduct() {
           <div className={'d-sm-none d-md-block col-md-6'}>
             <div
                 className={'d-flex flex-column justify-content-center align-items-center'}>
-              <div className={'fs-4 p-5 mt-3'}>Every detail counts! Dive into the
+              <div className={'fs-4 p-5 mt-3'}>Every detail counts! Dive into
+                the
                 specifics of your product, and let's make sure it stands out in
                 the crowded online marketplace.
               </div>
