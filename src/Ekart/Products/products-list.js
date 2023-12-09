@@ -2,12 +2,16 @@ import ProductCard from "./product-card";
 import * as service from "./service";
 import {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+import {getWishlist} from "../Wishlist/wishlistService";
+import {setWishlistItems} from "../Wishlist/wishlistReducer";
 
 function ProductsList() {
-
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.userReducer.currentUser);
   const [products, setProducts] = useState([]);
-
   const {searchTerm} = useParams();
+  const wishlistItems = useSelector((state) => state.wishlistReducer.wishlistItems);
 
   const searchProducts = async (searchTerm) => {
     const fetchedProducts = await service.searchProductsByTitle(searchTerm);
@@ -19,17 +23,25 @@ function ProductsList() {
     setProducts(fetchedProducts);
   }
 
+  const getWishlistItems = async () => {
+    const fetchedWishlistItems = await getWishlist()
+    dispatch(setWishlistItems(fetchedWishlistItems));
+  }
+
   useEffect(() => {
     if (searchTerm) {
       searchProducts(searchTerm);
     } else {
       fetchAllProducts();
     }
-  }, [searchTerm]);
+    if (user) {
+      getWishlistItems();
+    }
+  }, [searchTerm, user]);
 
   return (
       <>
-        {products?.length === 0 && (
+        {products?.length === 0 && searchTerm && (
             <div className={'fs-2 m-2 p-2'}>No products found for
               "{searchTerm}"</div>
         )}

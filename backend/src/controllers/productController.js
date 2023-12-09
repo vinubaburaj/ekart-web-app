@@ -1,6 +1,6 @@
 import axios from "axios";
 import Product from "../models/product.js";
-import { mergeAndFilterProducts } from "../helpers/productHelper.js";
+import {mergeAndFilterProducts} from "../helpers/productHelper.js";
 import reviewModel from "../models/review.js";
 
 const PRODUCTS_URL = "https://dummyjson.com/products";
@@ -138,23 +138,21 @@ export const getReviewsForProduct = async (req, res) => {
 
     // Check if the product already exists in the database.
     // If a review for a product was created then it should exist in the db
-    const productExists = await Product.findOne({ id: productId });
+    const productExists = await Product.findOne({id: productId});
 
-    if(productExists){
+    if (productExists) {
       // If product exists, fetch if there is any reviews for it
       const response = await reviewModel
-      .find({ productId: productExists._id })
+      .find({productId: productExists._id})
       .populate("user");
-    res.status(200).json(response);
-    return
-    }
-    else{
+      res.status(200).json(response);
+    } else {
       // If product doesn't exist in db, return an empty array response
       res.status(200).json([])
     }
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "Error fetching reviews for product" });
+    res.status(500).json({message: "Error fetching reviews for product"});
   }
 };
 
