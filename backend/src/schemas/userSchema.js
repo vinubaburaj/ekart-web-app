@@ -1,4 +1,4 @@
-import { Schema } from "mongoose";
+import {Schema} from "mongoose";
 
 const userSchema = new Schema(
   {
@@ -18,7 +18,14 @@ const userSchema = new Schema(
         },
       },
     ],
-    wishlist: [],
+    wishlist: [
+      {
+        product: {
+          type: Schema.Types.ObjectId,
+          ref: "Product",
+        }
+      }
+    ],
     role: {
       type: String,
       enum: ["BUYER", "SELLER", "ADMIN"],

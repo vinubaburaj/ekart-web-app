@@ -8,7 +8,8 @@ import cartRoutes from "./routes/cartRoutes.js";
 import profileRoutes from "./routes/profileRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import sessionMiddleware from "./middleware/sessionMiddleware.js";
-import { MongoClient, ServerApiVersion } from "mongodb";
+import {MongoClient, ServerApiVersion} from "mongodb";
+import wishlistRoutes from "./routes/wishlistRoutes.js";
 
 const PORT = process.env.PORT || 4000;
 const DB_URL =
@@ -66,6 +67,7 @@ app.use(sessionMiddleware);
 app.use("/api/auth", authRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/cart", cartRoutes);
+app.use("/api/wishlist", wishlistRoutes);
 app.use("/api/profile", profileRoutes);
 app.use("/api/users", userRoutes);
 

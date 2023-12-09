@@ -38,13 +38,6 @@ const cartSlice = createSlice({
     setCartItems: (state, action) => {
       state.cartItems = action.payload;
     }
-    // setCartItemsCount: (state, action) => {
-    //   state.cartItemsCount = action.payload;
-    // },
-    // incrementCartItemsCount: (state) => {
-    //   state.numberOfCartItems += 1;
-    // },
-    // decrementCartItemsCount: (state) => {}
   },
 });
 

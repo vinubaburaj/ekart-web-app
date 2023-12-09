@@ -13,6 +13,7 @@ import ProductsList from "./Products/products-list";
 import AddProduct from "./Seller/addProduct";
 import Profile from "./Profile";
 import SellerProductsList from "./Seller/seller-products-list";
+import ErrorPage from "../Common/errorPage";
 
 function Ekart() {
   const path = useLocation().pathname;
@@ -40,7 +41,7 @@ function Ekart() {
           <Route path={"/Account/Profile"} exact element={<Profile/>}/>
           {/* To fetch the profile of another user using their userId */}
           <Route path={"/Account/Profile/:profileId"} element={<Profile/>}/>
-
+          <Route path="/Error" element={<ErrorPage/>}/>
         </Routes>
       </div>
   )

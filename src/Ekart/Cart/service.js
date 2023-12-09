@@ -7,15 +7,8 @@ const CART_URL = `${API_BASE}/cart`;
 export const addToCart = async (product, quantity) => {
   const productId = product.id;
 
-  /*if (product._id) {
-    productId = product._id;
-  } else if (typeof product.id === 'number') {
-    // If _id is not present, create the product in our db and use the created product's _id
-    // TODO: Move this to backend
-    const createdProduct = await createProduct(product);
-    productId = createdProduct._id;
-  }*/
-
+  // Adding the product in the database. If it already exists, it will just
+  // return a 200 response with the message that it exists.
   const createdProduct = await createProduct(product);
 
   const payload = { productId, quantity };
