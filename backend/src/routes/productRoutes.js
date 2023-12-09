@@ -6,6 +6,7 @@ import {
   getAllProducts,
   getProductById,
   getProductsBySeller,
+  getRandomProducts,
   getReviewsForProduct,
   searchProducts,
   searchProductsBySeller,
@@ -28,6 +29,8 @@ router.post("/:productId/reviews", addReviewForProduct);
 
 // Default all products route
 router.get("/", getAllProducts);
+
+router.get("/random", getRandomProducts);
 
 router.get("/:id", getProductById);
 

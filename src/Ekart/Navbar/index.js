@@ -45,6 +45,7 @@ const Navbar = () => {
     if (isSeller) {
       navigate(`/Products/seller/search/${searchTerm}`);
     } else {
+      dispatch(setCurrentUser({...user, prevSearch: searchTerm}));
       navigate(`/Products/search/${searchTerm}`);
     }
   }

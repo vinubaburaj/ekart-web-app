@@ -31,6 +31,7 @@ const userSchema = new Schema(
       enum: ["BUYER", "SELLER", "ADMIN"],
       default: "BUYER",
     },
+    prevSearch: String
   }
 );
 
