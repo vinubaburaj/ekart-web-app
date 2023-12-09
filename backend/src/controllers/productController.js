@@ -62,13 +62,19 @@ export const createProduct = async (req, res) => {
   try {
     const productData = req.body;
 
-    // Check if the product already exists
-    const existingProduct = await Product.findOne({
-      id: parseInt(productData.id),
-    });
+    if (productData.id) {
+      // Check if the product already exists
+      const existingProduct = await Product.findOne({
+        id: parseInt(productData.id),
+      });
 
-    if (existingProduct) {
-      return res.status(200).json({ message: "Product already exists" });
+      if (existingProduct) {
+        return res.status(200).json({ message: "Product already exists" });
+      }
+    }
+
+    if (!productData.id) {
+      productData.id = Math.floor(100000 + Math.random() * 900000);
     }
 
     const product = new Product({
@@ -112,9 +118,10 @@ export const getProductById = async (req, res) => {
 // Update a product by ID
 export const updateProduct = async (req, res) => {
   try {
-    const updatedProduct = await Product.findOneAndUpdate({id: req.params.id},
-        req.body,
-        {new: true}
+    const updatedProduct = await Product.findOneAndUpdate(
+      { id: req.params.id },
+      req.body,
+      { new: true }
     );
     res.json(updatedProduct);
   } catch (error) {
@@ -125,8 +132,8 @@ export const updateProduct = async (req, res) => {
 // Delete a product by ID
 export const deleteProduct = async (req, res) => {
   try {
-    await Product.findOneAndDelete({id: req.params.id});
-    res.json({message: "Product deleted successfully"});
+    await Product.findOneAndDelete({ id: req.params.id });
+    res.json({ message: "Product deleted successfully" });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -140,17 +147,16 @@ export const getReviewsForProduct = async (req, res) => {
     // If a review for a product was created then it should exist in the db
     const productExists = await Product.findOne({ id: productId });
 
-    if(productExists){
+    if (productExists) {
       // If product exists, fetch if there is any reviews for it
       const response = await reviewModel
-      .find({ productId: productExists._id })
-      .populate("user");
-    res.status(200).json(response);
-    return
-    }
-    else{
+        .find({ productId: productExists._id })
+        .populate("user");
+      res.status(200).json(response);
+      return;
+    } else {
       // If product doesn't exist in db, return an empty array response
-      res.status(200).json([])
+      res.status(200).json([]);
     }
   } catch (error) {
     console.error(error);
@@ -203,15 +209,15 @@ export const getProductsBySeller = async (req, res) => {
   try {
     const sellerId = req.session["currentUser"]?._id;
     if (!sellerId) {
-      return res.status(401).json({message: "Unauthorized"});
+      return res.status(401).json({ message: "Unauthorized" });
     }
-    const response = await Product.find({sellerId: sellerId});
+    const response = await Product.find({ sellerId: sellerId });
     res.status(200).json(response);
   } catch (error) {
     console.error(error);
-    res.status(500).json({message: "Error fetching products for seller"});
+    res.status(500).json({ message: "Error fetching products for seller" });
   }
-}
+};
 
 export const searchProductsBySeller = async (req, res) => {
   try {
@@ -219,22 +225,24 @@ export const searchProductsBySeller = async (req, res) => {
     const sellerId = req.params.sellerId;
 
     if (!sellerId) {
-      return res.status(401).json({message: "Unauthorized"});
+      return res.status(401).json({ message: "Unauthorized" });
     }
 
     if (!searchTerm) {
-      return res.status(400).json({message: "Search term is required"});
+      return res.status(400).json({ message: "Search term is required" });
     }
 
     // Search in the database
     const dbSearchResults = await Product.find({
-      title: {$regex: new RegExp(searchTerm, "i")}, // Case-insensitive search
-      sellerId: sellerId
+      title: { $regex: new RegExp(searchTerm, "i") }, // Case-insensitive search
+      sellerId: sellerId,
     });
 
-    res.status(200).json({message: "Search successful", data: dbSearchResults});
+    res
+      .status(200)
+      .json({ message: "Search successful", data: dbSearchResults });
   } catch (error) {
     console.error(error);
-    res.status(500).json({message: "Internal server error"});
+    res.status(500).json({ message: "Internal server error" });
   }
-}
+};
