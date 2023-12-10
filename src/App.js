@@ -28,16 +28,16 @@ function App() {
   const getTheme = () => {
     if (isSeller) {
       document.querySelector(':root').style.setProperty('--primary-color',
-          '#3e9a89');
+          '#9a3e5e');
       document.querySelector(':root').style.setProperty('--secondary-color',
-          '#d7fcfb');
+          '#fcd7e8');
       return createTheme({
         palette: {
           primary: {
-            main: '#3e9a89',
+            main: '#9a3e5e',
           },
           secondary: {
-            main: '#d7fcfb',
+            main: '#fcd7e8',
           },
         },
       })
