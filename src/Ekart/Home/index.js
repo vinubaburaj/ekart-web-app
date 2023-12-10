@@ -59,11 +59,11 @@ function Home() {
                   </Link>
                 </div>
                 <hr/>
-                <div className={'row mx-3'}>
+                {randomProducts && <div className={'row mx-3'}>
                   <Card className={'p-2'}>
                     <Carousel swipe={true} animation={"slide"}
                               interval={6000}>
-                      {randomProducts && randomProducts.map((product) => (
+                      {randomProducts.map((product) => (
                           <Link key={product.id}
                                 to={`/Products/${product.id}`}
                                 style={{textDecoration: "none"}}>
@@ -83,7 +83,7 @@ function Home() {
                       ))}
                     </Carousel>
                   </Card>
-                </div>
+                </div>}
               </div>
             </div>
         )}

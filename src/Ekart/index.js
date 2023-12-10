@@ -14,7 +14,7 @@ import AddProduct from "./Seller/addProduct";
 import Profile from "./Profile";
 import SellerProductsList from "./Seller/seller-products-list";
 import ErrorPage from "../Common/errorPage";
-import ProtectedRoute from "./Utils/protectedRoutes";
+import ProtectedRoute from "../Utils/protectedRoutes";
 import UnauthorizedPage from "../Common/unauthorizedPage";
 
 function Ekart() {
