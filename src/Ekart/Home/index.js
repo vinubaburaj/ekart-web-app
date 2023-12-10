@@ -15,7 +15,7 @@ function Home() {
   const role = useSelector((state) => state.userReducer.role);
   const [products, setProducts] = useState([]);
   const [randomProducts, setRandomProducts] = useState([]);
-  const searchTerm = useSelector((state) => state.userReducer.currentUser.prevSearch);
+  const searchTerm = useSelector((state) => state.userReducer.currentUser?.prevSearch);
 
   const getProductsByPrevSearch = async () => {
     if (!searchTerm) {
