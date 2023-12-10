@@ -2,12 +2,18 @@ import axios from "axios";
 import Product from "../models/product.js";
 import {mergeAndFilterProducts} from "../helpers/productHelper.js";
 import reviewModel from "../models/review.js";
+import User from "../models/user.js";
 
 const PRODUCTS_URL = "https://dummyjson.com/products";
 
 export const searchProducts = async (req, res) => {
   try {
     const searchTerm = req.query.q;
+    const userId = req.session["currentUser"]?._id;
+    let user;
+    if (userId) {
+      user = await User.findById(userId);
+    }
 
     if (!searchTerm) {
       return res.status(400).json({ message: "Search term is required" });
@@ -30,6 +36,12 @@ export const searchProducts = async (req, res) => {
       dbSearchResults,
       apiSearchResults
     );
+
+    if (mergedResults.length !== 0 && user) {
+      // Add the search term to the user's search history
+      user.prevSearch = searchTerm;
+      await user.save();
+    }
 
     res.status(200).json({ message: "Search successful", data: mergedResults });
   } catch (error) {
@@ -56,6 +68,31 @@ export const getAllProducts = async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 };
+
+export const getRandomProducts = async (req, res) => {
+  try {
+    // Fetch products from the external API
+    const apiResponse = await axios.get(PRODUCTS_URL);
+    const apiProducts = apiResponse.data.products;
+
+    // Fetch products from the database
+    const dbProducts = await Product.find();
+
+    // Merge and filter products
+    const mergedProducts = mergeAndFilterProducts(dbProducts, apiProducts);
+
+    // Shuffle the products
+    const shuffledProducts = mergedProducts.sort(() => 0.5 - Math.random());
+
+    // Get sub-array of first n elements after shuffled
+    const selectedProducts = shuffledProducts.slice(0, 5);
+
+    res.status(200).json(selectedProducts);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+}
 
 // Create a new product
 export const createProduct = async (req, res) => {

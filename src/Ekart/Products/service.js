@@ -9,14 +9,16 @@ const request = axios.create({
 const EXTERNAL_API_URL = "https://dummyjson.com/products";
 
 export const createProduct = async (product) => {
-  const response = await httpService.post(PRODUCTS, product);
-  return response;
+  return await httpService.post(PRODUCTS, product);
 };
 
 export const findAllProducts = async () => {
-  const response = await httpService.get(PRODUCTS);
-  return response;
+  return await httpService.get(PRODUCTS);
 };
+
+export const findRandomProducts = async () => {
+  return await httpService.get(`${PRODUCTS}/random`);
+}
 
 export const findProductById = async (productId) => {
   // allow it to fail if it is a dummy JSON ID that doesn't exist
@@ -43,29 +45,24 @@ export const searchSellerProductsByTitle = async (sellerId, searchTerm) => {
 }
 
 export const getProductsBySeller = async () => {
-  const response = await httpService.get(`${PRODUCTS}/seller`);
-  return response;
+  return await httpService.get(`${PRODUCTS}/seller`);
 }
 
 export const getReviewsForProduct = async (productId) => {
-  const response = await httpService.get(`${PRODUCTS}/${productId}/reviews`);
-  return response;
+  return await httpService.get(`${PRODUCTS}/${productId}/reviews`);
 };
 
 export const addReviewForProduct = async (product, review) => {
-  const response = await httpService.post(`${PRODUCTS}/${product.id}/reviews`, {
+  return await httpService.post(`${PRODUCTS}/${product.id}/reviews`, {
     product: product,
     review: review,
   });
-  return response;
 };
 
 export const updateProduct = async (productId, product) => {
-  const response = await httpService.put(`${PRODUCTS}/seller/${productId}`, product);
-  return response;
+  return await httpService.put(`${PRODUCTS}/seller/${productId}`, product);
 }
 
 export const deleteProduct = async (productId) => {
-  const response = await httpService.deleteReq(`${PRODUCTS}/seller/${productId}`);
-  return response;
+  return await httpService.deleteReq(`${PRODUCTS}/seller/${productId}`);
 };
