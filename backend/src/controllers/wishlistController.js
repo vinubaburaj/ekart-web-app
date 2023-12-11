@@ -4,7 +4,7 @@ import Product from "../models/product.js";
 export const addProductToWishlist = async (req, res) => {
   try {
     const productReq = req.body;
-    const userId = req.session.currentUser?._id;
+    const userId = req.session["currentUser"]._id;
     if (!userId) {
       return res.status(401).json({message: "Unauthorized"});
     }
@@ -47,7 +47,7 @@ export const addProductToWishlist = async (req, res) => {
 
 export const getWishlist = async (req, res) => {
   try {
-    const userId = req.session.currentUser?._id;
+    const userId = req.session["currentUser"]?._id;
     if (!userId) {
       return res.status(401).json({message: "Unauthorized"});
     }
@@ -65,7 +65,7 @@ export const getWishlist = async (req, res) => {
 export const deleteProductFromWishlist = async (req, res) => {
   try {
     const productId = req.params.productId;
-    const userId = req.session.currentUser?._id;
+    const userId = req.session["currentUser"]?._id;
     if (!userId) {
       return res.status(401).json({message: "Unauthorized"});
     }
@@ -97,7 +97,7 @@ export const deleteProductFromWishlist = async (req, res) => {
 
 export const emptyWishlist = async (req, res) => {
   try {
-    const userId = req.session.currentUser?._id;
+    const userId = req.session["currentUser"]?._id;
     if (!userId) {
       return res.status(401).json({message: "Unauthorized"});
     }
@@ -122,7 +122,7 @@ export const emptyWishlist = async (req, res) => {
 export const moveProductToCart = async (req, res) => {
   try {
     const productId = req.params.productId;
-    const userId = req.session.currentUser?._id;
+    const userId = req.session["currentUser"]?._id;
     if (!userId) {
       return res.status(401).json({message: "Unauthorized"});
     }
@@ -162,7 +162,7 @@ export const moveProductToCart = async (req, res) => {
 
 export const moveAllProductsToCart = async (req, res) => {
   try {
-    const userId = req.session.currentUser?._id;
+    const userId = req.session["currentUser"]?._id;
     if (!userId) {
       return res.status(401).json({message: "Unauthorized"});
     }
