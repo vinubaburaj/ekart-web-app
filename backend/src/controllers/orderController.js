@@ -48,7 +48,13 @@ const getUserOrderHistory = async (req, res) => {
     }
 
     // Find user and populate orders
-    const user = await User.findById(userId).populate("orders");
+    const user = await User.findById(userId).populate({
+      path: "orders",
+      populate: {
+        path: "products.product",
+        model: "Product",
+      },
+    });
 
     res.status(200).json(user.orders);
   } catch (error) {
