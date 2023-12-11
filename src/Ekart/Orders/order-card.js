@@ -1,24 +1,66 @@
-import React from "react";
-import { Card, CardContent, CardMedia, Typography } from "@mui/material";
+import React, { useState } from "react";
+import {
+  Card,
+  CardContent,
+  CardMedia,
+  Typography,
+  Button,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+} from "@mui/material";
 
 const cardStyle = {
   display: "flex",
   flexDirection: "column",
   justifyContent: "space-between",
   height: "100%",
+  width: "400px", // Adjust the width as needed
+  position: "relative",
+  padding: "16px", // Add padding for better separation
+  marginBottom: "16px", // Add margin between cards
 };
 
 const cardContentStyle = {
   flexGrow: 1,
 };
 
+const productThumbnailContainer = {
+  display: "flex",
+  gap: "8px", // Adjust the gap as needed
+  marginBottom: "8px", // Add margin between thumbnails and text
+  flexWrap: "wrap", // Allow thumbnails to wrap to the next line if needed
+};
+
 const productThumbnailStyle = {
-  maxWidth: "100%",
-  maxHeight: "100%",
+  maxWidth: "60px", // Adjust the thumbnail size as needed
+  maxHeight: "60px",
   objectFit: "cover",
 };
 
-const OrderCard = ({ order }) => {
+const cancelledFlagStyle = {
+  position: "absolute",
+  top: "8px",
+  right: "8px",
+  backgroundColor: "#ffcccc", // Light red background
+  color: "red",
+  padding: "4px",
+  fontWeight: "bold",
+};
+
+const OrderCard = ({ order, onCancel }) => {
+  const [isCancelConfirmationOpen, setCancelConfirmationOpen] = useState(false);
+
+  const handleCancelConfirmation = () => {
+    setCancelConfirmationOpen(true);
+  };
+
+  const handleCancelOrder = () => {
+    onCancel(order._id);
+    setCancelConfirmationOpen(false);
+  };
+
   const renderProductThumbnails = (products) => {
     const MAX_THUMBNAILS = 2;
     const productThumbnails = products
@@ -42,11 +84,19 @@ const OrderCard = ({ order }) => {
       );
     }
 
-    return productThumbnails;
+    return <div style={productThumbnailContainer}>{productThumbnails}</div>;
   };
 
   return (
-    <Card style={cardStyle}>
+    <Card
+      style={cardStyle}
+      onClick={order.isCancelled ? null : handleCancelConfirmation}
+    >
+      {order.isCancelled && (
+        <Typography variant="body2" style={cancelledFlagStyle}>
+          CANCELLED
+        </Typography>
+      )}
       <CardContent style={cardContentStyle}>
         <Typography variant="h6" component="div" gutterBottom>
           Order Date: {new Date(order.orderDate).toLocaleString()}
@@ -56,6 +106,35 @@ const OrderCard = ({ order }) => {
         </Typography>
         {renderProductThumbnails(order.products)}
       </CardContent>
+      {!order.isCancelled && (
+        <Button
+          variant="contained"
+          color="secondary"
+          onClick={handleCancelConfirmation}
+        >
+          Cancel Order
+        </Button>
+      )}
+      <Dialog
+        open={isCancelConfirmationOpen}
+        onClose={() => setCancelConfirmationOpen(false)}
+      >
+        <DialogTitle>Confirm Cancellation</DialogTitle>
+        <DialogContent>
+          <Typography>Are you sure you want to cancel this order?</Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={() => setCancelConfirmationOpen(false)}
+            color="primary"
+          >
+            No
+          </Button>
+          <Button onClick={handleCancelOrder} color="secondary">
+            Yes, Cancel Order
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Card>
   );
 };

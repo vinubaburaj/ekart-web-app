@@ -9,3 +9,7 @@ const request = axios.create({
 export const findAllOrders = async () => {
   return await httpService.get(ORDERS);
 };
+
+export const cancelOrder = async (orderId) => {
+  return await httpService.put(`${ORDERS}/${orderId}/cancel`);
+};
