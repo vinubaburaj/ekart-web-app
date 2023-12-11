@@ -24,3 +24,9 @@ export const mergeAndFilterProducts = (dbProducts, apiProducts) => {
 
   return mergedProducts;
 };
+
+// Function to shuffle and get subarray
+export const getShuffledSubarray = (array, size) => {
+  const shuffled = array.sort(() => 0.5 - Math.random());
+  return shuffled.slice(0, size);
+};

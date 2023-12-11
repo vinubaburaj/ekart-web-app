@@ -1,6 +1,6 @@
 import axios from "axios";
 import Product from "../models/product.js";
-import { mergeAndFilterProducts } from "../helpers/productHelper.js";
+import { mergeAndFilterProducts, getShuffledSubarray } from "../helpers/productHelper.js";
 import reviewModel from "../models/review.js";
 import User from "../models/user.js";
 
@@ -71,21 +71,19 @@ export const getAllProducts = async (req, res) => {
 
 export const getRandomProducts = async (req, res) => {
   try {
-    // Fetch products from the external API
-    const apiResponse = await axios.get(PRODUCTS_URL);
-    const apiProducts = apiResponse.data.products;
+    // Concurrently fetch products from the external API and the database
+    const [apiResponse, dbProducts] = await Promise.all([
+      axios.get(PRODUCTS_URL),
+      Product.find(),
+    ]);
 
-    // Fetch products from the database
-    const dbProducts = await Product.find();
+    const apiProducts = apiResponse.data.products;
 
     // Merge and filter products
     const mergedProducts = mergeAndFilterProducts(dbProducts, apiProducts);
 
-    // Shuffle the products
-    const shuffledProducts = mergedProducts.sort(() => 0.5 - Math.random());
-
-    // Get sub-array of first n elements after shuffled
-    const selectedProducts = shuffledProducts.slice(0, 5);
+    // Shuffle and select first 5 products
+    const selectedProducts = getShuffledSubarray(mergedProducts, 5);
 
     res.status(200).json(selectedProducts);
   } catch (error) {
