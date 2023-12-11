@@ -1,13 +1,40 @@
-import React from "react";
-import { Typography, Paper, Grid, Button } from "@mui/material";
+import React, { useState, useEffect } from "react";
+import { Typography, Paper, Grid, Button, Box } from "@mui/material";
+import { getOrderDetails } from "./service";
+import { useParams } from "react-router";
 
-function OrderDetails({ order }) {
+function OrderDetails() {
+  const { orderId } = useParams();
+  const [order, setOrder] = useState(null);
+
+  useEffect(() => {
+    const fetchOrderDetails = async () => {
+      try {
+        const response = await getOrderDetails(orderId);
+        setOrder(response);
+      } catch (error) {
+        console.error("Error fetching order details:", error);
+      }
+    };
+
+    fetchOrderDetails();
+  }, [orderId]);
+
+  if (!order) {
+    // Loading or error state, you can customize this part
+    return <Typography>Loading order details...</Typography>;
+  }
+
   // Extract necessary information from the order prop
   const { _id, orderDate, totalAmount, products } = order;
 
   const paperStyle = {
     marginTop: "16px",
     padding: "16px",
+  };
+
+  const contentStyle = {
+    flex: 1,
   };
 
   const sidebarStyle = {
@@ -24,44 +51,66 @@ function OrderDetails({ order }) {
   };
 
   return (
-    <div>
-      <Typography variant="h5" component="div" gutterBottom>
-        Order Details - {_id}
-      </Typography>
-      {/* Display order date, total amount, and other relevant information */}
-      <Typography variant="body2" gutterBottom>
-        Order Date:{" "}
-        {new Date(orderDate).toLocaleString("en-US", {
-          year: "numeric",
-          month: "short",
-          day: "numeric",
-          hour: "numeric",
-          minute: "numeric",
-          hour12: true,
-        })}
-      </Typography>
-      <Typography variant="body2">
-        Total Amount: ${totalAmount.toFixed(2)}
-      </Typography>
+    <Box
+      display="flex"
+      justifyContent="center"
+      alignItems="center"
+      minHeight="100vh"
+    >
+      <Box display="flex" maxWidth="1200px" width="100%">
+        <div style={contentStyle}>
+          <Typography variant="h5" component="div" gutterBottom>
+            Order ID - #{_id}
+          </Typography>
+          {/* Display order date, total amount, and other relevant information */}
+          <Typography variant="body2" gutterBottom>
+            Order Date:{" "}
+            {new Date(orderDate).toLocaleString("en-US", {
+              year: "numeric",
+              month: "short",
+              day: "numeric",
+              hour: "numeric",
+              minute: "numeric",
+              hour12: true,
+            })}
+          </Typography>
+          <Typography variant="body2">
+            Total Amount: ${totalAmount.toFixed(2)}
+          </Typography>
 
-      {/* Display receipt-like summary for each product in the order */}
-      <Grid container spacing={2}>
-        <Grid item xs={12} md={8}>
-          {/* Main content area */}
-          {products.map((product) => (
-            <Paper key={product._id} style={paperStyle} elevation={3}>
-              <Typography variant="h6">{product.product.title}</Typography>
-              <Typography variant="body2">
-                Quantity: {product.quantity}
-              </Typography>
-              <Typography variant="body2">
-                Price: ${product.product.price.toFixed(2)}
-              </Typography>
-              {/* Add more details as needed */}
-            </Paper>
-          ))}
-        </Grid>
-        <Grid item xs={12} md={4} style={sidebarStyle}>
+          {/* Display receipt-like summary for each product in the order */}
+          <Grid container spacing={2}>
+            {products.map((product) => (
+              <Grid item xs={12} md={8} key={product._id}>
+                {/* Main content area */}
+                <Paper style={paperStyle} elevation={3}>
+                  <Box display="flex" alignItems="center">
+                    {/* Thumbnail as an icon */}
+                    <img
+                      src={product.product.thumbnail}
+                      alt={product.product.title}
+                      style={{ width: 30, height: 30, marginRight: 10 }}
+                    />
+                    <div>
+                      <Typography variant="h6">
+                        {product.product.title}
+                      </Typography>
+                      <Typography variant="body2">
+                        Quantity: {product.quantity}
+                      </Typography>
+                      <Typography variant="body2">
+                        Price: ${product.product.price.toFixed(2)}
+                      </Typography>
+                    </div>
+                  </Box>
+                  {/* Add more details as needed */}
+                </Paper>
+              </Grid>
+            ))}
+          </Grid>
+        </div>
+
+        <div style={sidebarStyle}>
           {/* Sidebar for receipt-like summary */}
           <Paper style={paperStyle} elevation={3}>
             <Typography variant="h6" gutterBottom>
@@ -86,19 +135,18 @@ function OrderDetails({ order }) {
               Total: ${totalAmount.toFixed(2)}
             </Typography>
           </Paper>
-        </Grid>
-      </Grid>
-
-      {/* Download button */}
-      <Button
-        variant="contained"
-        color="primary"
-        style={downloadButtonStyle}
-        onClick={handleDownload}
-      >
-        Download Order Details
-      </Button>
-    </div>
+          {/* Download button */}
+          <Button
+            variant="contained"
+            color="primary"
+            style={downloadButtonStyle}
+            onClick={handleDownload}
+          >
+            Download Order Details
+          </Button>
+        </div>
+      </Box>
+    </Box>
   );
 }
 

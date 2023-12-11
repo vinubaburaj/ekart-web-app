@@ -115,7 +115,13 @@ const getOrderDetails = async (req, res) => {
     }
 
     // Check if the user has the specified order
-    const user = await User.findById(userId).populate("orders");
+    const user = await User.findById(userId).populate({
+      path: "orders",
+      populate: {
+        path: "products.product",
+        model: "Product",
+      },
+    });
     const orderDetails = user.orders.find(
       (order) => order._id.toString() === orderId
     );

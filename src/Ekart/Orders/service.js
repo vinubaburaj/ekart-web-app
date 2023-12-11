@@ -14,6 +14,10 @@ export const cancelOrder = async (orderId) => {
   return await httpService.put(`${ORDERS}/${orderId}/cancel`);
 };
 
-export const createOrder = async (products) => {
-  return await httpService.post(`${ORDERS}`, products);
+export const createOrder = async (orders) => {
+  return await httpService.post(`${ORDERS}`, orders);
+};
+
+export const getOrderDetails = async (orderId) => {
+  return await httpService.get(`${ORDERS}/${orderId}`);
 };
