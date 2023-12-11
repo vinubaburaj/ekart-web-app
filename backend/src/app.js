@@ -1,6 +1,5 @@
 import express from "express";
 import mongoose from "mongoose";
-import bodyParser from "body-parser";
 import cors from "cors";
 import authRoutes from "./routes/authRoutes.js";
 import productRoutes from "./routes/productRoutes.js";
@@ -11,6 +10,7 @@ import orderRoutes from "./routes/orderRoutes.js";
 import sessionMiddleware from "./middleware/sessionMiddleware.js";
 import {MongoClient, ServerApiVersion} from "mongodb";
 import wishlistRoutes from "./routes/wishlistRoutes.js";
+import session from "express-session";
 
 const PORT = process.env.PORT || 4000;
 const DB_URL =
@@ -52,17 +52,30 @@ app.use(
     origin: [process.env.FRONTEND_URL, "http://localhost:3000"],
   })
 );
-app.use(bodyParser.json());
 
+const sessionOptions = {
+  secret: "sessionSecretKeyABCDE",
+  resave: false,
+  saveUninitialized: false
+};
 if (process.env.NODE_ENV !== "development") {
+  sessionOptions.proxy = true;
+  sessionOptions.cookie = {
+    secure: true,
+    sameSite: "none"
+  };
+}
+
+/*if (process.env.NODE_ENV === "production") {
   sessionMiddleware.proxy = true;
   sessionMiddleware.cookie = {
     secure: true,
     sameSite: "none",
   };
-}
+}*/
 
-app.use(sessionMiddleware);
+app.use(session(sessionOptions));
+app.use(express.json());
 
 // Routes
 app.use("/api/auth", authRoutes);
