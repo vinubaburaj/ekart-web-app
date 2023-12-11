@@ -13,15 +13,17 @@ const createOrder = async (req, res) => {
     const { products } = req.body;
 
     // Calculate total amount based on products and quantities
-    const totalAmount = products.reduce(
-      (total, { product, quantity }) => total + product.price * quantity,
-      0
-    );
+    const totalAmount =
+      products.reduce(
+        (total, { product, quantity }) => total + product.price * quantity,
+        0
+      ) + 5;
 
     // Create a new order
     const order = new Order({
       user: userId,
       products,
+      // added shipping cost
       totalAmount,
     });
 
@@ -31,7 +33,14 @@ const createOrder = async (req, res) => {
     // Add the order to the user's order history
     await User.findByIdAndUpdate(userId, { $push: { orders: order._id } });
 
-    res.status(201).json(order);
+    const newOrder = await Order.findById(order._id).populate({
+      path: "products",
+      populate: {
+        path: "product",
+        model: "Product",
+      },
+    });
+    res.status(201).json(newOrder);
   } catch (error) {
     console.error("Error creating order:", error);
     res.status(500).json({ error: error.message });

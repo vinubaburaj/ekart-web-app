@@ -17,6 +17,7 @@ import ErrorPage from "../Common/errorPage";
 import ProtectedRoute from "./Utils/protectedRoutes";
 import UnauthorizedPage from "../Common/unauthorizedPage";
 import Orders from "./Orders";
+import OrderDetails from "./Orders/order-details";
 
 function Ekart() {
   const path = useLocation().pathname;
@@ -108,6 +109,14 @@ function Ekart() {
           element={
             <ProtectedRoute>
               <Orders />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/Account/Orders/:orderId"
+          element={
+            <ProtectedRoute>
+              <OrderDetails />
             </ProtectedRoute>
           }
         />

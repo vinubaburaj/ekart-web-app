@@ -13,3 +13,7 @@ export const findAllOrders = async () => {
 export const cancelOrder = async (orderId) => {
   return await httpService.put(`${ORDERS}/${orderId}/cancel`);
 };
+
+export const createOrder = async (products) => {
+  return await httpService.post(`${ORDERS}`, products);
+};
