@@ -13,6 +13,9 @@ import ProductsList from "./Products/products-list";
 import AddProduct from "./Seller/addProduct";
 import Profile from "./Profile";
 import SellerProductsList from "./Seller/seller-products-list";
+import ErrorPage from "../Common/errorPage";
+import ProtectedRoute from "./Utils/protectedRoutes";
+import UnauthorizedPage from "../Common/unauthorizedPage";
 
 function Ekart() {
   const path = useLocation().pathname;
@@ -30,17 +33,26 @@ function Ekart() {
           <Route path="/Products" element={<Products/>}/>
           <Route path="/Products/:productId" element={<ProductDetails/>}/>
           <Route path="/Products/search/:searchTerm" element={<ProductsList/>}/>
-          <Route path="/Products/seller/search/:searchTerm" element={<SellerProductsList/>}/>
-          <Route path="/Cart" element={<Cart/>}/>
-          <Route path="/Account/Wishlist" element={<Wishlist/>}/>
-          <Route path="/AddProduct" element={<AddProduct/>}/>
-          <Route path="/EditProduct/:productId" element={<AddProduct/>}/>
-          <Route path={"/Account/Wishlist"} element={<Wishlist/>}/>
+          <Route path="/Products/seller/search/:searchTerm" element={
+            <ProtectedRoute><SellerProductsList/></ProtectedRoute>}/>
+          <Route path="/Cart"
+                 element={<ProtectedRoute><Cart/></ProtectedRoute>}/>
+          <Route path="/Account/Wishlist"
+                 element={<ProtectedRoute><Wishlist/></ProtectedRoute>}/>
+          <Route path="/AddProduct"
+                 element={<ProtectedRoute><AddProduct/></ProtectedRoute>}/>
+          <Route path="/EditProduct/:productId"
+                 element={<ProtectedRoute><AddProduct/></ProtectedRoute>}/>
+          <Route path={"/Account/Wishlist"}
+                 element={<ProtectedRoute><Wishlist/></ProtectedRoute>}/>
           {/* To fetch the profile of the user who is currently logged in (according to requirement) */}
-          <Route path={"/Account/Profile"} exact element={<Profile/>}/>
+          <Route path={"/Account/Profile"} exact
+                 element={<ProtectedRoute><Profile/></ProtectedRoute>}/>
           {/* To fetch the profile of another user using their userId */}
-          <Route path={"/Account/Profile/:profileId"} element={<Profile/>}/>
-
+          <Route path={"/Account/Profile/:profileId"}
+                 element={<ProtectedRoute><Profile/></ProtectedRoute>}/>
+          <Route path="/Error" element={<ErrorPage/>}/>
+          <Route path="/Unauthorized" element={<UnauthorizedPage/>}/>
         </Routes>
       </div>
   )

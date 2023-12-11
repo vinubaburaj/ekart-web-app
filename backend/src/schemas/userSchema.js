@@ -17,11 +17,12 @@ const userSchema = new Schema({
       },
     },
   ],
-  wishlist: [],
-  orders: [
+  wishlist: [
     {
-      type: Schema.Types.ObjectId,
-      ref: "Order",
+      product: {
+        type: Schema.Types.ObjectId,
+        ref: "Product",
+      },
     },
   ],
   role: {
@@ -29,6 +30,13 @@ const userSchema = new Schema({
     enum: ["BUYER", "SELLER", "ADMIN"],
     default: "BUYER",
   },
+  prevSearch: String,
+  orders: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Order",
+    },
+  ],
 });
 
 export default userSchema;

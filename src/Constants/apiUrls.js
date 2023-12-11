@@ -6,3 +6,4 @@ export const LOGOUT = API_BASE+"/auth/logout";
 export const CHECK_AUTH = API_BASE+"/auth/check-auth";
 export const PRODUCTS = API_BASE+"/products";
 export const PROFILE = API_BASE+"/profile"
+export const WISHLIST = API_BASE+"/wishlist";

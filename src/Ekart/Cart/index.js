@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 import React, {useEffect, useState} from "react";
 import {PiSmileySad} from "react-icons/pi";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import CardSummary from "./card-summary";
 import {
   getCart,
@@ -19,6 +19,7 @@ import {useAuth} from "../../AuthContext";
 import {useIsMount} from "../../Common/helpers";
 import {setCartItems} from "../Cart/cartReducer";
 import {useDispatch, useSelector} from "react-redux";
+import {Roles} from "../../Constants/roles";
 
 function Cart() {
   const { user } = useAuth();
@@ -27,6 +28,8 @@ function Cart() {
   const [cartChanged, setCartChanged] = useState(false);
   const isMount = useIsMount();
   const dispatch = useDispatch();
+  const role = useSelector((state) => state.userReducer.role);
+  const navigate = useNavigate();
 
   const fetchCart = async () => {
     try {
@@ -52,9 +55,12 @@ function Cart() {
 
   useEffect(() => {
     if (user) {
+      if (role === Roles.SELLER) {
+        navigate("/Unauthorized");
+      }
       fetchCart();
     }
-  }, [user]);
+  }, [user, role]);
 
   return (
     <div className="m-2">

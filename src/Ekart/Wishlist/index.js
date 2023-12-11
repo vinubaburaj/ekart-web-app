@@ -1,23 +1,53 @@
 import {useDispatch, useSelector} from "react-redux";
 import ProductCard from "../Products/product-card";
 import {Button} from "@mui/material";
-import React from "react";
-import {deleteProductFromWishlist, emptyWishlist} from "./wishlistReducer";
-import {addProductToCart} from "../Cart/cartReducer";
+import React, {useEffect} from "react";
+import {setCartItems} from "../Cart/cartReducer";
+import {setWishlistItems} from "./wishlistReducer";
+import * as wishlistService from "./wishlistService";
+import {useNavigate} from "react-router-dom";
+import {Roles} from "../../Constants/roles";
 
 function Wishlist() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const wishlistItems = useSelector(
       (state) => state.wishlistReducer.wishlistItems);
+  const user = useSelector((state) => state.userReducer.currentUser);
+  const role = useSelector((state) => state.userReducer.role);
 
-  const moveAllToCart = () => {
-    wishlistItems.forEach((product) => {
-      dispatch(deleteProductFromWishlist(product.id));
-      dispatch(addProductToCart({
-        quantity: 1,
-        product: product,
-      }));
-    });
+  useEffect(() => {
+    if (user) {
+      if (role === Roles.SELLER) {
+        navigate("/Unauthorized");
+      }
+      getWishlistItems();
+    }
+  }, [user]);
+
+  const getWishlistItems = async () => {
+    const fetchedWishlistItems = await wishlistService.getWishlist()
+    dispatch(setWishlistItems(fetchedWishlistItems));
+  }
+
+  const moveAllToCart = async () => {
+    const response = await wishlistService.moveAllProductsToCart();
+    if (response.status === 403) {
+      // TODO: Show error message in error component
+      navigate('/Error', {state: {message: response.data.message}});
+    }
+    dispatch(setWishlistItems(response.wishlist));
+    dispatch(setCartItems(response.cart));
+  }
+
+  const clearWishlist = async () => {
+    const response = await wishlistService.emptyWishlist();
+    if (response.status === 403) {
+      // TODO: Show error message in error component
+      navigate('/Error', {state: {message: response.data.message}});
+    }
+    dispatch(setWishlistItems(response.wishlist));
+    dispatch(setCartItems(response.cart));
   }
 
   return (
@@ -44,17 +74,17 @@ function Wishlist() {
                   variant="contained"
                   className="d-block w-100"
                   color="error"
-                  onClick={() => dispatch(emptyWishlist())}
+                  onClick={clearWishlist}
               >
                 Clear Wishlist
               </Button>
             </div>
           </div>
           <div className="row mt-3">
-            {wishlistItems.map((product, index) => (
+            {wishlistItems.map((item, index) => (
                 <div className="col col-sm-6 col-md-4 col-lg-3 mb-3"
                      key={index}>
-                  <ProductCard product={product}/>
+                  <ProductCard product={item.product}/>
                 </div>
             ))}
           </div>

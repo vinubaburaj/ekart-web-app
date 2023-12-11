@@ -15,16 +15,14 @@ import {useDispatch, useSelector} from "react-redux";
 import * as service from "./service";
 import {deleteProduct} from "./service";
 import Carousel from "react-material-ui-carousel";
-import {
-  addProductToWishlist,
-  deleteProductFromWishlist,
-} from "../Wishlist/wishlistReducer";
 import {addToCart as addToCartService} from "../Cart/service";
 import {useAuth} from "../../AuthContext";
 import {Roles} from "../../Constants/roles";
 import {Link, useNavigate} from "react-router-dom";
 import SimpleConfirmDialog from "../../Common/SimpleConfirmDialog";
 import PropTypes from "prop-types";
+import * as wishlistService from "../Wishlist/wishlistService";
+import SnackbarComponent from "../../Common/snackbar";
 
 function ProductDetails() {
   const dispatch = useDispatch();
@@ -39,15 +37,61 @@ function ProductDetails() {
   const role = useSelector((state) => state.userReducer.role);
   const [isSeller, setIsSeller] = useState(role === Roles.SELLER);
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [snackbarOpen, setSnackBarOpen] = useState(false);
+  const [snackbarMsg, setSnackBarMsg] = useState("");
+  const [severity, setSeverity] = useState("success");
+  const wishlistItems = useSelector(
+      (state) => state.wishlistReducer.wishlistItems);
+
+  useEffect(() => {
+    setWishListed(wishlistItems.some((item) => item.product.id === product.id));
+  }, [wishlistItems]);
 
   const toggleWishList = () => {
-    setWishListed(!wishListed);
-    if (!wishListed) {
-      dispatch(addProductToWishlist(product));
+    if (user) {
+      if (!wishListed) {
+        addingToWishlist();
+      } else {
+        removingFromWishlist();
+      }
     } else {
-      dispatch(deleteProductFromWishlist(product.id));
+      navigate("/Login");
     }
   };
+
+  const addingToWishlist = async () => {
+    const res = await wishlistService.addProductToWishlist(product);
+    if (res?.status === 500) {
+      navigate("/Error");
+    }
+    if (res?.status === 403) {
+      setSnackBarMsg("Already in WishList!");
+      setSeverity("error");
+      setSnackBarOpen(true);
+      return;
+    }
+    setWishListed(true);
+    setSnackBarMsg("Added to WishList!");
+    setSeverity("success");
+    setSnackBarOpen(true);
+  }
+
+  const removingFromWishlist = async () => {
+    const res = await wishlistService.deleteProductFromWishlist(product.id);
+    if (res?.status === 500) {
+      navigate("/Error");
+    }
+    if (res?.status === 403) {
+      setSnackBarMsg("Not in WishList!");
+      setSeverity("error");
+      setSnackBarOpen(true);
+      return;
+    }
+    setWishListed(false);
+    setSnackBarMsg("Removed from WishList!");
+    setSeverity("success");
+    setSnackBarOpen(true);
+  }
   const addToCart = async () => {
     const response = await addToCartService(product, quantity);
     dispatch(setCartItems(response));
@@ -216,51 +260,57 @@ function ProductDetails() {
                     <div className="row">
                       <div className="col-6">
                   <textarea
-                    id="addReviewForm"
-                    className="form-control"
-                    rows="3"
-                    placeholder="Add a review..."
-                    value={review}
-                    onChange={(e) => setReview(e.target.value)}
+                      id="addReviewForm"
+                      className="form-control"
+                      rows="3"
+                      placeholder="Add a review..."
+                      value={review}
+                      onChange={(e) => setReview(e.target.value)}
                   />
-                </div>
-                <div className="col-2">
-                  <button
-                    className="btn btn-primary"
-                    disabled={!review}
-                    onClick={handleAddReview}
-                  >
-                    Add Review
-                  </button>
+                      </div>
+                      <div className="col-2">
+                        <button
+                            className="btn btn-primary"
+                            disabled={!review}
+                            onClick={handleAddReview}
+                        >
+                          Add Review
+                        </button>
+                      </div>
+                    </div>
+                )}
+                <div className="mt-3 ">
+                  {reviews.length > 0 && (
+                      <>
+                        {/* {JSON.stringify(reviews)} */}
+                        <ul className="list-group list-group-flush">
+                          {reviews.map((reviewObject) => (
+                              <li className="list-group-item">
+                                {/* {JSON.stringify(reviewObject)} */}
+                                <div
+                                    className="fs-5">{reviewObject.review}</div>
+                                <div className="small">
+                                  <span>By: </span>
+                                  <Link
+                                      to={`/Account/Profile/${reviewObject?.user?._id}`}>
+                                    {reviewObject?.user?.firstName}{" "}
+                                    {reviewObject?.user?.lastName}
+                                  </Link>
+                                </div>
+                              </li>
+                          ))}
+                        </ul>
+                      </>
+                  )}
                 </div>
               </div>
-            )}
-            <div className="mt-3 ">
-              {reviews.length>0 && (
-                <>
-                  {/* {JSON.stringify(reviews)} */}
-                  <ul className="list-group list-group-flush">
-                    {reviews.map((reviewObject) => (
-                      <li className="list-group-item">
-                        {/* {JSON.stringify(reviewObject)} */}
-                        <div className="fs-5">{reviewObject.review}</div>
-                        <div className="small">
-                          <span>By: </span>
-                          <Link to={`/Account/Profile/${reviewObject?.user?._id}`}>
-                          {reviewObject?.user?.firstName}{" "}
-                          {reviewObject?.user?.lastName}
-                          </Link>
-                        </div>
-                      </li>
-                    ))}
-                  </ul>
-                </>
-              )}
-            </div>
-          </div>
-        </>
-      )}
-    </>
+            </>
+        )}
+        <SnackbarComponent snackbarOpen={snackbarOpen} snackbarMsg={snackbarMsg}
+                           severity={severity} horizontal="center"
+                           vertical="top"/>
+        <SimpleConfirmDialog open={dialogOpen} onClose={handleDialogClose}/>
+      </>
   );
 }
 

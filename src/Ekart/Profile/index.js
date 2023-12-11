@@ -221,10 +221,7 @@ const Profile = () => {
                       id="roleBuyer"
                       value="BUYER"
                       checked={profileData.role === "BUYER"}
-                      onChange={(e) =>
-                        setProfileData({ ...profileData, role: e.target.value })
-                      }
-                      disabled={!isEditing}
+                      disabled={true}
                     />
                     <Form.Check
                       type="radio"
@@ -232,10 +229,7 @@ const Profile = () => {
                       id="roleSeller"
                       value="SELLER"
                       checked={profileData.role === "SELLER"}
-                      onChange={(e) =>
-                        setProfileData({ ...profileData, role: e.target.value })
-                      }
-                      disabled={!isEditing}
+                      disabled={true}
                     />
                   </div>
                 </Form.Group>
