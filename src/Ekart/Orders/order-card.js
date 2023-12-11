@@ -89,12 +89,18 @@ const OrderCard = ({ order, onCancel }) => {
   };
 
   return (
-    <Card
-      style={cardStyle}
-    >
+    <Card style={cardStyle}>
       <CardContent style={cardContentStyle}>
         <Typography variant="h6" component="div" gutterBottom>
-          Order Date: {new Date(order.orderDate).toLocaleString()}
+          Order Date:{" "}
+          {new Date(order.orderDate).toLocaleString("en-US", {
+            day: "numeric",
+            month: "short",
+            year: "numeric",
+            hour: "numeric",
+            minute: "numeric",
+            hour12: true,
+          })}
         </Typography>
         <Typography variant="subtitle1" color="textSecondary">
           Total Amount: ${order.totalAmount.toFixed(2)}
@@ -121,7 +127,9 @@ const OrderCard = ({ order, onCancel }) => {
       >
         <DialogTitle>Confirm Cancellation</DialogTitle>
         <DialogContent>
-          <Typography>Are you sure you want to cancel this order?</Typography>
+          <Typography>
+            Are you sure you want to cancel this order? This cannot be reversed!
+          </Typography>
         </DialogContent>
         <DialogActions>
           <Button
@@ -130,7 +138,10 @@ const OrderCard = ({ order, onCancel }) => {
           >
             No
           </Button>
-          <Button onClick={handleCancelOrder} color="secondary">
+          <Button
+            onClick={handleCancelOrder}
+            style={{ backgroundColor: "#ff3333", color: "white" }}
+          >
             Yes, Cancel Order
           </Button>
         </DialogActions>
