@@ -40,13 +40,14 @@ const productThumbnailStyle = {
 };
 
 const cancelledFlagStyle = {
-  position: "absolute",
-  top: "8px",
-  right: "8px",
   backgroundColor: "#ffcccc", // Light red background
   color: "red",
   padding: "4px",
   fontWeight: "bold",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  textAlign: "center",
 };
 
 const OrderCard = ({ order, onCancel }) => {
@@ -90,13 +91,7 @@ const OrderCard = ({ order, onCancel }) => {
   return (
     <Card
       style={cardStyle}
-      onClick={order.isCancelled ? null : handleCancelConfirmation}
     >
-      {order.isCancelled && (
-        <Typography variant="body2" style={cancelledFlagStyle}>
-          CANCELLED
-        </Typography>
-      )}
       <CardContent style={cardContentStyle}>
         <Typography variant="h6" component="div" gutterBottom>
           Order Date: {new Date(order.orderDate).toLocaleString()}
@@ -114,6 +109,11 @@ const OrderCard = ({ order, onCancel }) => {
         >
           Cancel Order
         </Button>
+      )}
+      {order.isCancelled && (
+        <Typography variant="body2" style={cancelledFlagStyle}>
+          CANCELLED
+        </Typography>
       )}
       <Dialog
         open={isCancelConfirmationOpen}
