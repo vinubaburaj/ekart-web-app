@@ -9,10 +9,10 @@ const ProtectedRoute = ({children}) => {
 
   useEffect(() => {
     console.log("PROTECTED ROUTE: ", user);
-    if (!user) {
+    if (!user && user !== undefined) {
       navigate("/Login", {state: {from: location}});
     }
-  }, [user]);
+  }, []);
 
   return children;
 };
