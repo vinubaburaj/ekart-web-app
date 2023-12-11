@@ -9,7 +9,9 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
+  Tooltip,
 } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 const cardStyle = {
   display: "flex",
@@ -20,6 +22,7 @@ const cardStyle = {
   position: "relative",
   padding: "16px", // Add padding for better separation
   marginBottom: "16px", // Add margin between cards
+  cursor: "pointer",
 };
 
 const cardContentStyle = {
@@ -52,6 +55,7 @@ const cancelledFlagStyle = {
 
 const OrderCard = ({ order, onCancel }) => {
   const [isCancelConfirmationOpen, setCancelConfirmationOpen] = useState(false);
+  const navigate = useNavigate();
 
   const handleCancelConfirmation = () => {
     setCancelConfirmationOpen(true);
@@ -88,65 +92,79 @@ const OrderCard = ({ order, onCancel }) => {
     return <div style={productThumbnailContainer}>{productThumbnails}</div>;
   };
 
+  const cursorStyle = order.isCancelled ? "not-allowed" : "pointer";
+
+  // Navigate to the order details page
+  const handleCardClick = () => {
+    if (!order.isCancelled) {
+      navigate(`/Account/Orders/${order._id}`);
+    }
+  };
+
   return (
-    <Card style={cardStyle}>
-      <CardContent style={cardContentStyle}>
-        <Typography variant="h6" component="div" gutterBottom>
-          Order Date:{" "}
-          {new Date(order.orderDate).toLocaleString("en-US", {
-            day: "numeric",
-            month: "short",
-            year: "numeric",
-            hour: "numeric",
-            minute: "numeric",
-            hour12: true,
-          })}
-        </Typography>
-        <Typography variant="subtitle1" color="textSecondary">
-          Total Amount: ${order.totalAmount.toFixed(2)}
-        </Typography>
-        {renderProductThumbnails(order.products)}
-      </CardContent>
-      {!order.isCancelled && (
-        <Button
-          variant="contained"
-          color="secondary"
-          onClick={handleCancelConfirmation}
-        >
-          Cancel Order
-        </Button>
-      )}
-      {order.isCancelled && (
-        <Typography variant="body2" style={cancelledFlagStyle}>
-          CANCELLED
-        </Typography>
-      )}
-      <Dialog
-        open={isCancelConfirmationOpen}
-        onClose={() => setCancelConfirmationOpen(false)}
-      >
-        <DialogTitle>Confirm Cancellation</DialogTitle>
-        <DialogContent>
-          <Typography>
-            Are you sure you want to cancel this order? This cannot be reversed!
+    <Tooltip
+      title={order.isCancelled ? "Cancelled orders cannot be opened!" : ""}
+    >
+      <Card style={cardStyle} onClick={handleCardClick}>
+        <CardContent style={cardContentStyle}>
+          <Typography variant="h6" component="div" gutterBottom>
+            Order Date:{" "}
+            {new Date(order.orderDate).toLocaleString("en-US", {
+              day: "numeric",
+              month: "short",
+              year: "numeric",
+              hour: "numeric",
+              minute: "numeric",
+              hour12: true,
+            })}
           </Typography>
-        </DialogContent>
-        <DialogActions>
+          <Typography variant="subtitle1" color="textSecondary">
+            Total Amount: ${order.totalAmount.toFixed(2)}
+          </Typography>
+          {renderProductThumbnails(order.products)}
+        </CardContent>
+        {!order.isCancelled && (
           <Button
-            onClick={() => setCancelConfirmationOpen(false)}
-            color="primary"
+            variant="contained"
+            color="secondary"
+            onClick={handleCancelConfirmation}
           >
-            No
+            Cancel Order
           </Button>
-          <Button
-            onClick={handleCancelOrder}
-            style={{ backgroundColor: "#ff3333", color: "white" }}
-          >
-            Yes, Cancel Order
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </Card>
+        )}
+        {order.isCancelled && (
+          <Typography variant="body2" style={cancelledFlagStyle}>
+            CANCELLED
+          </Typography>
+        )}
+        <Dialog
+          open={isCancelConfirmationOpen}
+          onClose={() => setCancelConfirmationOpen(false)}
+        >
+          <DialogTitle>Confirm Cancellation</DialogTitle>
+          <DialogContent>
+            <Typography>
+              Are you sure you want to cancel this order? This cannot be
+              reversed!
+            </Typography>
+          </DialogContent>
+          <DialogActions>
+            <Button
+              onClick={() => setCancelConfirmationOpen(false)}
+              color="primary"
+            >
+              No
+            </Button>
+            <Button
+              onClick={handleCancelOrder}
+              style={{ backgroundColor: "#ff3333", color: "white" }}
+            >
+              Yes, Cancel Order
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </Card>
+    </Tooltip>
   );
 };
 

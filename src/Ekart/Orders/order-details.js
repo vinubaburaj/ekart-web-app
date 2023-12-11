@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Typography, Paper, Grid, Button, Box } from "@mui/material";
 import { getOrderDetails } from "./service";
 import { useParams } from "react-router";
+import jsPDF from "jspdf";
 
 function OrderDetails() {
   const { orderId } = useParams();
@@ -46,8 +47,33 @@ function OrderDetails() {
   };
 
   const handleDownload = () => {
-    // TODO: Implement download functionality
-    console.log("Downloading order details...");
+    // Create a new instance of jsPDF
+    const pdf = new jsPDF();
+
+    // Add content to the PDF
+    pdf.text(`Order ID: ${_id}`, 20, 20);
+    pdf.text(`Order Date: ${new Date(orderDate).toLocaleString()}`, 20, 30);
+    pdf.text(`Total Amount: $${totalAmount.toFixed(2)}`, 20, 40);
+
+    // Add receipt-like summary for each product
+    let yPos = 60; // Initial y position
+    products.forEach((product) => {
+      pdf.text(`Product: ${product.product.title}`, 20, yPos);
+      pdf.text(`Quantity: ${product.quantity}`, 20, yPos + 10);
+      pdf.text(`Price: $${product.product.price.toFixed(2)}`, 20, yPos + 20);
+      pdf.text(
+        `Subtotal: $${(product.quantity * product.product.price).toFixed(2)}`,
+        20,
+        yPos + 30
+      );
+      yPos += 50; // Increase y position for the next product
+    });
+
+    // Add total amount to the PDF
+    pdf.text(`Total: $${totalAmount.toFixed(2)}`, 20, yPos);
+
+    // Save the PDF with a specific name
+    pdf.save(`Order_${_id}_Receipt.pdf`);
   };
 
   return (
@@ -142,7 +168,7 @@ function OrderDetails() {
             style={downloadButtonStyle}
             onClick={handleDownload}
           >
-            Download Order Details
+            Download Order Receipt
           </Button>
         </div>
       </Box>
