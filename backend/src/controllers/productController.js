@@ -1,6 +1,6 @@
 import axios from "axios";
 import Product from "../models/product.js";
-import {mergeAndFilterProducts} from "../helpers/productHelper.js";
+import { mergeAndFilterProducts, getShuffledSubarray } from "../helpers/productHelper.js";
 import reviewModel from "../models/review.js";
 import User from "../models/user.js";
 
@@ -71,41 +71,45 @@ export const getAllProducts = async (req, res) => {
 
 export const getRandomProducts = async (req, res) => {
   try {
-    // Fetch products from the external API
-    const apiResponse = await axios.get(PRODUCTS_URL);
-    const apiProducts = apiResponse.data.products;
+    // Concurrently fetch products from the external API and the database
+    const [apiResponse, dbProducts] = await Promise.all([
+      axios.get(PRODUCTS_URL),
+      Product.find(),
+    ]);
 
-    // Fetch products from the database
-    const dbProducts = await Product.find();
+    const apiProducts = apiResponse.data.products;
 
     // Merge and filter products
     const mergedProducts = mergeAndFilterProducts(dbProducts, apiProducts);
 
-    // Shuffle the products
-    const shuffledProducts = mergedProducts.sort(() => 0.5 - Math.random());
-
-    // Get sub-array of first n elements after shuffled
-    const selectedProducts = shuffledProducts.slice(0, 5);
+    // Shuffle and select first 5 products
+    const selectedProducts = getShuffledSubarray(mergedProducts, 5);
 
     res.status(200).json(selectedProducts);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });
   }
-}
+};
 
 // Create a new product
 export const createProduct = async (req, res) => {
   try {
     const productData = req.body;
 
-    // Check if the product already exists
-    const existingProduct = await Product.findOne({
-      id: parseInt(productData.id),
-    });
+    if (productData.id) {
+      // Check if the product already exists
+      const existingProduct = await Product.findOne({
+        id: parseInt(productData.id),
+      });
 
-    if (existingProduct) {
-      return res.status(200).json({ message: "Product already exists" });
+      if (existingProduct) {
+        return res.status(200).json({ message: "Product already exists" });
+      }
+    }
+
+    if (!productData.id) {
+      productData.id = Math.floor(100000 + Math.random() * 900000);
     }
 
     const product = new Product({
@@ -149,9 +153,10 @@ export const getProductById = async (req, res) => {
 // Update a product by ID
 export const updateProduct = async (req, res) => {
   try {
-    const updatedProduct = await Product.findOneAndUpdate({id: req.params.id},
-        req.body,
-        {new: true}
+    const updatedProduct = await Product.findOneAndUpdate(
+      { id: req.params.id },
+      req.body,
+      { new: true }
     );
     res.json(updatedProduct);
   } catch (error) {
@@ -162,8 +167,8 @@ export const updateProduct = async (req, res) => {
 // Delete a product by ID
 export const deleteProduct = async (req, res) => {
   try {
-    await Product.findOneAndDelete({id: req.params.id});
-    res.json({message: "Product deleted successfully"});
+    await Product.findOneAndDelete({ id: req.params.id });
+    res.json({ message: "Product deleted successfully" });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -175,21 +180,22 @@ export const getReviewsForProduct = async (req, res) => {
 
     // Check if the product already exists in the database.
     // If a review for a product was created then it should exist in the db
-    const productExists = await Product.findOne({id: productId});
+    const productExists = await Product.findOne({ id: productId });
 
     if (productExists) {
       // If product exists, fetch if there is any reviews for it
       const response = await reviewModel
-      .find({productId: productExists._id})
-      .populate("user");
+        .find({ productId: productExists._id })
+        .populate("user");
       res.status(200).json(response);
+      return;
     } else {
       // If product doesn't exist in db, return an empty array response
-      res.status(200).json([])
+      res.status(200).json([]);
     }
   } catch (error) {
     console.error(error);
-    res.status(500).json({message: "Error fetching reviews for product"});
+    res.status(500).json({ message: "Error fetching reviews for product" });
   }
 };
 
@@ -238,15 +244,15 @@ export const getProductsBySeller = async (req, res) => {
   try {
     const sellerId = req.session["currentUser"]?._id;
     if (!sellerId) {
-      return res.status(401).json({message: "Unauthorized"});
+      return res.status(401).json({ message: "Unauthorized" });
     }
-    const response = await Product.find({sellerId: sellerId});
+    const response = await Product.find({ sellerId: sellerId });
     res.status(200).json(response);
   } catch (error) {
     console.error(error);
-    res.status(500).json({message: "Error fetching products for seller"});
+    res.status(500).json({ message: "Error fetching products for seller" });
   }
-}
+};
 
 export const searchProductsBySeller = async (req, res) => {
   try {
@@ -254,22 +260,24 @@ export const searchProductsBySeller = async (req, res) => {
     const sellerId = req.params.sellerId;
 
     if (!sellerId) {
-      return res.status(401).json({message: "Unauthorized"});
+      return res.status(401).json({ message: "Unauthorized" });
     }
 
     if (!searchTerm) {
-      return res.status(400).json({message: "Search term is required"});
+      return res.status(400).json({ message: "Search term is required" });
     }
 
     // Search in the database
     const dbSearchResults = await Product.find({
-      title: {$regex: new RegExp(searchTerm, "i")}, // Case-insensitive search
-      sellerId: sellerId
+      title: { $regex: new RegExp(searchTerm, "i") }, // Case-insensitive search
+      sellerId: sellerId,
     });
 
-    res.status(200).json({message: "Search successful", data: dbSearchResults});
+    res
+      .status(200)
+      .json({ message: "Search successful", data: dbSearchResults });
   } catch (error) {
     console.error(error);
-    res.status(500).json({message: "Internal server error"});
+    res.status(500).json({ message: "Internal server error" });
   }
-}
+};

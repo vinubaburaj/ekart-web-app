@@ -6,6 +6,8 @@ import productRoutes from "./routes/productRoutes.js";
 import cartRoutes from "./routes/cartRoutes.js";
 import profileRoutes from "./routes/profileRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
+import orderRoutes from "./routes/orderRoutes.js";
+import sessionMiddleware from "./middleware/sessionMiddleware.js";
 import {MongoClient, ServerApiVersion} from "mongodb";
 import wishlistRoutes from "./routes/wishlistRoutes.js";
 import session from "express-session";
@@ -82,6 +84,7 @@ app.use("/api/cart", cartRoutes);
 app.use("/api/wishlist", wishlistRoutes);
 app.use("/api/profile", profileRoutes);
 app.use("/api/users", userRoutes);
+app.use("/api/orders", orderRoutes);
 
 // Start the server
 app.listen(PORT, () => {

@@ -118,7 +118,6 @@ function ProductDetails() {
 
   const fetchProductReviews = async () => {
     const fetchedReviews = await service.getReviewsForProduct(productId);
-    console.log("FETCHED REVIEWS: ", fetchedReviews);
     setReviews(fetchedReviews);
   };
 

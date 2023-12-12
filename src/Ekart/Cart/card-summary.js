@@ -1,8 +1,11 @@
 import { Button, Card, CardContent, Typography } from "@mui/material";
 import React from "react";
 import { emptyCart } from "./service";
+import { createOrder } from "../Orders/service";
+import { useNavigate } from "react-router-dom";
 
 function CardSummary({ cartItems, setCartItems }) {
+  const navigate = useNavigate();
   const handleEmptyCart = () => {
     emptyCart();
     setCartItems([]);
@@ -16,6 +19,25 @@ function CardSummary({ cartItems, setCartItems }) {
   });
   totalPrice = totalPrice.toFixed(2);
   console.log("price: ", totalPrice);
+
+  const handlePlaceOrder = async () => {
+    // Prepare the payload
+    const orderPayload = {
+      products: cartItems.map((item) => ({
+        product: item.product,
+        quantity: item.quantity,
+      })),
+    };
+
+    // Create the order
+    const createdOrder = await createOrder(orderPayload);
+    console.log("CREATED ORDER: ", createdOrder);
+
+    // Redirect to order details
+    const orderDetailsUrl = `/Account/Orders/${createdOrder._id}`;
+    navigate(orderDetailsUrl);
+  };
+
   return (
     <>
       <Card>
@@ -72,6 +94,7 @@ function CardSummary({ cartItems, setCartItems }) {
         variant="contained"
         color="primary"
         className="d-block mt-2 w-100"
+        onClick={handlePlaceOrder}
       >
         Place Order
       </Button>
