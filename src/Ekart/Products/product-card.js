@@ -79,13 +79,17 @@ const ProductCard = ({product}) => {
   }
 
   const toggleCart = async () => {
-    setAddedToCart(!addedToCart);
-    if (!addedToCart) {
-      const response = await addToCart(product, 1);
-      dispatch(setCartItems(response))
+    if (user) {
+      setAddedToCart(!addedToCart);
+      if (!addedToCart) {
+        const response = await addToCart(product, 1);
+        dispatch(setCartItems(response))
+      }
+      setSnackBarMsg("Added to Cart");
+      setSnackBarOpen(true);
+    } else {
+      navigate("/Login");
     }
-    setSnackBarMsg("Added to Cart");
-    setSnackBarOpen(true);
   };
 
   const toggleWishList = () => {
