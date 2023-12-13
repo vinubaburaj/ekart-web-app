@@ -99,11 +99,7 @@ function Ekart() {
         {/* To fetch the profile of another user using their userId */}
         <Route
           path={"/Account/Profile/:profileId"}
-          element={
-            <ProtectedRoute>
-              <Profile />
-            </ProtectedRoute>
-          }
+          element={<Profile />}
         />
         <Route path="/Error" element={<ErrorPage />} />
         <Route path="/Unauthorized" element={<UnauthorizedPage />} />
