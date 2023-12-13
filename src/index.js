@@ -9,6 +9,8 @@ import {createTheme, ThemeProvider} from "@mui/material";
 import store from "./Ekart/store";
 import {Provider} from "react-redux";
 
+document.title = "Ekart";
+
 export const theme = createTheme({
   palette: {
     primary: {
