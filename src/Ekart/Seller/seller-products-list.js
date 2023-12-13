@@ -1,16 +1,22 @@
 import ProductCard from "../Products/product-card";
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import * as service from "../Products/service";
 import {setSellerProducts} from "./sellerProductsReducer";
-import {useEffect} from "react";
+import React, {useEffect, useState} from "react";
+import {Roles} from "../../Constants/roles";
 
 function SellerProductsList() {
   const {searchTerm} = useParams();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const products = useSelector(
       (state) => state.sellerProductsReducer.sellerProducts);
   const currentUser = useSelector((state) => state.userReducer.currentUser);
+  const role = useSelector((state) => state.userReducer.role);
+  const [snackbarOpen, setSnackBarOpen] = useState(false);
+  const [snackbarMsg, setSnackBarMsg] = useState("");
+  const [severity, setSeverity] = useState("success");
 
   const fetchSellerProducts = async () => {
     const fetchedProducts = await service.getProductsBySeller();
@@ -26,6 +32,9 @@ function SellerProductsList() {
 
   useEffect(() => {
     if (currentUser) {
+      if (role !== Roles.SELLER) {
+        navigate('/Unauthorized');
+      }
       if (searchTerm) {
         searchSellerProducts(searchTerm);
       } else {

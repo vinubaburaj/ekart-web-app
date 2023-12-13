@@ -11,7 +11,6 @@ function ProductsList() {
   const user = useSelector((state) => state.userReducer.currentUser);
   const [products, setProducts] = useState([]);
   const {searchTerm} = useParams();
-  const wishlistItems = useSelector((state) => state.wishlistReducer.wishlistItems);
 
   const searchProducts = async (searchTerm) => {
     const fetchedProducts = await service.searchProductsByTitle(searchTerm);

@@ -48,10 +48,10 @@ function AddProduct() {
   console.log(editMode);
 
   useEffect(() => {
-    if (role !== Roles.SELLER) {
-      navigate('/Unauthorized');
-    }
     if (currentUser) {
+      if (role !== Roles.SELLER) {
+        navigate('/Unauthorized');
+      }
       setNewProduct({...newProduct, sellerId: currentUser._id});
     }
     if (editMode) {
@@ -112,7 +112,7 @@ function AddProduct() {
     }
     const response = await createProduct(newProduct);
     console.log(response);
-    navigate('/Home');
+    navigate('/Products', {state: {message: 'Product added!'}});
   }
 
   const editProduct = async () => {
@@ -120,7 +120,7 @@ function AddProduct() {
     if (response.status) {
       // TODO show error
     }
-    navigate('/Products');
+    navigate('/Products', {state: {message: 'Product updated!'}});
     console.log(response);
   }
 
@@ -267,7 +267,7 @@ function AddProduct() {
               </div>
             </Paper>
           </div>
-          <div className={'d-sm-none d-md-block col-md-6'}>
+          <div className={'d-none d-md-block col-md-6'}>
             <div
                 className={'d-flex flex-column justify-content-center align-items-center'}>
               <div className={'fs-4 p-5 mt-3'}>Every detail counts! Dive into
@@ -278,8 +278,8 @@ function AddProduct() {
               <img
                   src={'https://cdn.pixabay.com/photo/2017/03/13/17/26/ecommerce-2140603_1280.jpg'}
                   className={'m-3'}
-                  width={'700px'}
-                  height={'400px'}
+                  width="100%"
+                  height="100%"
                   alt={'store-img'}/>
             </div>
           </div>

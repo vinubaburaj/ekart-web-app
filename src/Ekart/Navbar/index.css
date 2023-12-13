@@ -43,3 +43,7 @@
 .wd-cursor-pointer {
     cursor: pointer !important;
 }
+
+.dropdown-toggle::after {
+  display: none !important;
+}

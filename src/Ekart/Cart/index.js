@@ -17,9 +17,10 @@ import {
 } from "./service";
 import {useAuth} from "../../AuthContext";
 import {useIsMount} from "../../Common/helpers";
-import {setCartItems} from "../Cart/cartReducer";
+import {setCartItems} from "./cartReducer";
 import {useDispatch, useSelector} from "react-redux";
 import {Roles} from "../../Constants/roles";
+import SnackbarComponent from "../../Common/snackbar";
 
 function Cart() {
   const { user } = useAuth();
@@ -30,6 +31,13 @@ function Cart() {
   const dispatch = useDispatch();
   const role = useSelector((state) => state.userReducer.role);
   const navigate = useNavigate();
+  const [snackbarOpen, setSnackBarOpen] = useState(false);
+  const [snackbarMsg, setSnackBarMsg] = useState("");
+  const [severity, setSeverity] = useState("success");
+
+  const handleSnackbarClose = () => {
+    setSnackBarOpen(false);
+  }
 
   const fetchCart = async () => {
     try {
@@ -44,6 +52,9 @@ function Cart() {
     const response = await removeProductFromCart(productId);
     dispatch(setCartItems(response));
     setCartChanged(true);
+    setSnackBarMsg("Product removed from cart");
+    setSeverity("success");
+    setSnackBarOpen(true);
   };
 
   useEffect(() => {
@@ -146,11 +157,14 @@ function Cart() {
               </table>
             </div>
             <div className={"col-3"}>
-              <CardSummary cartItems={cartItems} setCartItems={setCartItems} />
+              <CardSummary cartItems={cartItems} />
             </div>
           </div>
         </>
       )}
+      <SnackbarComponent snackbarOpen={snackbarOpen} snackbarMsg={snackbarMsg}
+                         severity={severity} horizontal="center"
+                         vertical="top" handleClose={handleSnackbarClose}/>
     </div>
   );
 }

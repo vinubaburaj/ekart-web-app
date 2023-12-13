@@ -1,15 +1,28 @@
-import { Button, Card, CardContent, Typography } from "@mui/material";
-import React from "react";
-import { emptyCart } from "./service";
-import { createOrder } from "../Orders/service";
-import { useNavigate } from "react-router-dom";
+import {Button, Card, CardContent, Typography} from "@mui/material";
+import React, {useState} from "react";
+import {emptyCart} from "./service";
+import {createOrder} from "../Orders/service";
+import {useNavigate} from "react-router-dom";
+import {useDispatch} from "react-redux";
+import {setCartItems} from "./cartReducer";
+import SnackbarComponent from "../../Common/snackbar";
 
-function CardSummary({ cartItems, setCartItems }) {
+function CardSummary({ cartItems }) {
   const navigate = useNavigate();
-  const handleEmptyCart = () => {
-    emptyCart();
-    setCartItems([]);
+  const dispatch = useDispatch();
+  const [snackbarOpen, setSnackBarOpen] = useState(false);
+  const [snackbarMsg, setSnackBarMsg] = useState("");
+  const [severity, setSeverity] = useState("success");
+  const handleEmptyCart = async () => {
+    await emptyCart();
+    dispatch(setCartItems([]));
+    setSnackBarMsg("Cart emptied");
+    setSeverity("success");
+    setSnackBarOpen(true);
   };
+  const handleSnackbarClose = () => {
+    setSnackBarOpen(false);
+  }
   const shipping = 5.0;
   let totalPrice = 0;
   let totalQuantity = 0;
@@ -106,6 +119,9 @@ function CardSummary({ cartItems, setCartItems }) {
       >
         Empty Cart
       </Button>
+      <SnackbarComponent snackbarOpen={snackbarOpen} snackbarMsg={snackbarMsg}
+                         severity={severity} horizontal="center"
+                         vertical="top" handleClose={handleSnackbarClose}/>
     </>
   );
 }

@@ -47,6 +47,10 @@ function ProductDetails() {
     setWishListed(wishlistItems.some((item) => item.product.id === product.id));
   }, [wishlistItems]);
 
+  const handleSnackbarClose = () => {
+    setSnackBarOpen(false);
+  }
+
   const toggleWishList = () => {
     if (user) {
       if (!wishListed) {
@@ -95,6 +99,8 @@ function ProductDetails() {
   const addToCart = async () => {
     const response = await addToCartService(product, quantity);
     dispatch(setCartItems(response));
+    setSnackBarMsg("Added to Cart");
+    setSnackBarOpen(true);
   };
 
   const fetchProduct = async () => {
@@ -254,7 +260,7 @@ function ProductDetails() {
                 </div>
               </div>
               <hr className={"mt-1"}/>
-              <div className="mx-3 mb-5">
+              <div className="mx-3 mb-5 ps-3">
                 <div className="fs-4 mb-3">Reviews</div>
                 {user && user.role === "BUYER" && (
                     <div className="row">
@@ -280,6 +286,9 @@ function ProductDetails() {
                     </div>
                 )}
                 <div className="mt-3 ">
+                  {review.length === 0 && (
+                      <div className="fs-5">No reviews yet</div>
+                  )}
                   {reviews.length > 0 && (
                       <>
                         {/* {JSON.stringify(reviews)} */}
@@ -308,7 +317,7 @@ function ProductDetails() {
         )}
         <SnackbarComponent snackbarOpen={snackbarOpen} snackbarMsg={snackbarMsg}
                            severity={severity} horizontal="center"
-                           vertical="top"/>
+                           vertical="top" handleClose={handleSnackbarClose}/>
         <SimpleConfirmDialog open={dialogOpen} onClose={handleDialogClose}/>
       </>
   );

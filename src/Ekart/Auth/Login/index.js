@@ -103,7 +103,7 @@ function Login() {
           variant="outlined"
           className="mt-3"
         />
-        <button className={"btn btn-primary mt-3"} onClick={login}>
+        <button tabIndex={0} className={"btn btn-primary mt-3"} onClick={login}>
           Sign in
         </button>
         <Typography variant="body2" className="mt-3">

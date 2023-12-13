@@ -7,7 +7,7 @@ import {findRandomProducts, searchProductsByTitle} from "../Products/service";
 import React, {useEffect, useState} from "react";
 import ProductCard from "../Products/product-card";
 import Carousel from "react-material-ui-carousel";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {Button, Card, CardActionArea} from "@mui/material";
 
 function Home() {
@@ -16,6 +16,7 @@ function Home() {
   const [products, setProducts] = useState([]);
   const [randomProducts, setRandomProducts] = useState([]);
   const searchTerm = useSelector((state) => state.userReducer.currentUser?.prevSearch);
+  const navigate = useNavigate();
 
   const getProductsByPrevSearch = async () => {
     if (!searchTerm) {
@@ -26,7 +27,7 @@ function Home() {
   }
 
   const getRandomProducts = async () => {
-    const response = await findRandomProducts();
+    const response = await findRandomProducts(navigate);
     setRandomProducts(response);
   }
 

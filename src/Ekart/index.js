@@ -1,9 +1,9 @@
-import { Route, Routes, useLocation } from "react-router";
+import {Route, Routes, useLocation} from "react-router";
 import Home from "./Home";
 import Login from "./Auth/Login";
 import Products from "./Products";
 import ProductDetails from "./Products/product-details";
-import { Navigate } from "react-router-dom";
+import {Navigate, useNavigate} from "react-router-dom";
 import Navbar from "./Navbar";
 import Cart from "./Cart";
 import "./index.css";
@@ -16,14 +16,17 @@ import SellerProductsList from "./Seller/seller-products-list";
 import ErrorPage from "../Common/errorPage";
 import ProtectedRoute from "../Utils/protectedRoutes";
 import UnauthorizedPage from "../Common/unauthorizedPage";
+import {initializeNavigation} from "../Utils/navigationInitializer";
 import Orders from "./Orders";
 import OrderDetails from "./Orders/order-details";
 
 function Ekart() {
   const path = useLocation().pathname;
+  const navigate = useNavigate();
   let showNavbar = false;
   const hideNavbarPaths = ["/Login", "/Register"];
   showNavbar = !hideNavbarPaths.includes(path);
+  initializeNavigation(navigate);
   return (
     <div className={"container-fluid px-0 mx-0"}>
       {showNavbar && <Navbar />}
