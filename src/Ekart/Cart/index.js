@@ -17,7 +17,7 @@ import {
 } from "./service";
 import {useAuth} from "../../AuthContext";
 import {useIsMount} from "../../Common/helpers";
-import {setCartItems} from "../Cart/cartReducer";
+import {setCartItems} from "./cartReducer";
 import {useDispatch, useSelector} from "react-redux";
 import {Roles} from "../../Constants/roles";
 import SnackbarComponent from "../../Common/snackbar";

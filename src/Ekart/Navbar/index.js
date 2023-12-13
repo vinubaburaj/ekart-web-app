@@ -53,7 +53,7 @@ const Navbar = () => {
   }
 
   useEffect(() => {
-    if (user) {
+    if (user && role === Roles.BUYER) {
       setIsUserLoggedIn(true);
       fetchCart(); // Fetching the cart info after a refresh as user gets updated after refresh.
     }
