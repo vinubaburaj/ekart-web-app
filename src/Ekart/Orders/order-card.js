@@ -94,9 +94,12 @@ const OrderCard = ({ order, onCancel }) => {
 
   const cursorStyle = order.isCancelled ? "not-allowed" : "pointer";
 
-  // Navigate to the order details page
-  const handleCardClick = () => {
-    if (!order.isCancelled) {
+  const handleCardClick = (event) => {
+    // Check if the click event originated from the main card content
+    const isCardContentClick =
+      event.target.tagName !== "BUTTON" && !event.target.closest("button");
+
+    if (!order.isCancelled && isCardContentClick) {
       navigate(`/Account/Orders/${order._id}`);
     }
   };
