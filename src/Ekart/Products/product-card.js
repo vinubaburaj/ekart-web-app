@@ -6,7 +6,6 @@ import {
   CardContent,
   CardMedia,
   IconButton,
-  Rating,
   Typography,
 } from "@mui/material";
 import {setCartItems} from "../Cart/cartReducer";
@@ -164,7 +163,7 @@ const ProductCard = ({product}) => {
               <Typography gutterBottom variant="h6" component="div">
                 {product.title}
               </Typography>
-              <div className={"d-flex flex-row align-items-center mb-2"}>
+              {/*<div className={"d-flex flex-row align-items-center mb-2"}>
                 <Rating
                     size={"small"}
                     readOnly
@@ -173,7 +172,7 @@ const ProductCard = ({product}) => {
                     precision={0.5}
                 />
                 ({ratingValue ? ratingValue : "No Ratings"})
-              </div>
+              </div>*/}
               <Typography variant="body2" color="text.secondary">
                 ${product.price}
               </Typography>

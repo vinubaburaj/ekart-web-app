@@ -4,7 +4,6 @@ import {
   FormControl,
   InputLabel,
   MenuItem,
-  Rating,
   Select,
 } from "@mui/material";
 import {FaRegHeart} from "react-icons/fa";
@@ -203,7 +202,7 @@ function ProductDetails() {
                         />
                     )}
                   </div>
-                  <div className={"d-flex flex-row"}>
+                  {/*<div className={"d-flex flex-row"}>
                     <Rating
                         readOnly
                         name="read-only"
@@ -211,7 +210,7 @@ function ProductDetails() {
                         precision={0.5}
                     />
                     ({product.rating})
-                  </div>
+                  </div>*/}
                   <h4 className="mt-2">${product.price}</h4>
                   {!isSeller && <div className={"d-flex flex-row mt-3"}>
                     <FormControl className={"me-3"} color={"primary"}>
