@@ -73,17 +73,17 @@ function Wishlist() {
         </>}
         {wishlistItems.length > 0 && <>
           <div className={'row ms-2'}>
-            <div className={'col-2'}>
+            <div className={'col-12 col-lg-2 ps-0'}>
               <div className={'fs-3'}>Items in Wishlist</div>
             </div>
-            <div className={'col-2'}>
+            <div className={'col-12 col-lg-2 ps-0'}>
               <Button variant="contained" color="primary"
                       className="d-block w-100"
                       onClick={moveAllToCart}>
                 Move All to Cart
               </Button>
             </div>
-            <div className={'col-2'}>
+            <div className={'col-12 col-lg-2 ps-0 mt-2 mt-md-0'}>
               <Button
                   variant="contained"
                   className="d-block w-100"

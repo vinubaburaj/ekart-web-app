@@ -96,10 +96,14 @@ function ProductDetails() {
     setSnackBarOpen(true);
   }
   const addToCart = async () => {
-    const response = await addToCartService(product, quantity);
-    dispatch(setCartItems(response));
-    setSnackBarMsg("Added to Cart");
-    setSnackBarOpen(true);
+    if (user) {
+      const response = await addToCartService(product, quantity);
+      dispatch(setCartItems(response));
+      setSnackBarMsg("Added to Cart");
+      setSnackBarOpen(true);
+    } else {
+      navigate("/Login");
+    }
   };
 
   const fetchProduct = async () => {

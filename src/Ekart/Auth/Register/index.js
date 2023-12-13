@@ -119,7 +119,7 @@ function Register() {
         {userExists && <div className="alert alert-danger">User with this email
           already exists! Try <Link to={'/Login'}>logging in</Link> instead.
         </div>}
-        <div className={'col p-5'}>
+        <div className={'d-none d-md-flex col-md-6 p-5'}>
           <div
               className={'d-flex flex-column justify-content-center align-items-center'}>
             <Link to={'/'} className={'fs-1'}>E-kart</Link>
@@ -128,12 +128,17 @@ function Register() {
             <img
                 src={'https://cdn.pixabay.com/photo/2019/04/26/07/14/store-4156934_1280.png'}
                 className={'mt-3'}
-                width={'400px'}
-                height={'400px'}
+                width="100%"
+                height="100%"
                 alt={'store-img'}/>
           </div>
         </div>
-        <div className={'col pe-5'}>
+        <div className={'col-12 col-md-6 p-5'}>
+          <div className={'d-flex flex-column d-md-none'}>
+            <Link to={'/'} className={'fs-1'}>E-kart</Link>
+            <div className={'fs-2'}>The best products, all in one place.
+            </div>
+          </div>
           <h3 className={'mt-3'}>Sign up</h3>
           <div className={'row'}>
             <div className={'col-12'}>
@@ -146,7 +151,7 @@ function Register() {
                   id="first-name"
                   label="First Name"
                   variant="outlined"
-                  className="mt-3 w-50"
+                  className="mt-3 w-100"
                   onChange={(e) => setUser(
                       {...user, firstName: e.target.value})}
               />
@@ -161,7 +166,7 @@ function Register() {
                   id="last-name"
                   label="Last Name"
                   variant="outlined"
-                  className="mt-3 w-50"
+                  className="mt-3 w-100"
                   onChange={(e) => setUser({...user, lastName: e.target.value})}
               />
             </div>
@@ -177,7 +182,7 @@ function Register() {
                   id="email-id"
                   label="Email ID"
                   variant="outlined"
-                  className="mt-3 w-50"
+                  className="mt-3 w-100"
                   onChange={(e) => setUser({...user, email: e.target.value})}
               />
             </div>
@@ -192,7 +197,7 @@ function Register() {
                   id="password"
                   label="Password"
                   variant="outlined"
-                  className="mt-3 w-50"
+                  className="mt-3 w-100"
                   onChange={(e) => setUser({...user, password: e.target.value})}
               />
             </div>
@@ -207,7 +212,7 @@ function Register() {
                   id="confirm-password"
                   label="Confirm Password"
                   variant="outlined"
-                  className="mt-3 w-50"
+                  className="mt-3 w-100"
                   onChange={(e) => setUser(
                       {...user, confirmPassword: e.target.value})}
               />
