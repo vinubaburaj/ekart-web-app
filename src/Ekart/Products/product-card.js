@@ -46,8 +46,12 @@ const ProductCard = ({product}) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    setWishListed(wishlistItems.some((item) => item.product.id === product.id));
+    setWishListed(wishlistItems?.some((item) => item.product.id === product.id));
   }, [wishlistItems]);
+
+  const handleSnackbarClose = () => {
+    setSnackBarOpen(false);
+  }
 
   const handleDialogClose = (value) => {
     console.log(value);
@@ -60,10 +64,15 @@ const ProductCard = ({product}) => {
   const deleteProdFromDB = async () => {
     const response = await deleteProduct(product.id);
     if (response.status) {
-      // TODO: Show error message
+      setSnackBarMsg("Error in deleting product");
+      setSeverity("error");
+      setSnackBarOpen(true);
       return;
     }
     dispatch(deleteFromSellerProducts(product.id));
+    setSnackBarMsg("Product deleted");
+    setSeverity("success");
+    setSnackBarOpen(true);
   }
 
   const deleteProductClicked = () => {
@@ -72,12 +81,12 @@ const ProductCard = ({product}) => {
 
   const toggleCart = async () => {
     setAddedToCart(!addedToCart);
-    setSnackBarOpen(true);
     if (!addedToCart) {
       const response = await addToCart(product, 1);
       dispatch(setCartItems(response))
     }
-    setSnackBarMsg(addedToCart ? "Removed from Cart" : "Added to Cart");
+    setSnackBarMsg("Added to Cart");
+    setSnackBarOpen(true);
   };
 
   const toggleWishList = () => {
@@ -111,16 +120,13 @@ const ProductCard = ({product}) => {
 
   const removingFromWishlist = async () => {
     const res = await wishlistService.deleteProductFromWishlist(product.id);
-    if (res?.status === 500) {
-      navigate("/Error");
-    }
     if (res?.status === 403) {
       setSnackBarMsg("Not in WishList!");
       setSeverity("error");
       setSnackBarOpen(true);
       return;
     }
-    dispatch(setWishlistItems(res.wishlist));
+    dispatch(setWishlistItems(res));
     setWishListed(false);
     setSnackBarMsg("Removed from WishList!");
     setSeverity("success");
@@ -135,6 +141,9 @@ const ProductCard = ({product}) => {
     }
     dispatch(setCartItems(response.cart));
     dispatch(setWishlistItems(response.wishlist));
+    setSnackBarMsg("Moved to Cart!");
+    setSeverity("success");
+    setSnackBarOpen(true);
   }
 
   return (
@@ -244,7 +253,7 @@ const ProductCard = ({product}) => {
         )}
         <SnackbarComponent snackbarOpen={snackbarOpen} snackbarMsg={snackbarMsg}
                            severity={severity} horizontal="center"
-                           vertical="top"/>
+                           vertical="top" handleClose={handleSnackbarClose}/>
         <SimpleConfirmDialog open={dialogOpen} onClose={handleDialogClose}/>
       </Card>
   );

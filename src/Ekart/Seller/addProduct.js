@@ -48,10 +48,10 @@ function AddProduct() {
   console.log(editMode);
 
   useEffect(() => {
-    if (role !== Roles.SELLER) {
-      navigate('/Unauthorized');
-    }
     if (currentUser) {
+      if (role !== Roles.SELLER) {
+        navigate('/Unauthorized');
+      }
       setNewProduct({...newProduct, sellerId: currentUser._id});
     }
     if (editMode) {
@@ -112,7 +112,7 @@ function AddProduct() {
     }
     const response = await createProduct(newProduct);
     console.log(response);
-    navigate('/Home');
+    navigate('/Products', {state: {message: 'Product added!'}});
   }
 
   const editProduct = async () => {
@@ -120,7 +120,7 @@ function AddProduct() {
     if (response.status) {
       // TODO show error
     }
-    navigate('/Products');
+    navigate('/Products', {state: {message: 'Product updated!'}});
     console.log(response);
   }
 

@@ -1,12 +1,13 @@
 import {useDispatch, useSelector} from "react-redux";
 import ProductCard from "../Products/product-card";
 import {Button} from "@mui/material";
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import {setCartItems} from "../Cart/cartReducer";
 import {setWishlistItems} from "./wishlistReducer";
 import * as wishlistService from "./wishlistService";
 import {useNavigate} from "react-router-dom";
 import {Roles} from "../../Constants/roles";
+import SnackbarComponent from "../../Common/snackbar";
 
 function Wishlist() {
   const dispatch = useDispatch();
@@ -15,6 +16,9 @@ function Wishlist() {
       (state) => state.wishlistReducer.wishlistItems);
   const user = useSelector((state) => state.userReducer.currentUser);
   const role = useSelector((state) => state.userReducer.role);
+  const [snackbarOpen, setSnackBarOpen] = useState(false);
+  const [snackbarMsg, setSnackBarMsg] = useState("");
+  const [severity, setSeverity] = useState("success");
 
   useEffect(() => {
     if (user) {
@@ -38,6 +42,9 @@ function Wishlist() {
     }
     dispatch(setWishlistItems(response.wishlist));
     dispatch(setCartItems(response.cart));
+    setSnackBarMsg("All items moved to cart");
+    setSeverity("success");
+    setSnackBarOpen(true);
   }
 
   const clearWishlist = async () => {
@@ -48,6 +55,13 @@ function Wishlist() {
     }
     dispatch(setWishlistItems(response.wishlist));
     dispatch(setCartItems(response.cart));
+    setSnackBarMsg("Wishlist cleared");
+    setSeverity("success");
+    setSnackBarOpen(true);
+  }
+
+  const handleSnackbarClose = () => {
+    setSnackBarOpen(false);
   }
 
   return (
@@ -89,6 +103,9 @@ function Wishlist() {
             ))}
           </div>
         </>}
+        <SnackbarComponent snackbarOpen={snackbarOpen} snackbarMsg={snackbarMsg}
+                           severity={severity} horizontal="center"
+                           vertical="top" handleClose={handleSnackbarClose}/>
       </div>
   );
 }

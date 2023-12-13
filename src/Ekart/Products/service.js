@@ -16,8 +16,8 @@ export const findAllProducts = async () => {
   return await httpService.get(PRODUCTS);
 };
 
-export const findRandomProducts = async () => {
-  return await httpService.get(`${PRODUCTS}/random`);
+export const findRandomProducts = async (navigate) => {
+  return await httpService.get(`${PRODUCTS}/random`, navigate);
 }
 
 export const findProductById = async (productId) => {

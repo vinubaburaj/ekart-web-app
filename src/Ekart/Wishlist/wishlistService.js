@@ -21,8 +21,7 @@ export const deleteProductFromWishlist = async (productId) => {
 }
 
 export const emptyWishlist = async () => {
-  const response = await httpService.deleteReq(`${WISHLIST}`);
-  return response.wishlist;
+  return await httpService.deleteReq(`${WISHLIST}`);
 }
 
 export const moveAllProductsToCart = async () => {
