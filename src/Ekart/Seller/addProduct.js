@@ -267,7 +267,7 @@ function AddProduct() {
               </div>
             </Paper>
           </div>
-          <div className={'d-sm-none d-md-block col-md-6'}>
+          <div className={'d-none d-md-block col-md-6'}>
             <div
                 className={'d-flex flex-column justify-content-center align-items-center'}>
               <div className={'fs-4 p-5 mt-3'}>Every detail counts! Dive into

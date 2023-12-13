@@ -127,7 +127,10 @@ const Navbar = () => {
 
             <div className={`${isUserLoggedIn ? "d-flex"
                 : "d-none d-md-flex"} col-1 col-md-2 col-xl-1 px-0 ${isUserLoggedIn
-                ? "offset-md-1 offset-lg-0 offset-xl-2" : "offset-xl-1"}`}>
+            && !isSeller
+                ? "offset-md-1 offset-lg-0 offset-xl-2"
+                : ""} ${isUserLoggedIn && isSeller ? "offset-2 offset-xl-3"
+                : ""} ${!isUserLoggedIn ? "offset-xl-1" : ""}`}>
               <div
                   className={`wd-td-none wd-fg-white me-3 ${
                       role === Roles.ADMIN ? "wd-ml-auto" : ""
