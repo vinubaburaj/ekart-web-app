@@ -1,70 +1,79 @@
-# Getting Started with Create React App
+# Ekart - Ecommerce Application
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Ekart is a full-fledged ecommerce application that allows users to browse products, manage wishlists, add items to the cart, post reviews, place orders, download order receipts, and cancel orders. The application is built with ReactJS for the front end and Node.js for the backend. The project is hosted on Netlify for the frontend and Render for the backend and uses a NoSQL MongdoDB to store all the required information for the application that needs to be persisted.
 
-## Available Scripts
+## Features
 
-In the project directory, you can run:
+- View a wide range of products from the default list fetched from [Dummy JSON API](https://dummyjson.com).
+- Wishlist products and add them to the shopping cart.
+- Post reviews on products to share your opinions.
+- Place orders and download order receipts for your records.
+- Cancel orders if you change your mind.
 
-### `npm start`
+## User Roles
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+1. **Anonymous:**
+   - View all products.
+   - View product reviews.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+2. **Buyer:**
+   - Wishlist products.
+   - Add products to the shopping cart.
+   - Post reviews on products.
+   - Place orders.
 
-### `npm test`
+3. **Seller:**
+   - Create new products for sale.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+4. **Admin:**
+   - Create and delete user roles.
 
-### `npm run build`
+## Project Structure
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- Frontend: [Ekart Web](https://main--ekart-web.netlify.app/)
+- Backend Routes and Controllers: [/backend](https://ekart-server-app.onrender.com/api/products)
+- Note: The backend server might take about 3 minutes to spin up again after 15 minutes of inactivity.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Technologies Used
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- Frontend: ReactJS, Redux for state management.
+- Backend: Node.js.
+- Hosting: Netlify (Frontend), Render (Backend).
+- Database: Mongo Atlas
 
-### `npm run eject`
+## Getting Started
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+- Running the application live:
+1. Spin up the backend of the application from this [link](https://ekart-server-app.onrender.com/api/products)
+2. Visit the frontend of the application [here](https://main--ekart-web.netlify.app/)
+3. Click on 'Sign In', if you have not already created an account click on 'Register Now' and enter your information.
+4. After signing in, you should be able to view all the products, add them to cart, wishlist items, place orders or add reviews.
+5. Sign is not required to view products and reviews. 
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- Running application in local:
+1. Clone the repository.
+2. Install dependencies using `npm install`.
+3. Navigate to the `backend` directory and set up the backend.
+4. Run the backend from the `backend` directory using `node app.js`.
+5. Run the frontend from the root directory using `npm run start`.
+6. Follow steps 3-5 from "Running the application in live" section above.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## Collaborators
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+- [Anant Moudgalya](https://github.com/anantmoudgalya) 
+- [Gibran Myageri](https://github.com/gibran96) 
+- [Vinu Baburaj](https://github.com/vinubaburaj)
 
-## Learn More
+## Contributing
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+We welcome contributions from the community. Please reach out to either of the collaborators for more information on contributing to this project.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## License
 
-### Code Splitting
+This project is made entirely for educational purposes and is not meant to be used as a proprietary application. 
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## Acknowledgments
 
-### Analyzing the Bundle Size
+We would like to express our gratitude to the developers of [Dummy JSON API](https://dummyjson.com) for providing the default product list.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Feel free to explore the application and provide feedback. Happy shopping! 🛒🎉
